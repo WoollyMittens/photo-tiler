@@ -55,50 +55,61 @@ useful.viewer.start(parent, {
 ```
 
 **id : {string}** - The ID attribute of an element somewhere in the document.
+
 **parent : {DOM node}** - The DOM element around which the functionality is centred.
+
 **links : {string}** - A CSS Rule that describes the toggle buttons within *parent*.
+
 **urlprefix : {string}** - A prefix that gets added to all web-service calls.
+
 **imagesize : {string}** - A web-service that returns the dimensions of an image on the server. An example is provided as *./php/imagesize.php*.
+
 **imageslice : {string}** - A web-service for requesting cropped tiles of an image on the server. An example is provided as *./php/imageslice.php*.
+
 **width : {integer}** - The width of the slideshow.
 
 **widthUnit : {string}**
-*'px* - The width would be applied in pixels.
-*'%* - The width would be applied as a percentage of the available space.
-*'em* - The width would be applied relative to the text size.
++ *'px* - The width would be applied in pixels.
++ *'%* - The width would be applied as a percentage of the available space.
++ *'em* - The width would be applied relative to the text size.
 
 **height : {integer}** - The height of the slideshow.
 
 **heightUnit : {string}**
-*'px* - The height would be applied in pixels.
-*'%* - The height would be applied as a percentage of the available space. The parent element needs to have a defined height.
-*'em* - The height would be applied relative to the text size.
++ *'px* - The height would be applied in pixels.
++ *'%* - The height would be applied as a percentage of the available space. The parent element needs to have a defined height.
++ *'em* - The height would be applied relative to the text size.
 
 **divide : {string}** - The percentage of the height devoted to the slides. The rest is reserved for the thumbnails.
+
 **margin : {string}** - The space separating the slides and the thumbnails.
+
 **highlight : {color}** - A color name, hex or rgba value  used to highlight the active thumbnail.
+
 **lens : {float}** - The radius of the lens overlay as a fraction of the width of the viewer.
 
 **toolbars : {string}**
-*buttons* - Show a minimal set of buttons.
-*toolbar* - Show a toolbar instead of separate buttons.
-*sliders* - Use sliders to control the zoom and rotation.
++ *buttons* - Show a minimal set of buttons.
++ *toolbar* - Show a toolbar instead of separate buttons.
++ *sliders* - Use sliders to control the zoom and rotation.
 
 **zoom : {string}**
-*static* - The main image zooms in.
-*lens* - A separate lens overlays a zoomed in view.
++ *static* - The main image zooms in.
++ *lens* - A separate lens overlays a zoomed in view.
 
 **spin : {string}**
-*rotation* - The left/right controls assume the images form a 360 degree rotation of a subject in separate frames.
-*slideshow* - The left/right controls cycle through slides.
-*catalogue* - The left/right controls emulate turning a page.
++ *rotation* - The left/right controls assume the images form a 360 degree rotation of a subject in separate frames.
++ *slideshow* - The left/right controls cycle through slides.
++ *catalogue* - The left/right controls emulate turning a page.
 
 **pan : {string}**
-*drag* - Adjust the view by dragging the mouse or touch.
-*hover* - Adjust the view by hovering the mouse.
++ *drag* - Adjust the view by dragging the mouse or touch.
++ *hover* - Adjust the view by hovering the mouse.
 
 **magnification : {float}** - The factor by which the magnification increases.
+
 **grid : {string}** - The size of the tiles that make up the zoomed image.
+
 **cache : {integer}** - How many tiles to keep track of at a time. More slows down the display, but reduces downloads.
 
 ### Using document.querySelectorAll
@@ -133,7 +144,9 @@ useful.css.select({
 ```
 
 **rule : {string}** - The CSS Rule for the intended target(s) of the script.
+
 **handler : {function}** - The public function that starts the script.
+
 **data : {object}** - Name-value pairs with configuration data.
 
 ### Using jQuery
