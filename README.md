@@ -69,16 +69,16 @@ useful.viewer.start(parent, {
 **width : {integer}** - The width of the slideshow.
 
 **widthUnit : {string}**
-+ *'px* - The width would be applied in pixels.
-+ *'%* - The width would be applied as a percentage of the available space.
-+ *'em* - The width would be applied relative to the text size.
++ *px* - The width would be applied in pixels.
++ *%* - The width would be applied as a percentage of the available space.
++ *em* - The width would be applied relative to the text size.
 
 **height : {integer}** - The height of the slideshow.
 
 **heightUnit : {string}**
-+ *'px* - The height would be applied in pixels.
-+ *'%* - The height would be applied as a percentage of the available space. The parent element needs to have a defined height.
-+ *'em* - The height would be applied relative to the text size.
++ *px* - The height would be applied in pixels.
++ *%* - The height would be applied as a percentage of the available space. The parent element needs to have a defined height.
++ *em* - The height would be applied relative to the text size.
 
 **divide : {string}** - The percentage of the height devoted to the slides. The rest is reserved for the thumbnails.
 
