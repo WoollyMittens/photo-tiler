@@ -1,0 +1,870 @@
+/*
+	Reference Styling for a Pan and Zoom Viewer
+*/
+
+@media all {
+
+	@import "compass/css3";
+	@import "compass/utilities";
+
+	/*
+		viewer
+	*/
+	div.viewer {
+		display : block;
+		height : 512px;
+		overflow : hidden;
+		position : relative;
+		visibility : hidden;
+		width : 100%;
+
+		div.wrapper {
+			background : Transparent;
+			height : 100%;
+			left : 0;
+			overflow : hidden;
+			position : absolute;
+			top : 0;
+			width : 100%;
+			z-index : 0;
+
+			div.background,
+			div.canvas {
+				background : Transparent;
+				height : 100%;
+				left : 0;
+				overflow : hidden;
+				position : absolute;
+				top : 0;
+				width : 100%;
+				z-index : 3;
+
+				figure {
+					display : block;
+					left : 0;
+					margin : 0;
+					padding : 0;
+					position : absolute;
+					top : 0;
+					z-index : 5;
+
+					img {
+						@include transition-property(all);
+						@include transition-duration(0.3s);
+						@include transition-timing-function(ease);
+						vertical-align : top;
+					}
+					img.tile_hidden {
+						@include opacity(0);
+					}
+					img.tile_visible {
+						@include opacity(1);
+					}
+				}
+				.figure_passive {
+					visibility : hidden;
+				}
+				.figure_active {
+					visibility : visible;
+				}
+				.figure_fadeout {
+					@include opacity(0);
+					@include transition-property(opacity);
+					@include transition-duration(0.3s);
+					@include transition-timing-function(ease);
+					z-index : 4;
+				}
+				.figure_fadein {
+					@include opacity(1);
+					@include transition-property(opacity);
+					@include transition-duration(0.3s);
+					@include transition-timing-function(ease);
+					z-index : 5;
+				}
+				.figure_leafout {
+					@include transition-property(clip, opacity, transform);
+					@include transition-duration(0.6s, 0.6s, 0.6s);
+					@include transition-timing-function(ease, ease, ease);
+					z-index : 4;
+				}
+				.figure_leafin {
+					@include transition-property(clip, opacity, transform);
+					@include transition-duration(0.6s, 0.6s, 0.6s);
+					@include transition-timing-function(ease, ease, ease);
+					z-index : 5;
+				}
+			}
+			div.background {
+				z-index : 1;
+
+				figure {
+					z-index : 2;
+				}
+			}
+			div.canvas.canvas_lens {
+				border : 5px solid rgba(0, 0, 0, 0.25);
+			}
+			div.canvas.canvas_hidden {
+				@include opacity(0);
+				@include transition-property(opacity);
+				@include transition-duration(0.3s);
+				@include transition-timing-function(ease);
+			}
+			&:hover div.canvas.canvas_hidden,
+			div.canvas.canvas_visible {
+				@include opacity(1);
+				@include transition-property(opacity);
+				@include transition-duration(0.3s);
+				@include transition-timing-function(ease);
+			}
+		}
+		div.cover {
+			@include opacity(0.01);
+			background : #000;
+			display : block;
+			height : 100%;
+			left : 0;
+			position : absolute;
+			top : 0;
+			width : 100%;
+			z-index : 6;
+		}
+	}
+
+	/*
+		Floating Buttons
+	*/
+	div.viewer {
+		nav.buttons {
+			menu {
+				button {
+					@include background(linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%));
+					@include border-radius(4px);
+					@include box-shadow(0 1px 3px #000000);
+					@include transition-property(all);
+					@include transition-duration(0.3s);
+					@include transition-timing-function(ease);
+					background-color : #999;
+					border : none;
+					cursor : pointer;
+					height : 32px;
+					margin : 0;
+					opacity : 0.3;
+					overflow : visible;
+					padding : 0;
+					position : absolute;
+					text-align : center;
+					width : 32px;
+					z-index : 10;
+
+					span {
+						background : Transparent url(../img/viewer.png) no-repeat 0 0;
+						display : inline-block;
+						height : 32px;
+						text-indent : -999em;
+						width : 18px;
+					}
+				}
+			}
+			menu.zoom {
+				button.increase {
+					right : 10px;
+					top : 10px;
+
+					span {
+						background-position : 0% -25px;
+					}
+				}
+				button.decrease {
+					right : 10px;
+					top : 52px;
+
+					span {
+						background-position : 100% -25px;
+					}
+				}
+			}
+			menu.leaf {
+				background : Transparent none;
+				button.increase {
+					border-radius : 4px;
+					right : 10px;
+					top : 94px;
+
+					span {
+						background-position : 100% -57px;
+					}
+				}
+				button.decrease {
+					display : none;
+
+					span {
+						background-position : 0% -57px;
+					}
+				}
+				button.reset {
+					right : 10px;
+					top : 94px;
+
+					span {
+						background-position : 50% -57px;
+						margin-left : 1px;
+						width : 26px;
+					}
+				}
+			}
+			menu.spin {
+				button.increase {
+					display : none;
+					right : 10px;
+					top : 136px;
+
+					span {
+						background-position : 100% 6px;
+					}
+				}
+				button.decrease {
+					right : 10px;
+					top : 94px;
+
+					span {
+						background-position : 0% 6px;
+					}
+				}
+			}
+		}
+	}
+
+	/*
+		Default Toolbar
+	*/
+	div.viewer {
+		nav.toolbar {
+			@include background(linear-gradient(top,#e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
+			@include border-radius(5px);
+			@include box-shadow(0 1px 3px #000000);
+			@include transition-property(all);
+			@include transition-duration(0.3s);
+			@include transition-timing-function(ease);
+			background-color : #999;
+			bottom : 0%;
+			display : block;
+			height : 32px;
+			left : 50%;
+			margin : 0 0 5% -64px;
+			opacity : 0.3;
+			overflow : hidden;
+			padding : 0;
+			position : absolute;
+			visibility : hidden;
+			width : 128px;
+			z-index : 7;
+
+			menu {
+				button {
+					@include background(linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%));
+					background-color : #999;
+					border : none;
+					cursor : pointer;
+					height : 32px;
+					margin : 0;
+					padding : 0;
+					position : absolute;
+					overflow : hidden;
+					position : absolute;
+					text-align : center;
+					white-space : nowrap;
+					width : 32px;
+					z-index : 10;
+
+					span {
+						background-image : url(../img/viewer.png);
+						cursor : pointer;
+						display : inline-block;
+						height : 18px;
+						overflow : hidden;
+						text-indent : 18px;
+						white-space : nowrap;
+						vertical-align : middle;
+						width : 18px;
+					}
+				}
+				button.disabled {
+					@include opacity(0.3);
+					cursor : default;
+				}
+			}
+			menu.zoom {
+				button.increase {
+					border-left : solid 1px #888888;
+					right : 32px;
+					top : 0;
+
+					span {
+						background-position : 0% -32px;
+					}
+				}
+				button.decrease {
+					left : 32px;
+					top : 0;
+
+					span {
+						background-position : 100% -32px;
+					}
+				}
+			}
+			menu.leaf {
+				button.increase {
+					@include border-radius(0 5px 5px 0);
+					border-left : solid 1px #888888;
+					right : 0;
+					top : 0;
+
+					span {
+						background-position : 100% -64px;
+					}
+				}
+				button.decrease {
+					@include border-radius(5px 0 0 5px);
+					border-right : solid 1px #888888;
+					left : 0;
+					top : 0;
+
+					span {
+						background-position : 0% -64px;
+					}
+				}
+				button.reset {
+					border-right : solid 1px #888888;
+					border-left : solid 1px #888888;
+					left : auto;
+					right : 96px;
+					top : 0;
+
+					span {
+						background-position : 50% -62px;
+						height : 24px;
+						text-indent : 26px;
+						width : 26px;
+					}
+				}
+				form {
+					left : 36px;
+					top : 4px;
+				}
+			}
+			menu.spin {
+				button.increase {
+					@include border-radius(5px 0 0 5px);
+					border-right : solid 1px #888888;
+					left : 0;
+					top : 0;
+
+					span {
+						background-position : 100% 0;
+					}
+				}
+				button.decrease {
+					@include border-radius(0 5px 5px 0);
+					border-left : solid 1px #888888;
+					right : 0;
+					top : 0;
+
+					span {
+						background-position : 0% 0;
+					}
+				}
+			}
+		}
+		nav.toolbar.catalogue {
+			margin-left : -128px;
+			width : 256px;
+
+			menu.zoom  {
+				button.decrease {
+					left : auto;
+					right : 64px;
+				}
+			}
+		}
+	}
+
+	/*
+		Slider Toolbar
+	*/
+	div.viewer {
+		menu.slider {
+			@include border-radius(5px);
+			@include transition-property(all);
+			@include transition-duration(0.3s);
+			@include transition-timing-function(ease);
+			@include opacity(0);
+			background-color : #e2e2e2;
+			display : block;
+			margin : 0;
+			overflow : hidden;
+			padding : 0;
+			position : absolute;
+			visibility : hidden;
+			z-index : 7;
+
+			div.meter, meter {
+				@include border-radius(4px);
+				background : #282828;
+				display : block;
+				height : 8px;
+				left : 50px;
+				margin : -4px 0 0 0;
+				overflow : visible;
+				position : absolute;
+				right : 50px;
+				top : 50%;
+				z-index : 8;
+
+				div {
+					@include background(linear-gradient(top, #949494 0%, #cfcfcf 100%));
+					@include border-radius(5px);
+					@include box-shadow(0 3px 3px #333);
+					background-color : #949494;
+					border-top : solid 1px #e9e9e9;
+					border-bottom : solid 1px #626262;
+					display : block;
+					height : 26px;
+					left : 50%;
+					margin : -16px 0 0 -14px;
+					position : absolute;
+					top : 50%;
+					width : 26px;
+					z-index : 9;
+
+					span {
+						background-image : url(../img/viewer.png);
+						display : block;
+						height : 18px;
+						margin : 4px 0 0 5px;
+						overflow : hidden;
+						position : absolute;
+						text-indent : 18px;
+						white-space : nowrap;
+						width : 18px;
+					}
+				}
+			}
+			button {
+				background-color : #cfcfcf;
+				border : none;
+				cursor : pointer;
+				height : 32px;
+				margin : 0;
+				padding : 0;
+				position : absolute;
+				visibility : visible;
+				overflow : hidden;
+				position : absolute;
+				text-align : center;
+				white-space : nowrap;
+				width : 32px;
+				z-index : 10;
+
+				span {
+					background-image : url(../img/viewer.png);
+					cursor : pointer;
+					display : inline-block;
+					height : 18px;
+					overflow : hidden;
+					text-indent : 18px;
+					white-space : nowrap;
+					vertical-align : middle;
+					width : 18px;
+				}
+			}
+			button.increase {
+				left : 0;
+				top : 0;
+			}
+			button.decrease {
+				bottom : 0;
+				right : 0;
+			}
+			div.cover {
+				cursor : pointer;
+				z-index : 9;
+			}
+		}
+	}
+
+	/*
+		Spin Toolbar
+	*/
+	div.viewer {
+		menu.slider.spin {
+			@include background(linear-gradient(top,#e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
+			bottom : 0%;
+			margin-bottom : 5%;
+			height : 32px;
+			left : 5%;
+			right : 15%;
+
+			div.meter, meter {
+				@include background(linear-gradient(top, #282828 0%, #343434 100%));
+				border-top : solid 1px #282828;
+				border-bottom : solid 1px #bebebe;
+
+				span {
+					background-position : 50% 0;
+				}
+			}
+			button {
+				@include background(linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%));
+			}
+			button.increase {
+				@include border-radius(5px 0 0 5px);
+				border-right : solid 1px #888888;
+
+				span {
+					background-position : 0 0;
+				}
+			}
+			button.decrease {
+				@include border-radius(0 5px 5px 0);
+				border-left : solid 1px #888888;
+
+				span {
+					background-position : 100% 0;
+				}
+			}
+		}
+	}
+
+	/*
+		Zoom Toolbar
+	*/
+	div.viewer {
+		menu.slider.zoom {
+			@include background(linear-gradient(left, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
+			bottom : 0%;
+			margin-bottom : 15%;
+			right : 5%;
+			top : 5%;
+			width : 32px;
+
+			div.meter, meter {
+				@include background(linear-gradient(left, #282828 0%, #343434 100%));
+				border-right : solid 1px #bebebe;
+				border-left : solid 1px #282828;
+				bottom : 50px;
+				height : auto;
+				left : 50%;
+				margin : 0 0 0 -4px;
+				top : 50px;
+				width : 8px;
+				-webkit-appearance: none;
+				appearance: none;
+
+				span {
+					background-position : 50% -32px;
+				}
+			}
+			button {
+				@include background(linear-gradient(left, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%));
+			}
+			button.increase {
+				@include border-radius(5px 5px 0 0);
+				border-bottom : solid 1px #888888;
+
+				span {
+					background-position : 0 -32px;
+				}
+			}
+			button.decrease {
+				@include border-radius(0 0 5px 5px);
+				border-top : solid 1px #888888;
+
+				span {
+					background-position : 100% -32px;
+				}
+			}
+		}
+	}
+
+	/*
+		Leafing Toolbar
+	*/
+	div.viewer {
+		menu.leaf {
+			@include background(linear-gradient(top,#e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
+			bottom : 0%;
+			margin-bottom : 5%;
+			margin-left : -100px;
+			height : 32px;
+			left : 50%;
+			width : 200px;
+
+			button {
+				@include background(linear-gradient(top,#e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
+
+				span {}
+			}
+			button.increase {
+				@include border-radius(5px 0 0 5px);
+				left : auto;
+				right : 49px;
+
+				span {
+					background-position : 100% -64px;
+				}
+			}
+			button.decrease {
+				left : 0;
+				right : auto;
+
+				span {
+					background-position : 0 -64px;
+				}
+			}
+			button.reset {
+				@include border-radius(0 5px 5px 0);
+				border-left : solid 1px #888888;
+				right : 0;
+				top : 0;
+				width : 48px;
+
+				span {
+					background-position : 50% -63px;
+					height : 21px;
+					text-indent : 25px;
+					width : 26px;
+				}
+			}
+			form {
+				height : 24px;
+				left : 36px;
+				margin : 0;
+				padding : 0;
+				position : absolute;
+				top : 4px;
+				width : 80px;
+				input {
+					@include box-shadow(inset 3px 3px 3px #414344);
+					background : #5a5d5f;
+					border : none;
+					color : #fff;
+					font-size : 14px;
+					font-family : Arial, Sans-Serif;
+					text-shadow : 1px 1px 1px #414344;
+					height : 16px;
+					line-height : 16px;
+					margin : 0;
+					padding : 4px;
+					text-align : center;
+					vertical-align : middle;
+					width : 24px;
+				}
+				span.count {
+					color : #fff;
+					display : inline-block;
+					font-size : 14px;
+					font-family : Arial, Sans-Serif;
+					height : 16px;
+					padding : 4px;
+					line-height : 16px;
+					text-shadow : 1px 1px 1px #414344;
+					vertical-align : middle;
+				}
+			}
+		}
+	}
+
+	/*
+		Thumbnails
+	*/
+	div.viewer {
+		nav.thumbnails {
+			@include box-sizing(border-box);
+			bottom : 0;
+			height : 28%;
+			left : 0;
+			overflow : hidden;
+			position : absolute;
+			width : 100%;
+
+			div {
+				height : 100%;
+				margin : 0 35px 0 35px;
+				position : relative;
+				overflow : hidden;
+
+				ul {
+					@include transition-property(all);
+					@include transition-duration(0.3s);
+					@include transition-timing-function(ease);
+					height : 100%;
+					margin : 0;
+					padding : 0;
+					position : relative;
+					width : 1000%;
+					z-index : 11;
+
+					li {
+						display : inline;
+						list-style-type : none;
+						a {
+							img {
+								@include opacity(0.7);
+								@include transition-property(opacity);
+								@include transition-duration(0.3s);
+								@include transition-timing-function(ease);
+								cursor : pointer;
+								float : left;
+								height : 100%;
+								margin-right : 10px;
+								-ms-interpolation-mode: bicubic;
+							}
+						}
+						a:hover {
+							img {
+								@include opacity(1);
+								filter : none;
+
+							}
+						}
+						a.thumbnails_active {
+							img {
+								@include opacity(1);
+								border : solid 2px #a4a4a4;
+								filter : none;
+								height : 95%;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/*
+		Thumbnails Controls
+	*/
+	div.viewer {
+		menu.scroller {
+			position : absolute;
+			height : 100%;
+			left : 0;
+			margin : 0;
+			padding : 0;
+			top : 0;
+			width : 100%;
+
+			button {
+				background-color : #9f9f9f;
+				border : none;
+				color : #fff;
+				cursor : pointer;
+				height : 100%;
+				line-height : 20px;
+				margin : 0;
+				overflow : visible;
+				padding : 0;
+				position : absolute;
+				text-align : center;
+				top : 0;
+				width : 25px;
+				z-index : 20;
+
+				span {
+					background : Transparent url(../img/slideshow.png) no-repeat 0 0;
+					display : inline-block;
+					height : 40px;
+					text-indent : -999em;
+					width : 15px;
+				}
+			}
+			button.previous {
+				left : 0;
+
+				span {
+					background-position : 0 -192px;
+				}
+			}
+			button.next {
+				right : 0;
+
+				span {
+					background-position : 0 -128px;
+				}
+			}
+			button.disabled {
+				@include opacity(0.3);
+				cursor : default;
+			}
+		}
+	}
+
+	/*
+		hover state
+	*/
+	div.viewer:hover {
+		div.canvas.canvas_hidden {
+			@include opacity(1);
+			@include transition-property(opacity);
+			@include transition-duration(0.3s);
+			@include transition-timing-function(ease);
+		}
+		nav.toolbar {
+			@include opacity(0.9);
+			visibility : visible;
+		}
+		menu.slider {
+			@include opacity(0.9);
+			visibility : visible;
+		}
+		nav.buttons {
+			menu {
+				button {
+					@include opacity(0.9);
+				}
+				button.disabled {
+					@include opacity(0.3);
+				}
+			}
+		}
+	}
+
+	/*
+		3D Rotation Variant
+	*/
+	div.viewer.spin_rotation {
+		div.wrapper {
+			background : #000;
+		}
+	}
+
+	/*
+		2D Slideshow Variant
+	*/
+	div.viewer.spin_slideshow {
+		div.wrapper {
+			background : #000;
+		}
+		menu.zoom {
+			margin-bottom : 5%;
+		}
+	}
+
+	/*
+		2D Catalogue Variant
+	*/
+	div.viewer.spin_catalogue {
+		div.wrapper {
+			background : #000;
+		}
+	}
+
+}
+
+@media (min-width: 1200px) {}
+@media (min-width: 980px) and (max-width: 1199px) {}
+@media (min-width: 768px) and (max-width: 979px) {}
+@media (max-width: 767px) {}
+@media (max-width: 480px) {}
+@media print {}

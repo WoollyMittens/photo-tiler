@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>useful.viewer.js: Tile Based Image Viewer</title>
+		<style>
+			html { font-family:Sans-Serif; font-size:75%; height:100%; }
+			body { _height:100%; line-height:180%; margin:0; min-height:100%; padding:0; }
+			.padded { padding:2em; }
+		</style>
+		<!--[if lte IE 9]>
+			<meta http-equiv="imagetoolbar" content="no"/>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+			<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<section class="example rightExample clearfix">
+			<article class="example">
+				<h2>Tile Based Image Viewer</h2>
+				<p>This tile-based image viewer loads only the parts of the image that are visible. Not unlike how Google Maps loads map tiles.</p>
+				<p>This demo comes with a web service to divide large images into tiles using PHP, but the concept is easily replicated in other languages.</p>
+				<p><a class="button downloadButton" href="http://www.woollymittens.nl/downloads/viewer.zip" target="_blank">Download</a></p>
+			</article>
+			<aside class="example">
+
+				<!-- Cut below this -->
+				<style>@import url("./css/viewer.css")</style>
+				<div id="viewera" class="viewer">
+					<ul>
+						<li><a href="./img/photo_0a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_0.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="./img/photo_1a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_1.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="./img/photo_2a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_2.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="./img/photo_3a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_3.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="./img/photo_4a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_4.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="./img/photo_5a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_5.jpg" width="1932" height="2576"/></a></li>
+						<li><a href="./img/photo_6a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_6.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="./img/photo_7a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_7.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="./img/photo_8a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_8.jpg" width="1920" height="2560"/></a></li>
+						<li><a href="./img/photo_9a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_9.jpg" width="2560" height="1920"/></a></li>
+					</ul>
+				</div>
+				<script src="./js/useful.viewer.js"></script>
+				<script>
+				//<!--
+					useful.css.select({
+						rule : '#viewera',
+						handler : useful.viewer.start,
+						data : {
+							'urlprefix' : '../',
+							'imagesize' : './php/imagesize.php',
+							'imageslice' : './php/imageslice.php',
+							'width' : '100',
+							'widthUnit' : '%',
+							'height' : '512',
+							'heightUnit' : 'px',
+							'divide' : '80%',
+							'margin' : '2%',
+							'highlight' : 'Grey',
+							'lens' : '0.5',
+							'toolbars' : 'buttons', 	// buttons | toolbar | sliders
+							'zoom' : 'static', 			// static | lens
+							'spin' : 'slideshow', 		// rotation | slideshow | catalogue
+							'pan' : 'drag', 			// drag | hover
+							'magnification' : '1.1',
+							'grid' : '256px',
+							'cache' : '32'
+						}
+					});
+				//-->
+				</script>
+				<!-- Cut above this -->
+
+			</aside>
+		</section>
+		<section class="example leftExample clearfix">
+			<article class="example">
+				<p>This example allows frames of a rotation to be dragged around.</p>
+			</article>
+			<aside class="example">
+
+				<!-- Cut below this -->
+				<style>@import url("./css/viewer.css")</style>
+				<div id="viewerc" class="viewer">
+					<ul>
+						<li><a href="./img/rotation_17a.jpg"><img alt="" src="./img/rotation_17.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_16a.jpg"><img alt="" src="./img/rotation_16.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_15a.jpg"><img alt="" src="./img/rotation_15.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_14a.jpg"><img alt="" src="./img/rotation_14.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_13a.jpg"><img alt="" src="./img/rotation_13.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_12a.jpg"><img alt="" src="./img/rotation_12.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_11a.jpg"><img alt="" src="./img/rotation_11.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_10a.jpg"><img alt="" src="./img/rotation_10.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_9a.jpg"><img alt="" src="./img/rotation_9.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_8a.jpg"><img alt="" src="./img/rotation_8.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_7a.jpg"><img alt="" src="./img/rotation_7.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_6a.jpg"><img alt="" src="./img/rotation_6.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_5a.jpg"><img alt="" src="./img/rotation_5.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_4a.jpg"><img alt="" src="./img/rotation_4.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_3a.jpg"><img alt="" src="./img/rotation_3.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_2a.jpg"><img alt="" src="./img/rotation_2.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_1a.jpg"><img alt="" src="./img/rotation_1.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_0a.jpg"><img alt="" src="./img/rotation_0.jpg" width="2304" height="3072"/></a></li>
+					</ul>
+				</div>
+				<script src="./js/useful.viewer.js"></script>
+				<script>
+				//<!--
+					useful.css.select({
+						rule : '#viewerc',
+						handler : useful.viewer.start,
+						data : {
+							'urlprefix' : '../',
+							'imagesize' : './php/imagesize.php',
+							'imageslice' : './php/imageslice.php',
+							'width' : '100',
+							'widthUnit' : '%',
+							'height' : '450',
+							'heightUnit' : 'px',
+							'divide' : '80%',
+							'margin' : '2%',
+							'highlight' : 'Grey',
+							'lens' : '0.5',
+							'toolbars' : 'sliders', 	// buttons | toolbar | sliders
+							'zoom' : 'static', 			// static | lens
+							'spin' : 'rotation', 		// rotation | slideshow | catalogue
+							'pan' : 'drag', 			// drag | hover
+							'magnification' : '1.1',
+							'grid' : '256px',
+							'cache' : '32'
+						}
+					});
+				//-->
+				</script>
+				<!-- Cut above this -->
+
+			</aside>
+		</section>
+		<section class="example rightExample clearfix">
+			<article class="example">
+				<p>This example shows a lens instead of zooming in on the whole image.</p>
+			</article>
+			<aside class="example">
+
+				<!-- Cut below this -->
+				<style>@import url("./css/viewer.css")</style>
+				<div id="viewerb" class="viewer">
+					<ul>
+						<li><a href="./img/photo_9a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_9.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="./img/photo_8a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_8.jpg" width="1920" height="2560"/></a></li>
+						<li><a href="./img/photo_7a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_7.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="./img/photo_6a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_6.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="./img/photo_5a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_5.jpg" width="1932" height="2576"/></a></li>
+						<li><a href="./img/photo_4a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_4.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="./img/photo_3a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_3.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="./img/photo_2a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_2.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="./img/photo_1a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_1.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="./img/photo_0a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_0.jpg" width="4608" height="3456"/></a></li>
+					</ul>
+				</div>
+				<script src="./js/useful.viewer.js"></script>
+				<script>
+				//<!--
+					useful.css.select({
+						rule : '#viewerb',
+						handler : useful.viewer.start,
+						data : {
+							'urlprefix' : '../',
+							'imagesize' : './php/imagesize.php',
+							'imageslice' : './php/imageslice.php',
+							'width' : '100',
+							'widthUnit' : '%',
+							'height' : '512',
+							'heightUnit' : 'px',
+							'divide' : '80%',
+							'margin' : '2%',
+							'highlight' : 'Grey',
+							'lens' : '0.5',
+							'toolbars' : 'toolbar', 	// buttons | toolbar | sliders
+							'zoom' : 'lens', 			// static | lens
+							'spin' : 'slideshow', 		// rotation | slideshow | catalogue
+							'pan' : 'drag', 			// drag | hover
+							'magnification' : '1.1',
+							'grid' : '256px',
+							'cache' : '32'
+						}
+					});
+				//-->
+				</script>
+				<!-- Cut above this -->
+
+			</aside>
+		</section>
+	</body>
+</html>
