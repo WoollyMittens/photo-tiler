@@ -2,6 +2,8 @@
 
 This tile-based image viewer loads only the parts of the image that are visible. Not unlike how Google Maps loads map tiles. This demo comes with a web service to divide large images into tiles using PHP, but the concept is easily replicated in other languages.
 
+Try the <a href="http://www.woollymittens.nl/useful/default.php?url=viewer">viewer demo</a>.
+
 ## How to use the script
 
 The stylesheet is best included in the header of the document.
