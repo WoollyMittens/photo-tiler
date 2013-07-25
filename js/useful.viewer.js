@@ -1442,6 +1442,7 @@
 			mouse : {
 				x : null,
 				sensitivity : null,
+				fudge : 0.7,
 				// mouse wheel controls
 				wheel : function (event, settings) {
 					// shortcut pointer
@@ -1466,7 +1467,7 @@
 					// store the touch positions
 					uvsm.x = event.pageX || event.x;
 					// calculate the sensitivity
-					uvsm.sensitivity = (settings.outlets.menus.spinCover.offsetWidth - settings.outlets.menus.spinIn.offsetWidth - settings.outlets.menus.spinOut.offsetWidth) / settings.outlets.figures.length;
+					uvsm.sensitivity = (settings.outlets.menus.spinCover.offsetWidth - settings.outlets.menus.spinIn.offsetWidth - settings.outlets.menus.spinOut.offsetWidth) / settings.outlets.figures.length * uvsm.fudge;
 					// cancel the click
 					useful.events.cancel(event);
 				},

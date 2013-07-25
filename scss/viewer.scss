@@ -1,12 +1,9 @@
 /*
 	Reference Styling for a Pan and Zoom Viewer
 */
-
 @media all {
-
 	@import "compass/css3";
 	@import "compass/utilities";
-
 	/*
 		viewer
 	*/
@@ -17,7 +14,9 @@
 		position : relative;
 		visibility : hidden;
 		width : 100%;
-
+		* {
+			@include box-sizing(border-box);
+		}
 		div.wrapper {
 			background : Transparent;
 			height : 100%;
@@ -27,7 +26,6 @@
 			top : 0;
 			width : 100%;
 			z-index : 0;
-
 			div.background,
 			div.canvas {
 				background : Transparent;
@@ -38,7 +36,6 @@
 				top : 0;
 				width : 100%;
 				z-index : 3;
-
 				figure {
 					display : block;
 					left : 0;
@@ -47,7 +44,6 @@
 					position : absolute;
 					top : 0;
 					z-index : 5;
-
 					img {
 						@include transition-property(all);
 						@include transition-duration(0.3s);
@@ -96,7 +92,6 @@
 			}
 			div.background {
 				z-index : 1;
-
 				figure {
 					z-index : 2;
 				}
@@ -130,7 +125,6 @@
 			z-index : 6;
 		}
 	}
-
 	/*
 		Floating Buttons
 	*/
@@ -145,7 +139,7 @@
 					@include transition-duration(0.3s);
 					@include transition-timing-function(ease);
 					background-color : #999;
-					border : none;
+					border : solid 1px #333;
 					cursor : pointer;
 					height : 32px;
 					margin : 0;
@@ -156,7 +150,6 @@
 					text-align : center;
 					width : 32px;
 					z-index : 10;
-
 					span {
 						background : Transparent url(../img/viewer.png) no-repeat 0 0;
 						display : inline-block;
@@ -170,7 +163,6 @@
 				button.increase {
 					right : 10px;
 					top : 10px;
-
 					span {
 						background-position : 0% -25px;
 					}
@@ -178,7 +170,6 @@
 				button.decrease {
 					right : 10px;
 					top : 52px;
-
 					span {
 						background-position : 100% -25px;
 					}
@@ -190,14 +181,12 @@
 					border-radius : 4px;
 					right : 10px;
 					top : 94px;
-
 					span {
 						background-position : 100% -57px;
 					}
 				}
 				button.decrease {
 					display : none;
-
 					span {
 						background-position : 0% -57px;
 					}
@@ -205,7 +194,6 @@
 				button.reset {
 					right : 10px;
 					top : 94px;
-
 					span {
 						background-position : 50% -57px;
 						margin-left : 1px;
@@ -218,7 +206,6 @@
 					display : none;
 					right : 10px;
 					top : 136px;
-
 					span {
 						background-position : 100% 6px;
 					}
@@ -226,7 +213,6 @@
 				button.decrease {
 					right : 10px;
 					top : 94px;
-
 					span {
 						background-position : 0% 6px;
 					}
@@ -234,7 +220,6 @@
 			}
 		}
 	}
-
 	/*
 		Default Toolbar
 	*/
@@ -248,6 +233,7 @@
 			@include transition-timing-function(ease);
 			background-color : #999;
 			bottom : 0%;
+			border : solid 1px #333;
 			display : block;
 			height : 32px;
 			left : 50%;
@@ -259,7 +245,6 @@
 			visibility : hidden;
 			width : 128px;
 			z-index : 7;
-
 			menu {
 				button {
 					@include background(linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%));
@@ -276,7 +261,6 @@
 					white-space : nowrap;
 					width : 32px;
 					z-index : 10;
-
 					span {
 						background-image : url(../img/viewer.png);
 						cursor : pointer;
@@ -299,7 +283,6 @@
 					border-left : solid 1px #888888;
 					right : 32px;
 					top : 0;
-
 					span {
 						background-position : 0% -32px;
 					}
@@ -307,7 +290,6 @@
 				button.decrease {
 					left : 32px;
 					top : 0;
-
 					span {
 						background-position : 100% -32px;
 					}
@@ -319,7 +301,6 @@
 					border-left : solid 1px #888888;
 					right : 0;
 					top : 0;
-
 					span {
 						background-position : 100% -64px;
 					}
@@ -329,7 +310,6 @@
 					border-right : solid 1px #888888;
 					left : 0;
 					top : 0;
-
 					span {
 						background-position : 0% -64px;
 					}
@@ -340,7 +320,6 @@
 					left : auto;
 					right : 96px;
 					top : 0;
-
 					span {
 						background-position : 50% -62px;
 						height : 24px;
@@ -359,7 +338,6 @@
 					border-right : solid 1px #888888;
 					left : 0;
 					top : 0;
-
 					span {
 						background-position : 100% 0;
 					}
@@ -369,7 +347,6 @@
 					border-left : solid 1px #888888;
 					right : 0;
 					top : 0;
-
 					span {
 						background-position : 0% 0;
 					}
@@ -379,7 +356,6 @@
 		nav.toolbar.catalogue {
 			margin-left : -128px;
 			width : 256px;
-
 			menu.zoom  {
 				button.decrease {
 					left : auto;
@@ -388,7 +364,6 @@
 			}
 		}
 	}
-
 	/*
 		Slider Toolbar
 	*/
@@ -400,6 +375,7 @@
 			@include transition-timing-function(ease);
 			@include opacity(0);
 			background-color : #e2e2e2;
+			border : solid 1px #333;
 			display : block;
 			margin : 0;
 			overflow : hidden;
@@ -407,7 +383,6 @@
 			position : absolute;
 			visibility : hidden;
 			z-index : 7;
-
 			div.meter, meter {
 				@include border-radius(4px);
 				background : #282828;
@@ -420,7 +395,6 @@
 				right : 50px;
 				top : 50%;
 				z-index : 8;
-
 				div {
 					@include background(linear-gradient(top, #949494 0%, #cfcfcf 100%));
 					@include border-radius(5px);
@@ -429,14 +403,13 @@
 					border-top : solid 1px #e9e9e9;
 					border-bottom : solid 1px #626262;
 					display : block;
-					height : 26px;
+					height : 28px;
 					left : 50%;
-					margin : -16px 0 0 -14px;
+					margin : -15px 0 0 -14px;
 					position : absolute;
 					top : 50%;
-					width : 26px;
+					width : 28px;
 					z-index : 9;
-
 					span {
 						background-image : url(../img/viewer.png);
 						display : block;
@@ -465,7 +438,6 @@
 				white-space : nowrap;
 				width : 32px;
 				z-index : 10;
-
 				span {
 					background-image : url(../img/viewer.png);
 					cursor : pointer;
@@ -492,7 +464,6 @@
 			}
 		}
 	}
-
 	/*
 		Spin Toolbar
 	*/
@@ -501,15 +472,13 @@
 			@include background(linear-gradient(top,#e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
 			bottom : 0%;
 			margin-bottom : 5%;
-			height : 32px;
+			height : 34px;
 			left : 5%;
 			right : 15%;
-
 			div.meter, meter {
 				@include background(linear-gradient(top, #282828 0%, #343434 100%));
 				border-top : solid 1px #282828;
 				border-bottom : solid 1px #bebebe;
-
 				span {
 					background-position : 50% 0;
 				}
@@ -520,7 +489,6 @@
 			button.increase {
 				@include border-radius(5px 0 0 5px);
 				border-right : solid 1px #888888;
-
 				span {
 					background-position : 0 0;
 				}
@@ -528,14 +496,12 @@
 			button.decrease {
 				@include border-radius(0 5px 5px 0);
 				border-left : solid 1px #888888;
-
 				span {
 					background-position : 100% 0;
 				}
 			}
 		}
 	}
-
 	/*
 		Zoom Toolbar
 	*/
@@ -546,8 +512,7 @@
 			margin-bottom : 15%;
 			right : 5%;
 			top : 5%;
-			width : 32px;
-
+			width : 34px;
 			div.meter, meter {
 				@include background(linear-gradient(left, #282828 0%, #343434 100%));
 				border-right : solid 1px #bebebe;
@@ -560,7 +525,6 @@
 				width : 8px;
 				-webkit-appearance: none;
 				appearance: none;
-
 				span {
 					background-position : 50% -32px;
 				}
@@ -571,7 +535,6 @@
 			button.increase {
 				@include border-radius(5px 5px 0 0);
 				border-bottom : solid 1px #888888;
-
 				span {
 					background-position : 0 -32px;
 				}
@@ -579,14 +542,12 @@
 			button.decrease {
 				@include border-radius(0 0 5px 5px);
 				border-top : solid 1px #888888;
-
 				span {
 					background-position : 100% -32px;
 				}
 			}
 		}
 	}
-
 	/*
 		Leafing Toolbar
 	*/
@@ -599,17 +560,14 @@
 			height : 32px;
 			left : 50%;
 			width : 200px;
-
 			button {
 				@include background(linear-gradient(top,#e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
-
 				span {}
 			}
 			button.increase {
 				@include border-radius(5px 0 0 5px);
 				left : auto;
 				right : 49px;
-
 				span {
 					background-position : 100% -64px;
 				}
@@ -617,7 +575,6 @@
 			button.decrease {
 				left : 0;
 				right : auto;
-
 				span {
 					background-position : 0 -64px;
 				}
@@ -628,7 +585,6 @@
 				right : 0;
 				top : 0;
 				width : 48px;
-
 				span {
 					background-position : 50% -63px;
 					height : 21px;
@@ -652,7 +608,7 @@
 					font-size : 14px;
 					font-family : Arial, Sans-Serif;
 					text-shadow : 1px 1px 1px #414344;
-					height : 16px;
+					height : 24px;
 					line-height : 16px;
 					margin : 0;
 					padding : 4px;
@@ -665,7 +621,7 @@
 					display : inline-block;
 					font-size : 14px;
 					font-family : Arial, Sans-Serif;
-					height : 16px;
+					height : 24px;
 					padding : 4px;
 					line-height : 16px;
 					text-shadow : 1px 1px 1px #414344;
@@ -674,7 +630,6 @@
 			}
 		}
 	}
-
 	/*
 		Thumbnails
 	*/
@@ -687,13 +642,11 @@
 			overflow : hidden;
 			position : absolute;
 			width : 100%;
-
 			div {
 				height : 100%;
 				margin : 0 35px 0 35px;
 				position : relative;
 				overflow : hidden;
-
 				ul {
 					@include transition-property(all);
 					@include transition-duration(0.3s);
@@ -704,7 +657,6 @@
 					position : relative;
 					width : 1000%;
 					z-index : 11;
-
 					li {
 						display : inline;
 						list-style-type : none;
@@ -725,7 +677,6 @@
 							img {
 								@include opacity(1);
 								filter : none;
-
 							}
 						}
 						a.thumbnails_active {
@@ -733,7 +684,7 @@
 								@include opacity(1);
 								border : solid 2px #a4a4a4;
 								filter : none;
-								height : 95%;
+								height : 100%;
 							}
 						}
 					}
@@ -741,7 +692,6 @@
 			}
 		}
 	}
-
 	/*
 		Thumbnails Controls
 	*/
@@ -754,10 +704,11 @@
 			padding : 0;
 			top : 0;
 			width : 100%;
-
 			button {
-				background-color : #9f9f9f;
-				border : none;
+				@include background(linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%));
+				@include box-shadow(0 1px 3px #000000);
+				background-color : #999;
+				border : solid 1px #333;
 				color : #fff;
 				cursor : pointer;
 				height : 100%;
@@ -770,7 +721,6 @@
 				top : 0;
 				width : 25px;
 				z-index : 20;
-
 				span {
 					background : Transparent url(../img/slideshow.png) no-repeat 0 0;
 					display : inline-block;
@@ -780,15 +730,15 @@
 				}
 			}
 			button.previous {
+				@include border-radius(4px 0 0 4px);
 				left : 0;
-
 				span {
 					background-position : 0 -192px;
 				}
 			}
 			button.next {
+				@include border-radius(0 4px 4px 0);
 				right : 0;
-
 				span {
 					background-position : 0 -128px;
 				}
@@ -799,7 +749,6 @@
 			}
 		}
 	}
-
 	/*
 		hover state
 	*/
@@ -829,7 +778,6 @@
 			}
 		}
 	}
-
 	/*
 		3D Rotation Variant
 	*/
@@ -838,7 +786,6 @@
 			background : #000;
 		}
 	}
-
 	/*
 		2D Slideshow Variant
 	*/
@@ -850,7 +797,6 @@
 			margin-bottom : 5%;
 		}
 	}
-
 	/*
 		2D Catalogue Variant
 	*/
@@ -859,9 +805,7 @@
 			background : #000;
 		}
 	}
-
 }
-
 @media (min-width: 1200px) {}
 @media (min-width: 980px) and (max-width: 1199px) {}
 @media (min-width: 768px) and (max-width: 979px) {}
