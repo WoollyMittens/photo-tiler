@@ -4,6 +4,7 @@
 @media all {
 	@import "compass/css3";
 	@import "compass/utilities";
+	@import "_definitions";
 	/*
 		viewer
 	*/
@@ -16,6 +17,7 @@
 		width : 100%;
 		* {
 			@include box-sizing(border-box);
+			-ms-interpolation-mode: bicubic;
 		}
 		div.wrapper {
 			background : Transparent;
@@ -132,31 +134,32 @@
 		nav.buttons {
 			menu {
 				button {
-					@include background(linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%));
-					@include border-radius(4px);
-					@include box-shadow(0 1px 3px #000000);
 					@include transition-property(all);
 					@include transition-duration(0.3s);
 					@include transition-timing-function(ease);
-					background-color : #999;
-					border : solid 1px #333;
+					background-color : $color-passive;
+					border : none;
 					cursor : pointer;
 					height : 32px;
 					margin : 0;
 					opacity : 0.3;
-					overflow : visible;
+					overflow : hidden;
 					padding : 0;
 					position : absolute;
-					text-align : center;
+					text-indent : 50px;
+					white-space : nowrap;
 					width : 32px;
 					z-index : 10;
 					span {
 						background : Transparent url(../img/viewer.png) no-repeat 0 0;
-						display : inline-block;
-						height : 32px;
-						text-indent : -999em;
-						width : 18px;
+						@include centerIcon ();
 					}
+				}
+				button:hover {
+					background-color : $color-hover;
+				}
+				button.disabled, button.disabled:hover {
+					background-color : $color-disabled;
 				}
 			}
 			menu.zoom {
@@ -164,38 +167,37 @@
 					right : 10px;
 					top : 10px;
 					span {
-						background-position : 0% -25px;
+						background-position : 0% -32px;
 					}
 				}
 				button.decrease {
 					right : 10px;
 					top : 52px;
 					span {
-						background-position : 100% -25px;
+						background-position : 100% -32px;
 					}
 				}
 			}
 			menu.leaf {
 				background : Transparent none;
 				button.increase {
-					border-radius : 4px;
 					right : 10px;
 					top : 94px;
 					span {
-						background-position : 100% -57px;
+						background-position : 100% -64px;
 					}
 				}
 				button.decrease {
 					display : none;
 					span {
-						background-position : 0% -57px;
+						background-position : 0% -64px;
 					}
 				}
 				button.reset {
 					right : 10px;
 					top : 94px;
 					span {
-						background-position : 50% -57px;
+						background-position : 50% -64px;
 						margin-left : 1px;
 						width : 26px;
 					}
@@ -207,14 +209,14 @@
 					right : 10px;
 					top : 136px;
 					span {
-						background-position : 100% 6px;
+						background-position : 100% 0;
 					}
 				}
 				button.decrease {
 					right : 10px;
 					top : 94px;
 					span {
-						background-position : 0% 6px;
+						background-position : 0% 0;
 					}
 				}
 			}
@@ -225,17 +227,14 @@
 	*/
 	div.viewer {
 		nav.toolbar {
-			@include background(linear-gradient(top,#e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
-			@include border-radius(5px);
-			@include box-shadow(0 1px 3px #000000);
 			@include transition-property(all);
 			@include transition-duration(0.3s);
 			@include transition-timing-function(ease);
-			background-color : #999;
+			background-color : $color-passive;
+			border : solid 1px #fff;
 			bottom : 0%;
-			border : solid 1px #333;
 			display : block;
-			height : 32px;
+			height : 34px;
 			left : 50%;
 			margin : 0 0 5% -64px;
 			opacity : 0.3;
@@ -243,12 +242,11 @@
 			padding : 0;
 			position : absolute;
 			visibility : hidden;
-			width : 128px;
+			width : 130px;
 			z-index : 7;
 			menu {
 				button {
-					@include background(linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%));
-					background-color : #999;
+					background-color : $color-passive;
 					border : none;
 					cursor : pointer;
 					height : 32px;
@@ -257,30 +255,26 @@
 					position : absolute;
 					overflow : hidden;
 					position : absolute;
-					text-align : center;
+					text-indent : 50px;
 					white-space : nowrap;
 					width : 32px;
 					z-index : 10;
 					span {
-						background-image : url(../img/viewer.png);
-						cursor : pointer;
-						display : inline-block;
-						height : 18px;
-						overflow : hidden;
-						text-indent : 18px;
-						white-space : nowrap;
-						vertical-align : middle;
-						width : 18px;
+						background : Transparent url(../img/viewer.png) no-repeat 0 0;
+						@include centerIcon ();
 					}
 				}
-				button.disabled {
-					@include opacity(0.3);
+				button:hover {
+					background-color : $color-hover;
+				}
+				button.disabled, button.disabled:hover {
+					background-color : $color-disabled;
 					cursor : default;
 				}
 			}
 			menu.zoom {
 				button.increase {
-					border-left : solid 1px #888888;
+					border-left : solid 1px #fff;
 					right : 32px;
 					top : 0;
 					span {
@@ -297,8 +291,7 @@
 			}
 			menu.leaf {
 				button.increase {
-					@include border-radius(0 5px 5px 0);
-					border-left : solid 1px #888888;
+					border-left : solid 1px #fff;
 					right : 0;
 					top : 0;
 					span {
@@ -306,8 +299,7 @@
 					}
 				}
 				button.decrease {
-					@include border-radius(5px 0 0 5px);
-					border-right : solid 1px #888888;
+					border-right : solid 1px #fff;
 					left : 0;
 					top : 0;
 					span {
@@ -315,16 +307,14 @@
 					}
 				}
 				button.reset {
-					border-right : solid 1px #888888;
-					border-left : solid 1px #888888;
+					border-right : solid 1px #fff;
+					border-left : solid 1px #fff;
 					left : auto;
 					right : 96px;
 					top : 0;
 					span {
-						background-position : 50% -62px;
-						height : 24px;
-						text-indent : 26px;
-						width : 26px;
+						@include centerIcon ();
+						background-position : 50% -64px;
 					}
 				}
 				form {
@@ -334,8 +324,7 @@
 			}
 			menu.spin {
 				button.increase {
-					@include border-radius(5px 0 0 5px);
-					border-right : solid 1px #888888;
+					border-right : solid 1px #fff;
 					left : 0;
 					top : 0;
 					span {
@@ -343,8 +332,7 @@
 					}
 				}
 				button.decrease {
-					@include border-radius(0 5px 5px 0);
-					border-left : solid 1px #888888;
+					border-left : solid 1px #fff;
 					right : 0;
 					top : 0;
 					span {
@@ -369,13 +357,11 @@
 	*/
 	div.viewer {
 		menu.slider {
-			@include border-radius(5px);
 			@include transition-property(all);
 			@include transition-duration(0.3s);
 			@include transition-timing-function(ease);
 			@include opacity(0);
-			background-color : #e2e2e2;
-			border : solid 1px #333;
+			background-color : $color-passive;
 			display : block;
 			margin : 0;
 			overflow : hidden;
@@ -384,47 +370,41 @@
 			visibility : hidden;
 			z-index : 7;
 			div.meter, meter {
-				@include border-radius(4px);
-				background : #282828;
+				background-color : #fff;
 				display : block;
 				height : 8px;
-				left : 50px;
+				left : 48px;
 				margin : -4px 0 0 0;
 				overflow : visible;
 				position : absolute;
-				right : 50px;
+				right : 48px;
 				top : 50%;
 				z-index : 8;
 				div {
-					@include background(linear-gradient(top, #949494 0%, #cfcfcf 100%));
-					@include border-radius(5px);
-					@include box-shadow(0 3px 3px #333);
-					background-color : #949494;
-					border-top : solid 1px #e9e9e9;
-					border-bottom : solid 1px #626262;
+					background-color : $color-passive;
+					border : solid 1px #fff;
 					display : block;
 					height : 28px;
 					left : 50%;
-					margin : -15px 0 0 -14px;
+					margin : -14px 0 0 -14px;
+					overflow : hidden;
 					position : absolute;
+					text-indent : 50px;
+					white-space : nowrap;
 					top : 50%;
 					width : 28px;
 					z-index : 9;
 					span {
-						background-image : url(../img/viewer.png);
-						display : block;
-						height : 18px;
-						margin : 4px 0 0 5px;
-						overflow : hidden;
-						position : absolute;
-						text-indent : 18px;
-						white-space : nowrap;
-						width : 18px;
+						background : Transparent url(../img/viewer.png) no-repeat 0 0;
+						@include centerIcon ();
 					}
+				}
+				div:hover, div.hover {
+					background-color : $color-hover;
 				}
 			}
 			button {
-				background-color : #cfcfcf;
+				background-color : $color-passive;
 				border : none;
 				cursor : pointer;
 				height : 32px;
@@ -434,21 +414,17 @@
 				visibility : visible;
 				overflow : hidden;
 				position : absolute;
-				text-align : center;
+				text-indent : 50px;
 				white-space : nowrap;
 				width : 32px;
 				z-index : 10;
 				span {
-					background-image : url(../img/viewer.png);
-					cursor : pointer;
-					display : inline-block;
-					height : 18px;
-					overflow : hidden;
-					text-indent : 18px;
-					white-space : nowrap;
-					vertical-align : middle;
-					width : 18px;
+					background : Transparent url(../img/viewer.png) no-repeat 0 0;
+					@include centerIcon ();
 				}
+			}
+			button:hover {
+				background-color : $color-hover;
 			}
 			button.increase {
 				left : 0;
@@ -469,33 +445,24 @@
 	*/
 	div.viewer {
 		menu.slider.spin {
-			@include background(linear-gradient(top,#e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
 			bottom : 0%;
 			margin-bottom : 5%;
-			height : 34px;
+			height : 32px;
 			left : 5%;
 			right : 15%;
 			div.meter, meter {
-				@include background(linear-gradient(top, #282828 0%, #343434 100%));
-				border-top : solid 1px #282828;
-				border-bottom : solid 1px #bebebe;
 				span {
 					background-position : 50% 0;
 				}
 			}
-			button {
-				@include background(linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%));
-			}
 			button.increase {
-				@include border-radius(5px 0 0 5px);
-				border-right : solid 1px #888888;
+				border-right : solid 1px #fff;
 				span {
 					background-position : 0 0;
 				}
 			}
 			button.decrease {
-				@include border-radius(0 5px 5px 0);
-				border-left : solid 1px #888888;
+				border-left : solid 1px #fff;
 				span {
 					background-position : 100% 0;
 				}
@@ -507,21 +474,17 @@
 	*/
 	div.viewer {
 		menu.slider.zoom {
-			@include background(linear-gradient(left, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
 			bottom : 0%;
 			margin-bottom : 15%;
 			right : 5%;
 			top : 5%;
-			width : 34px;
+			width : 32px;
 			div.meter, meter {
-				@include background(linear-gradient(left, #282828 0%, #343434 100%));
-				border-right : solid 1px #bebebe;
-				border-left : solid 1px #282828;
-				bottom : 50px;
+				bottom : 48px;
 				height : auto;
 				left : 50%;
 				margin : 0 0 0 -4px;
-				top : 50px;
+				top : 48px;
 				width : 8px;
 				-webkit-appearance: none;
 				appearance: none;
@@ -529,19 +492,14 @@
 					background-position : 50% -32px;
 				}
 			}
-			button {
-				@include background(linear-gradient(left, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%));
-			}
 			button.increase {
-				@include border-radius(5px 5px 0 0);
-				border-bottom : solid 1px #888888;
+				border-bottom : solid 1px #fff;
 				span {
 					background-position : 0 -32px;
 				}
 			}
 			button.decrease {
-				@include border-radius(0 0 5px 5px);
-				border-top : solid 1px #888888;
+				border-top : solid 1px #fff;
 				span {
 					background-position : 100% -32px;
 				}
@@ -553,7 +511,7 @@
 	*/
 	div.viewer {
 		menu.leaf {
-			@include background(linear-gradient(top,#e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
+			background-color : $color-passive;
 			bottom : 0%;
 			margin-bottom : 5%;
 			margin-left : -100px;
@@ -561,11 +519,10 @@
 			left : 50%;
 			width : 200px;
 			button {
-				@include background(linear-gradient(top,#e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%));
+				background-color : $color-active;
 				span {}
 			}
 			button.increase {
-				@include border-radius(5px 0 0 5px);
 				left : auto;
 				right : 49px;
 				span {
@@ -580,16 +537,13 @@
 				}
 			}
 			button.reset {
-				@include border-radius(0 5px 5px 0);
-				border-left : solid 1px #888888;
+				border-left : solid 1px #fff;
 				right : 0;
 				top : 0;
-				width : 48px;
+				width : 32px;
 				span {
-					background-position : 50% -63px;
-					height : 21px;
-					text-indent : 25px;
-					width : 26px;
+					@include centerIcon ();
+					background-position : 50% -64px;
 				}
 			}
 			form {
@@ -601,20 +555,18 @@
 				top : 4px;
 				width : 80px;
 				input {
-					@include box-shadow(inset 3px 3px 3px #414344);
-					background : #5a5d5f;
+					background : #fff;
 					border : none;
-					color : #fff;
+					color : #333;
 					font-size : 14px;
 					font-family : Arial, Sans-Serif;
-					text-shadow : 1px 1px 1px #414344;
 					height : 24px;
 					line-height : 16px;
 					margin : 0;
 					padding : 4px;
 					text-align : center;
 					vertical-align : middle;
-					width : 24px;
+					width : 32px;
 				}
 				span.count {
 					color : #fff;
@@ -624,7 +576,6 @@
 					height : 24px;
 					padding : 4px;
 					line-height : 16px;
-					text-shadow : 1px 1px 1px #414344;
 					vertical-align : middle;
 				}
 			}
@@ -635,7 +586,6 @@
 	*/
 	div.viewer {
 		nav.thumbnails {
-			@include box-sizing(border-box);
 			bottom : 0;
 			height : 28%;
 			left : 0;
@@ -644,7 +594,7 @@
 			width : 100%;
 			div {
 				height : 100%;
-				margin : 0 35px 0 35px;
+				margin : 1px 41px 0 41px;
 				position : relative;
 				overflow : hidden;
 				ul {
@@ -655,36 +605,44 @@
 					margin : 0;
 					padding : 0;
 					position : relative;
-					width : 1000%;
-					z-index : 11;
+					white-space : nowrap;
+					z-index : 10;
 					li {
 						display : inline;
 						list-style-type : none;
 						a {
+							margin-right : 1px;
+							display : inline-block;
+							overflow : hidden;
+							position : relative;
+							vertical-align : top;
+							height : 100%;
+							width : 25%;
 							img {
-								@include opacity(0.7);
+								@include opacity(1);
 								@include transition-property(opacity);
 								@include transition-duration(0.3s);
 								@include transition-timing-function(ease);
-								cursor : pointer;
-								float : left;
-								height : 100%;
-								margin-right : 10px;
-								-ms-interpolation-mode: bicubic;
+								filter : none;
+								border : none;
+								left : 0;
+								margin-left : 0;
+								margin-top : 0;
+								min-height : 101%;
+								min-width : 101%;
+								position : absolute;
+								top : 0;
 							}
 						}
 						a:hover {
 							img {
 								@include opacity(1);
-								filter : none;
 							}
 						}
 						a.thumbnails_active {
+							background-color : #FF6A00;
 							img {
-								@include opacity(1);
-								border : solid 2px #a4a4a4;
-								filter : none;
-								height : 100%;
+								@include opacity(0.5);
 							}
 						}
 					}
@@ -696,56 +654,54 @@
 		Thumbnails Controls
 	*/
 	div.viewer {
-		menu.scroller {
-			position : absolute;
-			height : 100%;
-			left : 0;
-			margin : 0;
-			padding : 0;
-			top : 0;
-			width : 100%;
-			button {
-				@include background(linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%));
-				@include box-shadow(0 1px 3px #000000);
-				background-color : #999;
-				border : solid 1px #333;
-				color : #fff;
-				cursor : pointer;
-				height : 100%;
-				line-height : 20px;
-				margin : 0;
-				overflow : visible;
-				padding : 0;
+		nav {
+			menu.scroller {
 				position : absolute;
-				text-align : center;
-				top : 0;
-				width : 25px;
-				z-index : 20;
-				span {
-					background : Transparent url(../img/slideshow.png) no-repeat 0 0;
-					display : inline-block;
-					height : 40px;
-					text-indent : -999em;
-					width : 15px;
-				}
-			}
-			button.previous {
-				@include border-radius(4px 0 0 4px);
+				height : 100%;
 				left : 0;
-				span {
-					background-position : 0 -192px;
+				margin : 1px 0 0 0;
+				padding : 0;
+				top : 0;
+				width : 100%;
+				button {
+					background-color : $color-passive;
+					border : none;
+					color : #fff;
+					cursor : pointer;
+					height : 100%;
+					margin : 0;
+					overflow : hidden;
+					padding : 0;
+					position : absolute;
+					text-indent : 50px;
+					white-space : nowrap;
+					top : 0;
+					width : 40px;
+					z-index : 20;
+					span {
+						background : Transparent url(../img/viewer.png) no-repeat 0 0;
+						@include centerIcon ();
+					}
 				}
-			}
-			button.next {
-				@include border-radius(0 4px 4px 0);
-				right : 0;
-				span {
-					background-position : 0 -128px;
+				button:hover {
+					background-color : $color-hover;
 				}
-			}
-			button.disabled {
-				@include opacity(0.3);
-				cursor : default;
+				button.previous {
+					left : 0;
+					span {
+						background-position : 0% -64px;
+					}
+				}
+				button.next {
+					right : 0;
+					span {
+						background-position : 100% -64px;
+					}
+				}
+				button.disabled {
+					background-color : $color-disabled;
+					cursor : default;
+				}
 			}
 		}
 	}
@@ -760,20 +716,17 @@
 			@include transition-timing-function(ease);
 		}
 		nav.toolbar {
-			@include opacity(0.9);
+			@include opacity(1);
 			visibility : visible;
 		}
 		menu.slider {
-			@include opacity(0.9);
+			@include opacity(1);
 			visibility : visible;
 		}
 		nav.buttons {
 			menu {
 				button {
-					@include opacity(0.9);
-				}
-				button.disabled {
-					@include opacity(0.3);
+					@include opacity(1);
 				}
 			}
 		}

@@ -68,7 +68,7 @@
 			if (!settings.widths[1]) {
 				// request them using AJAX
 				useful.request.send({
-					url : settings.imagesize + '?src=' + settings.figures.join(',').substr(2),
+					url : settings.imagesize + settings.queryprefix + 'src=' + settings.figures.join(',').substr(2),
 					post : 'name=value&foo=bar',
 					onSuccess : function (reply) { viewer.load(reply, settings); }
 				});
@@ -214,7 +214,7 @@
 				settings.outlets.wrapper.appendChild(settings.outlets.canvas);
 				// for all figures in the settings
 				settings.outlets.figures = [0];
-				var newImage, newWidth, newHeight;
+				var newImage, newWidth, newHeight, newJoint;
 				for (var a = 1, b = settings.figures.length; a < b; a += 1) {
 					// calculate the starting dimensions
 					newHeight = settings.outlets.parent.offsetHeight * settings.divide;
@@ -231,8 +231,8 @@
 					// add the default image to the slide
 					newImage = document.createElement('img');
 					// load starting images
-					newImage.src = settings.imageslice +
-						'?src=' + settings.figures[a] +
+					newImage.src = settings.imageslice + settings.queryprefix +
+						'src=' + settings.figures[a] +
 						'&width=' + parseInt(newWidth, 10) +
 						'&height=' + parseInt(newHeight, 10) +
 						'&left=0&top=0&right=1&bottom=1';
@@ -592,8 +592,8 @@
 										}
 										// costruct the tile url
 										settings.outlets.tiles[tileName].object.className = 'tile_hidden';
-										settings.outlets.tiles[tileName].object.src = settings.imageslice +
-											'?src=' + settings.figures[settings.outlets.index] +
+										settings.outlets.tiles[tileName].object.src = settings.imageslice + settings.queryprefix +
+											'src=' + settings.figures[settings.outlets.index] +
 											'&width=' + tileWidth +
 											'&height=' + tileHeight +
 											'&top=' + tileTop +
@@ -1595,8 +1595,8 @@
 				settings.outlets.slideDiv = document.createElement('div');
 				settings.outlets.slideUl = document.createElement('ul');
 				// force the height of the nav if desired
-				if (settings.divide) {
-					settings.outlets.slideNav.style.height = (100 - (settings.divide * 100) - parseInt(settings.margin, 10)) + '%';
+				if (settings.divide !== '100%') {
+					settings.outlets.slideNav.style.height = (100 - settings.divide * 100 - parseInt(settings.margin, 10)) + '%';
 				}
 				if (settings.margin) {
 					settings.pixelMargin = parseInt(settings.outlets.parent.offsetWidth * parseInt(settings.margin, 10) / 100, 10);
@@ -1609,12 +1609,9 @@
 					var newA = document.createElement('a');
 					newA.className = (a === 1) ? settings.navigation + '_active' : settings.navigation + '_passive';
 					var newImage = document.createElement('img');
-					newImage.style.marginRight = settings.pixelMargin + 'px';
 					newImage.alt = '';
 					newImage.src = settings.thumbnails[a];
-					newImage.style.borderColor = settings.highlight;
 					newA.appendChild(newImage);
-					newA.style.borderColor = settings.highlight;
 					newLi.appendChild(newA);
 					// insert the new nodes
 					settings.outlets.slideUl.appendChild(newLi);
@@ -1645,23 +1642,65 @@
 			update : function (settings) {
 				// update the thumbnails menu
 				viewer.thumbnails.menu.update(settings);
-				// highlight the active slide
-				for (var a = 1; a < settings.thumbnails.length; a += 1) {
+				/// highlight the icons
+				viewer.thumbnails.hightlightIcons(settings);
+				// centre the icons
+				viewer.thumbnails.centreIcons(settings);
+				// centre the slider
+				viewer.thumbnails.centreSlider(settings);
+			},
+			// highlight active icon
+			hightlightIcons : function (settings) {
+				// for all thumbnails
+				for (var a = 1, b = settings.thumbnails.length; a < b; a += 1) {
+					// highlight the active slide
 					settings.outlets.thumbnails[a].className = (settings.outlets.index === a) ? settings.navigation + '_active' : settings.navigation + '_passive';
+					settings.outlets.thumbnails[a].style.borderColor = (settings.outlets.index === a) ? settings.highlight : 'Transparent';
 					settings.outlets.thumbnails[a].style.backgroundColor = (settings.outlets.index === a) ? settings.highlight : 'Transparent';
 				}
+			},
+			// centre the icons in containers
+			centreIcons : function (settings) {
+				var imageObject, imageWidth, imageHeight, rowHeight;
+				// measure the available space
+				rowHeight = settings.outlets.slideNav.offsetHeight;
+				// for all thumbnails
+				for (var a = 1, b = settings.thumbnails.length; a < b; a += 1) {
+					// centre the image in its surroundings
+					settings.outlets.thumbnails[a].style.width =  rowHeight + 'px';
+					imageObject = settings.outlets.thumbnails[a].getElementsByTagName('img')[0];
+					imageWidth = imageObject.offsetWidth;
+					imageHeight = imageObject.offsetHeight;
+					if (imageWidth > imageHeight) {
+						imageWidth = imageWidth / imageHeight * rowHeight;
+						imageHeight = rowHeight;
+					} else {
+						imageHeight = imageHeight /  imageWidth * rowHeight;
+						imageWidth = rowHeight;
+					}
+					imageObject.style.width = Math.round(imageWidth) + 'px';
+					imageObject.style.height = Math.round(imageHeight) + 'px';
+					imageObject.style.left = '50%';
+					imageObject.style.top = '50%';
+					imageObject.style.marginLeft = Math.round(-imageWidth / 2) + 'px';
+					imageObject.style.marginTop = Math.round(-imageHeight / 2) + 'px';
+				}
+			},
+			// centre the container around the active one
+			centreSlider : function (settings) {
 				// scroll the slider enough to center the active slide
-				var activeThumbnail = settings.outlets.thumbnails[settings.outlets.index].getElementsByTagName('img')[0];
+				var activeThumbnail = settings.outlets.thumbnails[settings.outlets.index];
 				var activePosition = activeThumbnail.offsetLeft;
 				var activeWidth = activeThumbnail.offsetWidth;
 				var scrollDistance = settings.outlets.slideDiv.offsetWidth;
-				var centeredPosition = -1 * activePosition + scrollDistance / 2 - activeWidth / 2;
+				var centeredPosition = -activePosition + scrollDistance / 2 - activeWidth / 2;
 				centeredPosition = (centeredPosition > 0) ? 0 : centeredPosition;
 				centeredPosition = (centeredPosition < settings.scrollMax && settings.scrollMax < 0) ? settings.scrollMax : centeredPosition;
 				// transition to the new position
-				if (settings.navigation === 'thumbnails') {
-					useful.css.setRules(settings.outlets.slideUl, {'marginLeft' : centeredPosition + 'px'});
-				}
+				useful.css.setRules(
+					settings.outlets.slideUl,
+					{'marginLeft' : centeredPosition + 'px'}
+				);
 			},
 			// activate a corresponding figure
 			set : function (event, node, settings) {
@@ -1717,7 +1756,7 @@
 					// calculate the minimum position
 					settings.scrollMin = 0;
 					// calculate the maximum position
-					var lastThumbnail = settings.outlets.thumbnails[settings.outlets.thumbnails.length - 1].getElementsByTagName('img')[0];
+					var lastThumbnail = settings.outlets.thumbnails[settings.outlets.thumbnails.length - 1];
 					settings.scrollStep = lastThumbnail.offsetWidth;
 					settings.scrollMax = -1 * (lastThumbnail.offsetLeft + lastThumbnail.offsetWidth) + settings.scrollDistance;
 					// show or hide the prev button
@@ -1763,9 +1802,7 @@
 							newPosition = 0;
 						}
 						// transition to the new position
-						if (settings.navigation === 'thumbnails') {
-							useful.css.setRules(settings.outlets.slideUl, {'marginLeft' : newPosition + 'px'});
-						}
+						useful.css.setRules(settings.outlets.slideUl, {'marginLeft' : newPosition + 'px'});
 						// redraw the menu buttons
 						viewer.thumbnails.menu.update(settings);
 					}

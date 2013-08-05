@@ -3,6 +3,9 @@
 */
 @media all {
   /*
+  	definitions
+  */
+  /*
   	viewer
   */
   div.viewer {
@@ -17,6 +20,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    -ms-interpolation-mode: bicubic;
   }
   div.viewer div.wrapper {
     background: Transparent;
@@ -210,19 +214,6 @@
   	Floating Buttons
   */
   div.viewer nav.buttons menu button {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0px, #ffffff), color-stop(1px, #ffffff), color-stop(1px, #ebebeb), color-stop(100%, #9f9f9f));
-    background: -webkit-linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%);
-    background: -moz-linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%);
-    background: -o-linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%);
-    background: linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%);
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    -ms-border-radius: 4px;
-    -o-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 3px black;
-    -moz-box-shadow: 0 1px 3px black;
-    box-shadow: 0 1px 3px black;
     -webkit-transition-property: all;
     -moz-transition-property: all;
     -o-transition-property: all;
@@ -235,63 +226,73 @@
     -moz-transition-timing-function: ease;
     -o-transition-timing-function: ease;
     transition-timing-function: ease;
-    background-color: #999;
-    border: solid 1px #333;
+    background-color: #ff6a00;
+    border: none;
     cursor: pointer;
     height: 32px;
     margin: 0;
     opacity: 0.3;
-    overflow: visible;
+    overflow: hidden;
     padding: 0;
     position: absolute;
-    text-align: center;
+    text-indent: 50px;
+    white-space: nowrap;
     width: 32px;
     z-index: 10;
   }
   div.viewer nav.buttons menu button span {
     background: Transparent url(../img/viewer.png) no-repeat 0 0;
-    display: inline-block;
+    content: '';
+    display: block;
     height: 32px;
-    text-indent: -999em;
-    width: 18px;
+    left: 50%;
+    margin: -16px 0 0 -16px;
+    position: absolute;
+    top: 50%;
+    width: 32px;
+  }
+  div.viewer nav.buttons menu button:hover {
+    background-color: #ff9800;
+  }
+  div.viewer nav.buttons menu button.disabled, div.viewer nav.buttons menu button.disabled:hover {
+    background-color: #7f7f7f;
   }
   div.viewer nav.buttons menu.zoom button.increase {
     right: 10px;
     top: 10px;
   }
   div.viewer nav.buttons menu.zoom button.increase span {
-    background-position: 0% -25px;
+    background-position: 0% -32px;
   }
   div.viewer nav.buttons menu.zoom button.decrease {
     right: 10px;
     top: 52px;
   }
   div.viewer nav.buttons menu.zoom button.decrease span {
-    background-position: 100% -25px;
+    background-position: 100% -32px;
   }
   div.viewer nav.buttons menu.leaf {
     background: Transparent none;
   }
   div.viewer nav.buttons menu.leaf button.increase {
-    border-radius: 4px;
     right: 10px;
     top: 94px;
   }
   div.viewer nav.buttons menu.leaf button.increase span {
-    background-position: 100% -57px;
+    background-position: 100% -64px;
   }
   div.viewer nav.buttons menu.leaf button.decrease {
     display: none;
   }
   div.viewer nav.buttons menu.leaf button.decrease span {
-    background-position: 0% -57px;
+    background-position: 0% -64px;
   }
   div.viewer nav.buttons menu.leaf button.reset {
     right: 10px;
     top: 94px;
   }
   div.viewer nav.buttons menu.leaf button.reset span {
-    background-position: 50% -57px;
+    background-position: 50% -64px;
     margin-left: 1px;
     width: 26px;
   }
@@ -301,33 +302,20 @@
     top: 136px;
   }
   div.viewer nav.buttons menu.spin button.increase span {
-    background-position: 100% 6px;
+    background-position: 100% 0;
   }
   div.viewer nav.buttons menu.spin button.decrease {
     right: 10px;
     top: 94px;
   }
   div.viewer nav.buttons menu.spin button.decrease span {
-    background-position: 0% 6px;
+    background-position: 0% 0;
   }
 
   /*
   	Default Toolbar
   */
   div.viewer nav.toolbar {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e2e2e2), color-stop(2%, #e2e2e2), color-stop(98%, #909090), color-stop(100%, #909090));
-    background: -webkit-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: -moz-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: -o-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 1px 3px black;
-    -moz-box-shadow: 0 1px 3px black;
-    box-shadow: 0 1px 3px black;
     -webkit-transition-property: all;
     -moz-transition-property: all;
     -o-transition-property: all;
@@ -340,11 +328,11 @@
     -moz-transition-timing-function: ease;
     -o-transition-timing-function: ease;
     transition-timing-function: ease;
-    background-color: #999;
+    background-color: #ff6a00;
+    border: solid 1px #fff;
     bottom: 0%;
-    border: solid 1px #333;
     display: block;
-    height: 32px;
+    height: 34px;
     left: 50%;
     margin: 0 0 5% -64px;
     opacity: 0.3;
@@ -352,16 +340,11 @@
     padding: 0;
     position: absolute;
     visibility: hidden;
-    width: 128px;
+    width: 130px;
     z-index: 7;
   }
   div.viewer nav.toolbar menu button {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cfcfcf), color-stop(2%, #cfcfcf), color-stop(98%, #818181), color-stop(100%, #818181));
-    background: -webkit-linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-    background: -moz-linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-    background: -o-linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-    background: linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-    background-color: #999;
+    background-color: #ff6a00;
     border: none;
     cursor: pointer;
     height: 32px;
@@ -370,29 +353,31 @@
     position: absolute;
     overflow: hidden;
     position: absolute;
-    text-align: center;
+    text-indent: 50px;
     white-space: nowrap;
     width: 32px;
     z-index: 10;
   }
   div.viewer nav.toolbar menu button span {
-    background-image: url(../img/viewer.png);
-    cursor: pointer;
-    display: inline-block;
-    height: 18px;
-    overflow: hidden;
-    text-indent: 18px;
-    white-space: nowrap;
-    vertical-align: middle;
-    width: 18px;
+    background: Transparent url(../img/viewer.png) no-repeat 0 0;
+    content: '';
+    display: block;
+    height: 32px;
+    left: 50%;
+    margin: -16px 0 0 -16px;
+    position: absolute;
+    top: 50%;
+    width: 32px;
   }
-  div.viewer nav.toolbar menu button.disabled {
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
-    opacity: 0.3;
+  div.viewer nav.toolbar menu button:hover {
+    background-color: #ff9800;
+  }
+  div.viewer nav.toolbar menu button.disabled, div.viewer nav.toolbar menu button.disabled:hover {
+    background-color: #7f7f7f;
     cursor: default;
   }
   div.viewer nav.toolbar menu.zoom button.increase {
-    border-left: solid 1px #888888;
+    border-left: solid 1px #fff;
     right: 32px;
     top: 0;
   }
@@ -407,12 +392,7 @@
     background-position: 100% -32px;
   }
   div.viewer nav.toolbar menu.leaf button.increase {
-    -webkit-border-radius: 0 5px 5px 0;
-    -moz-border-radius: 0 5px 5px 0;
-    -ms-border-radius: 0 5px 5px 0;
-    -o-border-radius: 0 5px 5px 0;
-    border-radius: 0 5px 5px 0;
-    border-left: solid 1px #888888;
+    border-left: solid 1px #fff;
     right: 0;
     top: 0;
   }
@@ -420,12 +400,7 @@
     background-position: 100% -64px;
   }
   div.viewer nav.toolbar menu.leaf button.decrease {
-    -webkit-border-radius: 5px 0 0 5px;
-    -moz-border-radius: 5px 0 0 5px;
-    -ms-border-radius: 5px 0 0 5px;
-    -o-border-radius: 5px 0 0 5px;
-    border-radius: 5px 0 0 5px;
-    border-right: solid 1px #888888;
+    border-right: solid 1px #fff;
     left: 0;
     top: 0;
   }
@@ -433,29 +408,29 @@
     background-position: 0% -64px;
   }
   div.viewer nav.toolbar menu.leaf button.reset {
-    border-right: solid 1px #888888;
-    border-left: solid 1px #888888;
+    border-right: solid 1px #fff;
+    border-left: solid 1px #fff;
     left: auto;
     right: 96px;
     top: 0;
   }
   div.viewer nav.toolbar menu.leaf button.reset span {
-    background-position: 50% -62px;
-    height: 24px;
-    text-indent: 26px;
-    width: 26px;
+    content: '';
+    display: block;
+    height: 32px;
+    left: 50%;
+    margin: -16px 0 0 -16px;
+    position: absolute;
+    top: 50%;
+    width: 32px;
+    background-position: 50% -64px;
   }
   div.viewer nav.toolbar menu.leaf form {
     left: 36px;
     top: 4px;
   }
   div.viewer nav.toolbar menu.spin button.increase {
-    -webkit-border-radius: 5px 0 0 5px;
-    -moz-border-radius: 5px 0 0 5px;
-    -ms-border-radius: 5px 0 0 5px;
-    -o-border-radius: 5px 0 0 5px;
-    border-radius: 5px 0 0 5px;
-    border-right: solid 1px #888888;
+    border-right: solid 1px #fff;
     left: 0;
     top: 0;
   }
@@ -463,12 +438,7 @@
     background-position: 100% 0;
   }
   div.viewer nav.toolbar menu.spin button.decrease {
-    -webkit-border-radius: 0 5px 5px 0;
-    -moz-border-radius: 0 5px 5px 0;
-    -ms-border-radius: 0 5px 5px 0;
-    -o-border-radius: 0 5px 5px 0;
-    border-radius: 0 5px 5px 0;
-    border-left: solid 1px #888888;
+    border-left: solid 1px #fff;
     right: 0;
     top: 0;
   }
@@ -488,11 +458,6 @@
   	Slider Toolbar
   */
   div.viewer menu.slider {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-    border-radius: 5px;
     -webkit-transition-property: all;
     -moz-transition-property: all;
     -o-transition-property: all;
@@ -507,8 +472,7 @@
     transition-timing-function: ease;
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
     opacity: 0;
-    background-color: #e2e2e2;
-    border: solid 1px #333;
+    background-color: #ff6a00;
     display: block;
     margin: 0;
     overflow: hidden;
@@ -518,61 +482,48 @@
     z-index: 7;
   }
   div.viewer menu.slider div.meter, div.viewer menu.slider meter {
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    -ms-border-radius: 4px;
-    -o-border-radius: 4px;
-    border-radius: 4px;
-    background: #282828;
+    background-color: #fff;
     display: block;
     height: 8px;
-    left: 50px;
+    left: 48px;
     margin: -4px 0 0 0;
     overflow: visible;
     position: absolute;
-    right: 50px;
+    right: 48px;
     top: 50%;
     z-index: 8;
   }
   div.viewer menu.slider div.meter div, div.viewer menu.slider meter div {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #949494), color-stop(100%, #cfcfcf));
-    background: -webkit-linear-gradient(top, #949494 0%, #cfcfcf 100%);
-    background: -moz-linear-gradient(top, #949494 0%, #cfcfcf 100%);
-    background: -o-linear-gradient(top, #949494 0%, #cfcfcf 100%);
-    background: linear-gradient(top, #949494 0%, #cfcfcf 100%);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 3px 3px #333333;
-    -moz-box-shadow: 0 3px 3px #333333;
-    box-shadow: 0 3px 3px #333333;
-    background-color: #949494;
-    border-top: solid 1px #e9e9e9;
-    border-bottom: solid 1px #626262;
+    background-color: #ff6a00;
+    border: solid 1px #fff;
     display: block;
     height: 28px;
     left: 50%;
-    margin: -15px 0 0 -14px;
+    margin: -14px 0 0 -14px;
+    overflow: hidden;
     position: absolute;
+    text-indent: 50px;
+    white-space: nowrap;
     top: 50%;
     width: 28px;
     z-index: 9;
   }
   div.viewer menu.slider div.meter div span, div.viewer menu.slider meter div span {
-    background-image: url(../img/viewer.png);
+    background: Transparent url(../img/viewer.png) no-repeat 0 0;
+    content: '';
     display: block;
-    height: 18px;
-    margin: 4px 0 0 5px;
-    overflow: hidden;
+    height: 32px;
+    left: 50%;
+    margin: -16px 0 0 -16px;
     position: absolute;
-    text-indent: 18px;
-    white-space: nowrap;
-    width: 18px;
+    top: 50%;
+    width: 32px;
+  }
+  div.viewer menu.slider div.meter div:hover, div.viewer menu.slider div.meter div.hover, div.viewer menu.slider meter div:hover, div.viewer menu.slider meter div.hover {
+    background-color: #ff9800;
   }
   div.viewer menu.slider button {
-    background-color: #cfcfcf;
+    background-color: #ff6a00;
     border: none;
     cursor: pointer;
     height: 32px;
@@ -582,21 +533,24 @@
     visibility: visible;
     overflow: hidden;
     position: absolute;
-    text-align: center;
+    text-indent: 50px;
     white-space: nowrap;
     width: 32px;
     z-index: 10;
   }
   div.viewer menu.slider button span {
-    background-image: url(../img/viewer.png);
-    cursor: pointer;
-    display: inline-block;
-    height: 18px;
-    overflow: hidden;
-    text-indent: 18px;
-    white-space: nowrap;
-    vertical-align: middle;
-    width: 18px;
+    background: Transparent url(../img/viewer.png) no-repeat 0 0;
+    content: '';
+    display: block;
+    height: 32px;
+    left: 50%;
+    margin: -16px 0 0 -16px;
+    position: absolute;
+    top: 50%;
+    width: 32px;
+  }
+  div.viewer menu.slider button:hover {
+    background-color: #ff9800;
   }
   div.viewer menu.slider button.increase {
     left: 0;
@@ -615,54 +569,23 @@
   	Spin Toolbar
   */
   div.viewer menu.slider.spin {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e2e2e2), color-stop(2%, #e2e2e2), color-stop(98%, #909090), color-stop(100%, #909090));
-    background: -webkit-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: -moz-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: -o-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
     bottom: 0%;
     margin-bottom: 5%;
-    height: 34px;
+    height: 32px;
     left: 5%;
     right: 15%;
-  }
-  div.viewer menu.slider.spin div.meter, div.viewer menu.slider.spin meter {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #282828), color-stop(100%, #343434));
-    background: -webkit-linear-gradient(top, #282828 0%, #343434 100%);
-    background: -moz-linear-gradient(top, #282828 0%, #343434 100%);
-    background: -o-linear-gradient(top, #282828 0%, #343434 100%);
-    background: linear-gradient(top, #282828 0%, #343434 100%);
-    border-top: solid 1px #282828;
-    border-bottom: solid 1px #bebebe;
   }
   div.viewer menu.slider.spin div.meter span, div.viewer menu.slider.spin meter span {
     background-position: 50% 0;
   }
-  div.viewer menu.slider.spin button {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cfcfcf), color-stop(2%, #cfcfcf), color-stop(98%, #818181), color-stop(100%, #818181));
-    background: -webkit-linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-    background: -moz-linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-    background: -o-linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-    background: linear-gradient(top, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-  }
   div.viewer menu.slider.spin button.increase {
-    -webkit-border-radius: 5px 0 0 5px;
-    -moz-border-radius: 5px 0 0 5px;
-    -ms-border-radius: 5px 0 0 5px;
-    -o-border-radius: 5px 0 0 5px;
-    border-radius: 5px 0 0 5px;
-    border-right: solid 1px #888888;
+    border-right: solid 1px #fff;
   }
   div.viewer menu.slider.spin button.increase span {
     background-position: 0 0;
   }
   div.viewer menu.slider.spin button.decrease {
-    -webkit-border-radius: 0 5px 5px 0;
-    -moz-border-radius: 0 5px 5px 0;
-    -ms-border-radius: 0 5px 5px 0;
-    -o-border-radius: 0 5px 5px 0;
-    border-radius: 0 5px 5px 0;
-    border-left: solid 1px #888888;
+    border-left: solid 1px #fff;
   }
   div.viewer menu.slider.spin button.decrease span {
     background-position: 100% 0;
@@ -672,30 +595,18 @@
   	Zoom Toolbar
   */
   div.viewer menu.slider.zoom {
-    background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, #e2e2e2), color-stop(2%, #e2e2e2), color-stop(98%, #909090), color-stop(100%, #909090));
-    background: -webkit-linear-gradient(left, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: -moz-linear-gradient(left, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: -o-linear-gradient(left, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: linear-gradient(left, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
     bottom: 0%;
     margin-bottom: 15%;
     right: 5%;
     top: 5%;
-    width: 34px;
+    width: 32px;
   }
   div.viewer menu.slider.zoom div.meter, div.viewer menu.slider.zoom meter {
-    background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, #282828), color-stop(100%, #343434));
-    background: -webkit-linear-gradient(left, #282828 0%, #343434 100%);
-    background: -moz-linear-gradient(left, #282828 0%, #343434 100%);
-    background: -o-linear-gradient(left, #282828 0%, #343434 100%);
-    background: linear-gradient(left, #282828 0%, #343434 100%);
-    border-right: solid 1px #bebebe;
-    border-left: solid 1px #282828;
-    bottom: 50px;
+    bottom: 48px;
     height: auto;
     left: 50%;
     margin: 0 0 0 -4px;
-    top: 50px;
+    top: 48px;
     width: 8px;
     -webkit-appearance: none;
     appearance: none;
@@ -703,31 +614,14 @@
   div.viewer menu.slider.zoom div.meter span, div.viewer menu.slider.zoom meter span {
     background-position: 50% -32px;
   }
-  div.viewer menu.slider.zoom button {
-    background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, #cfcfcf), color-stop(2%, #cfcfcf), color-stop(98%, #818181), color-stop(100%, #818181));
-    background: -webkit-linear-gradient(left, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-    background: -moz-linear-gradient(left, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-    background: -o-linear-gradient(left, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-    background: linear-gradient(left, #cfcfcf 0%, #cfcfcf 2%, #818181 98%, #818181 100%);
-  }
   div.viewer menu.slider.zoom button.increase {
-    -webkit-border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    -ms-border-radius: 5px 5px 0 0;
-    -o-border-radius: 5px 5px 0 0;
-    border-radius: 5px 5px 0 0;
-    border-bottom: solid 1px #888888;
+    border-bottom: solid 1px #fff;
   }
   div.viewer menu.slider.zoom button.increase span {
     background-position: 0 -32px;
   }
   div.viewer menu.slider.zoom button.decrease {
-    -webkit-border-radius: 0 0 5px 5px;
-    -moz-border-radius: 0 0 5px 5px;
-    -ms-border-radius: 0 0 5px 5px;
-    -o-border-radius: 0 0 5px 5px;
-    border-radius: 0 0 5px 5px;
-    border-top: solid 1px #888888;
+    border-top: solid 1px #fff;
   }
   div.viewer menu.slider.zoom button.decrease span {
     background-position: 100% -32px;
@@ -737,11 +631,7 @@
   	Leafing Toolbar
   */
   div.viewer menu.leaf {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e2e2e2), color-stop(2%, #e2e2e2), color-stop(98%, #909090), color-stop(100%, #909090));
-    background: -webkit-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: -moz-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: -o-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
+    background-color: #ff6a00;
     bottom: 0%;
     margin-bottom: 5%;
     margin-left: -100px;
@@ -750,18 +640,9 @@
     width: 200px;
   }
   div.viewer menu.leaf button {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e2e2e2), color-stop(2%, #e2e2e2), color-stop(98%, #909090), color-stop(100%, #909090));
-    background: -webkit-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: -moz-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: -o-linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
-    background: linear-gradient(top, #e2e2e2 0%, #e2e2e2 2%, #909090 98%, #909090 100%);
+    background-color: #d45800;
   }
   div.viewer menu.leaf button.increase {
-    -webkit-border-radius: 5px 0 0 5px;
-    -moz-border-radius: 5px 0 0 5px;
-    -ms-border-radius: 5px 0 0 5px;
-    -o-border-radius: 5px 0 0 5px;
-    border-radius: 5px 0 0 5px;
     left: auto;
     right: 49px;
   }
@@ -776,21 +657,21 @@
     background-position: 0 -64px;
   }
   div.viewer menu.leaf button.reset {
-    -webkit-border-radius: 0 5px 5px 0;
-    -moz-border-radius: 0 5px 5px 0;
-    -ms-border-radius: 0 5px 5px 0;
-    -o-border-radius: 0 5px 5px 0;
-    border-radius: 0 5px 5px 0;
-    border-left: solid 1px #888888;
+    border-left: solid 1px #fff;
     right: 0;
     top: 0;
-    width: 48px;
+    width: 32px;
   }
   div.viewer menu.leaf button.reset span {
-    background-position: 50% -63px;
-    height: 21px;
-    text-indent: 25px;
-    width: 26px;
+    content: '';
+    display: block;
+    height: 32px;
+    left: 50%;
+    margin: -16px 0 0 -16px;
+    position: absolute;
+    top: 50%;
+    width: 32px;
+    background-position: 50% -64px;
   }
   div.viewer menu.leaf form {
     height: 24px;
@@ -802,22 +683,18 @@
     width: 80px;
   }
   div.viewer menu.leaf form input {
-    -webkit-box-shadow: inset 3px 3px 3px #414344;
-    -moz-box-shadow: inset 3px 3px 3px #414344;
-    box-shadow: inset 3px 3px 3px #414344;
-    background: #5a5d5f;
+    background: #fff;
     border: none;
-    color: #fff;
+    color: #333;
     font-size: 14px;
     font-family: Arial, Sans-Serif;
-    text-shadow: 1px 1px 1px #414344;
     height: 24px;
     line-height: 16px;
     margin: 0;
     padding: 4px;
     text-align: center;
     vertical-align: middle;
-    width: 24px;
+    width: 32px;
   }
   div.viewer menu.leaf form span.count {
     color: #fff;
@@ -827,7 +704,6 @@
     height: 24px;
     padding: 4px;
     line-height: 16px;
-    text-shadow: 1px 1px 1px #414344;
     vertical-align: middle;
   }
 
@@ -835,9 +711,6 @@
   	Thumbnails
   */
   div.viewer nav.thumbnails {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     bottom: 0;
     height: 28%;
     left: 0;
@@ -847,7 +720,7 @@
   }
   div.viewer nav.thumbnails div {
     height: 100%;
-    margin: 0 35px 0 35px;
+    margin: 1px 41px 0 41px;
     position: relative;
     overflow: hidden;
   }
@@ -868,16 +741,25 @@
     margin: 0;
     padding: 0;
     position: relative;
-    width: 1000%;
-    z-index: 11;
+    white-space: nowrap;
+    z-index: 10;
   }
   div.viewer nav.thumbnails div ul li {
     display: inline;
     list-style-type: none;
   }
+  div.viewer nav.thumbnails div ul li a {
+    margin-right: 1px;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    vertical-align: top;
+    height: 100%;
+    width: 25%;
+  }
   div.viewer nav.thumbnails div ul li a img {
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
-    opacity: 0.7;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
     -webkit-transition-property: opacity;
     -moz-transition-property: opacity;
     -o-transition-property: opacity;
@@ -890,93 +772,84 @@
     -moz-transition-timing-function: ease;
     -o-transition-timing-function: ease;
     transition-timing-function: ease;
-    cursor: pointer;
-    float: left;
-    height: 100%;
-    margin-right: 10px;
-    -ms-interpolation-mode: bicubic;
+    filter: none;
+    border: none;
+    left: 0;
+    margin-left: 0;
+    margin-top: 0;
+    min-height: 101%;
+    min-width: 101%;
+    position: absolute;
+    top: 0;
   }
   div.viewer nav.thumbnails div ul li a:hover img {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
-    filter: none;
+  }
+  div.viewer nav.thumbnails div ul li a.thumbnails_active {
+    background-color: #FF6A00;
   }
   div.viewer nav.thumbnails div ul li a.thumbnails_active img {
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-    opacity: 1;
-    border: solid 2px #a4a4a4;
-    filter: none;
-    height: 100%;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+    opacity: 0.5;
   }
 
   /*
   	Thumbnails Controls
   */
-  div.viewer menu.scroller {
+  div.viewer nav menu.scroller {
     position: absolute;
     height: 100%;
     left: 0;
-    margin: 0;
+    margin: 1px 0 0 0;
     padding: 0;
     top: 0;
     width: 100%;
   }
-  div.viewer menu.scroller button {
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0px, #ffffff), color-stop(1px, #ffffff), color-stop(1px, #ebebeb), color-stop(100%, #9f9f9f));
-    background: -webkit-linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%);
-    background: -moz-linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%);
-    background: -o-linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%);
-    background: linear-gradient(top, #ffffff 0px, #ffffff 1px, #ebebeb 1px, #9f9f9f 100%);
-    -webkit-box-shadow: 0 1px 3px black;
-    -moz-box-shadow: 0 1px 3px black;
-    box-shadow: 0 1px 3px black;
-    background-color: #999;
-    border: solid 1px #333;
+  div.viewer nav menu.scroller button {
+    background-color: #ff6a00;
+    border: none;
     color: #fff;
     cursor: pointer;
     height: 100%;
-    line-height: 20px;
     margin: 0;
-    overflow: visible;
+    overflow: hidden;
     padding: 0;
     position: absolute;
-    text-align: center;
+    text-indent: 50px;
+    white-space: nowrap;
     top: 0;
-    width: 25px;
+    width: 40px;
     z-index: 20;
   }
-  div.viewer menu.scroller button span {
-    background: Transparent url(../img/slideshow.png) no-repeat 0 0;
-    display: inline-block;
-    height: 40px;
-    text-indent: -999em;
-    width: 15px;
+  div.viewer nav menu.scroller button span {
+    background: Transparent url(../img/viewer.png) no-repeat 0 0;
+    content: '';
+    display: block;
+    height: 32px;
+    left: 50%;
+    margin: -16px 0 0 -16px;
+    position: absolute;
+    top: 50%;
+    width: 32px;
   }
-  div.viewer menu.scroller button.previous {
-    -webkit-border-radius: 4px 0 0 4px;
-    -moz-border-radius: 4px 0 0 4px;
-    -ms-border-radius: 4px 0 0 4px;
-    -o-border-radius: 4px 0 0 4px;
-    border-radius: 4px 0 0 4px;
+  div.viewer nav menu.scroller button:hover {
+    background-color: #ff9800;
+  }
+  div.viewer nav menu.scroller button.previous {
     left: 0;
   }
-  div.viewer menu.scroller button.previous span {
-    background-position: 0 -192px;
+  div.viewer nav menu.scroller button.previous span {
+    background-position: 0% -64px;
   }
-  div.viewer menu.scroller button.next {
-    -webkit-border-radius: 0 4px 4px 0;
-    -moz-border-radius: 0 4px 4px 0;
-    -ms-border-radius: 0 4px 4px 0;
-    -o-border-radius: 0 4px 4px 0;
-    border-radius: 0 4px 4px 0;
+  div.viewer nav menu.scroller button.next {
     right: 0;
   }
-  div.viewer menu.scroller button.next span {
-    background-position: 0 -128px;
+  div.viewer nav menu.scroller button.next span {
+    background-position: 100% -64px;
   }
-  div.viewer menu.scroller button.disabled {
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
-    opacity: 0.3;
+  div.viewer nav menu.scroller button.disabled {
+    background-color: #7f7f7f;
     cursor: default;
   }
 
@@ -1000,22 +873,18 @@
     transition-timing-function: ease;
   }
   div.viewer:hover nav.toolbar {
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=90);
-    opacity: 0.9;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
     visibility: visible;
   }
   div.viewer:hover menu.slider {
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=90);
-    opacity: 0.9;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
     visibility: visible;
   }
   div.viewer:hover nav.buttons menu button {
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=90);
-    opacity: 0.9;
-  }
-  div.viewer:hover nav.buttons menu button.disabled {
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
-    opacity: 0.3;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
   }
 
   /*

@@ -1,0 +1,82 @@
+/*
+	definitions
+*/
+
+$color-background : #ffffff;
+$color-text : #1e1e1e;
+$color-passive : #ff6a00;
+$color-active : #d45800;
+$color-hover : #ff9800;
+$color-disabled : #7f7f7f;
+$iconSize : 156px;
+
+@mixin centerIcon () {
+	content : '';
+	display : block;
+	height : 32px;
+	left : 50%;
+	margin : -16px 0 0 -16px;
+	position : absolute;
+	top : 50%;
+	width : 32px;
+}
+
+@mixin margin ($top:'', $right:'', $bottom:'', $left:'') {
+	@if $top != '' {
+		margin-top : (16 * $top) + px;
+		margin-top : $top + rem;
+	}
+	@if $right != '' {
+		margin-right : (16 * $right) + px;
+		margin-right : $right + rem;
+	}
+	@if $bottom != '' {
+		margin-bottom : (16 * $bottom) + px;
+		margin-bottom : $bottom + rem;
+	}
+	@if $left != '' {
+		margin-left : (16 * $left) + px;
+		margin-left : $left + rem;
+	}
+}
+
+@mixin padding ($top:'', $right:'', $bottom:'', $left:'') {
+	@if $top != '' {
+		padding-top : (16 * $top) + px;
+		padding-top : $top + rem;
+	}
+	@if $right != '' {
+		padding-right : (16 * $right) + px;
+		padding-right : $right + rem;
+	}
+	@if $bottom != '' {
+		padding-bottom : (16 * $bottom) + px;
+		padding-bottom : $bottom + rem;
+	}
+	@if $left != '' {
+		padding-left : (16 * $left) + px;
+		padding-left : $left + rem;
+	}
+}
+
+@mixin text ($size) {
+	@if $size == s {
+		font-size : 14px;
+		font-size : 1.571rem;
+	} @else if $size == m {
+		font-size : 16px;
+		font-size : 1rem;
+	} @else if $size == l {
+		font-size : 20px;
+		font-size : 1.25rem;
+	} @else if $size == xl {
+		font-size : 26px;
+		font-size : 1.625rem;
+	} @else if $size == xxl {
+		font-size : 30px;
+		font-size : 1.875rem;
+	} @else {
+		font-size : (16 * $size) + 'px';
+		font-size : $size + 'rem';
+	}
+}
