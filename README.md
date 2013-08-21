@@ -2,9 +2,9 @@
 
 This tile-based image viewer loads only the parts of the image that are visible. Not unlike how Google Maps loads map tiles. This demo comes with a web service to divide large images into tiles using PHP, but the concept is easily replicated in other languages.
 
-Try the <a href="http://www.woollymittens.nl/useful/default.php?url=viewer">viewer demo</a>.
+Try the <a href="http://www.woollymittens.nl/useful/default.php?url=viewer">demo</a>.
 
-## How to use the script
+## How to include the script
 
 The stylesheet is best included in the header of the document.
 
@@ -15,7 +15,7 @@ The stylesheet is best included in the header of the document.
 This include can be added to the header or placed inline before the script is invoked.
 
 ```html
-<script src="./js/useful.viewer.js"></script>
+<script src="./js/viewer.min.js"></script>
 ```
 
 To enable the use of HTML5 tags in Internet Explorer 8 and lower, include *html5.js*. To provide an alternative for *document.querySelectorAll* in Internet Explorer 8 and lower, include *jQuery*. To enable CSS3 transition animations in Internet Explorer 9 and lower, include *jQuery UI* as well.
@@ -24,18 +24,17 @@ To enable the use of HTML5 tags in Internet Explorer 8 and lower, include *html5
 <!--[if lte IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 <![endif]-->
 ```
 
-### Using vanilla JavaScript
+## How to start the script
 
 This is the safest way of starting the script, but allows for only one target element at a time.
 
 ```javascript
-var parent = documentGetElementById('id');
-useful.viewer.start(parent, {
+var viewer = new useful.Viewer( document.getElementById('id'), {
 	'urlprefix' : '../',
+	'queryprefix' : '?',
 	'imagesize' : './php/imagesize.php',
 	'imageslice' : './php/imageslice.php',
 	'width' : '100',
@@ -43,22 +42,24 @@ useful.viewer.start(parent, {
 	'height' : '512',
 	'heightUnit' : 'px',
 	'divide' : '80%',
-	'margin' : '2%',
-	'highlight' : 'Grey',
+	'margin' : '0%',
+	'colorPassive' : '#ff6a00',
+	'colorActive' : '#d45800',
+	'colorHover' : '#ff9800',
+	'colorDisabled' : '#7f7f7f',
 	'lens' : '0.5',
-	'toolbars' : 'toolbar',
-	'zoom' : 'static',
-	'spin' : 'slideshow',
-	'pan' : 'drag',
+	'toolbars' : 'buttons', 	// buttons | toolbar | sliders | none
+	'zoom' : 'static', 			// static | lens
+	'spin' : 'slideshow', 		// rotation | slideshow | catalogue
+	'pan' : 'drag', 			// drag | hover
 	'magnification' : '1.1',
 	'grid' : '256px',
 	'cache' : '32'
 });
+viewer.start();
 ```
 
 **id : {string}** - The ID attribute of an element somewhere in the document.
-
-**parent : {DOM node}** - The DOM element around which the functionality is centred.
 
 **links : {string}** - A CSS Rule that describes the toggle buttons within *parent*.
 
@@ -86,7 +87,13 @@ useful.viewer.start(parent, {
 
 **margin : {string}** - The space separating the slides and the thumbnails.
 
-**highlight : {color}** - A color name, hex or rgba value  used to highlight the active thumbnail.
+**colorPassive : {color}** - A color name, hex or rgba value  used for the passive state of the buttons.
+
+**colorActive : {color}** - A color name, hex or rgba value  used for the active state of the buttons.
+
+**colorHover : {color}** - A color name, hex or rgba value  used for the hover state of the buttons.
+
+**colorDisabled : {color}** - A color name, hex or rgba value  used for the disabled state of the buttons.
 
 **lens : {float}** - The radius of the lens overlay as a fraction of the width of the viewer.
 
@@ -114,71 +121,40 @@ useful.viewer.start(parent, {
 
 **cache : {integer}** - How many tiles to keep track of at a time. More slows down the display, but reduces downloads.
 
-### Using document.querySelectorAll
+## How to control the script
 
-This method allows CSS Rules to be used to apply the script to one or more nodes at the same time.
-
-```javascript
-useful.css.select({
-	rule : 'div.viewer',
-	handler : useful.viewer.start,
-	data : {
-		'urlprefix' : '../',
-		'imagesize' : './php/imagesize.php',
-		'imageslice' : './php/imageslice.php',
-		'width' : '100',
-		'widthUnit' : '%',
-		'height' : '512',
-		'heightUnit' : 'px',
-		'divide' : '80%',
-		'margin' : '2%',
-		'highlight' : 'Grey',
-		'lens' : '0.5',
-		'toolbars' : 'toolbar',
-		'zoom' : 'static',
-		'spin' : 'slideshow',
-		'pan' : 'drag',
-		'magnification' : '1.1',
-		'grid' : '256px',
-		'cache' : '32'
-	}
-});
-```
-
-**rule : {string}** - The CSS Rule for the intended target(s) of the script.
-
-**handler : {function}** - The public function that starts the script.
-
-**data : {object}** - Name-value pairs with configuration data.
-
-### Using jQuery
-
-This method is similar to the previous one, but uses jQuery for processing the CSS rule.
+### Focus
 
 ```javascript
-$('div.viewer').each(function (index, element) {
-	useful.viewer.start(element, {
-		'urlprefix' : '../',
-		'imagesize' : './php/imagesize.php',
-		'imageslice' : './php/imageslice.php',
-		'width' : '100',
-		'widthUnit' : '%',
-		'height' : '512',
-		'heightUnit' : 'px',
-		'divide' : '80%',
-		'margin' : '2%',
-		'highlight' : 'Grey',
-		'lens' : '0.5',
-		'toolbars' : 'toolbar',
-		'zoom' : 'static',
-		'spin' : 'slideshow',
-		'pan' : 'drag',
-		'magnification' : '1.1',
-		'grid' : '256px',
-		'cache' : '32'
-	});
-});
+viewer.focus(index);
 ```
+
+Highlights and centres a specific thumbnail.
+
+**index : {integer}** - The index of the slide to show.
+
+### Previous
+
+```javascript
+viewer.previous();
+```
+
+Shows the previous slide.
+
+### Next
+
+```javascript
+viewer.next();
+```
+
+Shows the next slide
+
+## Prerequisites
+
+To concatenate and minify the script yourself, the following prerequisites are required:
++ https://github.com/WoollyMittens/useful-transitions
++ https://github.com/WoollyMittens/useful-positions
++ https://github.com/WoollyMittens/useful-polyfills
 
 ## License
 This work is licensed under a Creative Commons Attribution 3.0 Unported License. The latest version of this and other scripts by the same author can be found at http://www.woollymittens.nl/

@@ -5,6 +5,7 @@
 	@import "compass/css3";
 	@import "compass/utilities";
 	@import "_definitions";
+	@import "_buttons";
 	/*
 		viewer
 	*/
@@ -137,22 +138,20 @@
 					@include transition-property(all);
 					@include transition-duration(0.3s);
 					@include transition-timing-function(ease);
+					@include iconParent(48);
 					background-color : $color-passive;
 					border : none;
 					cursor : pointer;
 					height : 32px;
 					margin : 0;
 					opacity : 0.3;
-					overflow : hidden;
 					padding : 0;
 					position : absolute;
-					text-indent : 50px;
-					white-space : nowrap;
 					width : 32px;
 					z-index : 10;
 					span {
 						background : Transparent url(../img/viewer.png) no-repeat 0 0;
-						@include centerIcon ();
+						@include iconCenter(32);
 					}
 				}
 				button:hover {
@@ -246,6 +245,7 @@
 			z-index : 7;
 			menu {
 				button {
+					@include iconParent(48);
 					background-color : $color-passive;
 					border : none;
 					cursor : pointer;
@@ -253,15 +253,12 @@
 					margin : 0;
 					padding : 0;
 					position : absolute;
-					overflow : hidden;
 					position : absolute;
-					text-indent : 50px;
-					white-space : nowrap;
 					width : 32px;
 					z-index : 10;
 					span {
 						background : Transparent url(../img/viewer.png) no-repeat 0 0;
-						@include centerIcon ();
+						@include iconCenter(32);
 					}
 				}
 				button:hover {
@@ -313,7 +310,7 @@
 					right : 96px;
 					top : 0;
 					span {
-						@include centerIcon ();
+						@include iconCenter(32);
 						background-position : 50% -64px;
 					}
 				}
@@ -381,22 +378,20 @@
 				top : 50%;
 				z-index : 8;
 				div {
+					@include iconParent(48);
 					background-color : $color-passive;
 					border : solid 1px #fff;
 					display : block;
 					height : 28px;
 					left : 50%;
 					margin : -14px 0 0 -14px;
-					overflow : hidden;
 					position : absolute;
-					text-indent : 50px;
-					white-space : nowrap;
 					top : 50%;
 					width : 28px;
 					z-index : 9;
 					span {
+						@include iconCenter(32);
 						background : Transparent url(../img/viewer.png) no-repeat 0 0;
-						@include centerIcon ();
 					}
 				}
 				div:hover, div.hover {
@@ -404,6 +399,7 @@
 				}
 			}
 			button {
+				@include iconParent(48);
 				background-color : $color-passive;
 				border : none;
 				cursor : pointer;
@@ -412,15 +408,13 @@
 				padding : 0;
 				position : absolute;
 				visibility : visible;
-				overflow : hidden;
 				position : absolute;
-				text-indent : 50px;
-				white-space : nowrap;
 				width : 32px;
 				z-index : 10;
 				span {
+					@include iconCenter(32);
 					background : Transparent url(../img/viewer.png) no-repeat 0 0;
-					@include centerIcon ();
+
 				}
 			}
 			button:hover {
@@ -542,7 +536,7 @@
 				top : 0;
 				width : 32px;
 				span {
-					@include centerIcon ();
+					@include iconCenter(32);
 					background-position : 50% -64px;
 				}
 			}
@@ -664,23 +658,21 @@
 				top : 0;
 				width : 100%;
 				button {
+					@include iconParent(48);
 					background-color : $color-passive;
 					border : none;
 					color : #fff;
 					cursor : pointer;
 					height : 100%;
 					margin : 0;
-					overflow : hidden;
 					padding : 0;
 					position : absolute;
-					text-indent : 50px;
-					white-space : nowrap;
 					top : 0;
 					width : 40px;
 					z-index : 20;
 					span {
 						background : Transparent url(../img/viewer.png) no-repeat 0 0;
-						@include centerIcon ();
+						@include iconCenter(32);
 					}
 				}
 				button:hover {
