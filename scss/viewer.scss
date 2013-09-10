@@ -713,6 +713,7 @@
 		}
 		menu.slider {
 			@include opacity(1);
+			filter : none;
 			visibility : visible;
 		}
 		nav.buttons {
