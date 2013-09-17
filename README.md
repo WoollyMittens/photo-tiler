@@ -34,9 +34,7 @@ This is the safest way of starting the script, but allows for only one target el
 ```javascript
 var viewer = new useful.Viewer( document.getElementById('id'), {
 	'urlprefix' : '../',
-	'queryprefix' : '?',
-	'imagesize' : './php/imagesize.php',
-	'imageslice' : './php/imageslice.php',
+	'imageslice' : './php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 	'width' : '100',
 	'widthUnit' : '%',
 	'height' : '512',
@@ -53,6 +51,7 @@ var viewer = new useful.Viewer( document.getElementById('id'), {
 	'spin' : 'slideshow', 		// rotation | slideshow | catalogue
 	'pan' : 'drag', 			// drag | hover
 	'magnification' : '1.1',
+	'max' : '4',
 	'grid' : '256px',
 	'cache' : '32'
 });
@@ -62,10 +61,6 @@ viewer.start();
 **id : {string}** - The ID attribute of an element somewhere in the document.
 
 **links : {string}** - A CSS Rule that describes the toggle buttons within *parent*.
-
-**urlprefix : {string}** - A prefix that gets added to all web-service calls.
-
-**imagesize : {string}** - A web-service that returns the dimensions of an image on the server. An example is provided as *./php/imagesize.php*.
 
 **imageslice : {string}** - A web-service for requesting cropped tiles of an image on the server. An example is provided as *./php/imageslice.php*.
 
@@ -116,6 +111,8 @@ viewer.start();
 + *hover* - Adjust the view by hovering the mouse.
 
 **magnification : {float}** - The factor by which the magnification increases.
+
+**max : {float}** - The maximum magnification factor.
 
 **grid : {string}** - The size of the tiles that make up the zoomed image.
 

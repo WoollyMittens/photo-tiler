@@ -51,9 +51,7 @@
 					// create a new instance of the script
 					var viewera = new useful.Viewer( document.getElementById('viewera'), {
 						'urlprefix' : '../',
-						'queryprefix' : '?',
-						'imagesize' : './php/imagesize.php',
-						'imageslice' : './php/imageslice.php',
+						'imageslice' : './php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 						'width' : '100',
 						'widthUnit' : '%',
 						'height' : '512',
@@ -70,6 +68,7 @@
 						'spin' : 'slideshow', 		// rotation | slideshow | catalogue
 						'pan' : 'drag', 			// drag | hover
 						'magnification' : '1.1',
+						'max' : '4',
 						'grid' : '256px',
 						'cache' : '32'
 					});
@@ -91,24 +90,24 @@
 				<style>@import url("./css/viewer.css")</style>
 				<div id="viewerc" class="viewer">
 					<ul>
-						<li><a href="./img/rotation_17a.jpg"><img alt="" src="./img/rotation_17.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_16a.jpg"><img alt="" src="./img/rotation_16.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_15a.jpg"><img alt="" src="./img/rotation_15.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_14a.jpg"><img alt="" src="./img/rotation_14.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_13a.jpg"><img alt="" src="./img/rotation_13.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_12a.jpg"><img alt="" src="./img/rotation_12.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_11a.jpg"><img alt="" src="./img/rotation_11.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_10a.jpg"><img alt="" src="./img/rotation_10.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_9a.jpg"><img alt="" src="./img/rotation_9.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_8a.jpg"><img alt="" src="./img/rotation_8.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_7a.jpg"><img alt="" src="./img/rotation_7.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_6a.jpg"><img alt="" src="./img/rotation_6.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_5a.jpg"><img alt="" src="./img/rotation_5.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_4a.jpg"><img alt="" src="./img/rotation_4.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_3a.jpg"><img alt="" src="./img/rotation_3.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_2a.jpg"><img alt="" src="./img/rotation_2.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_1a.jpg"><img alt="" src="./img/rotation_1.jpg" width="2304" height="3072"/></a></li>
-						<li><a href="./img/rotation_0a.jpg"><img alt="" src="./img/rotation_0.jpg" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_17a.jpg"><img alt="" src="./img/rotation_17.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_16a.jpg"><img alt="" src="./img/rotation_16.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_15a.jpg"><img alt="" src="./img/rotation_15.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_14a.jpg"><img alt="" src="./img/rotation_14.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_13a.jpg"><img alt="" src="./img/rotation_13.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_12a.jpg"><img alt="" src="./img/rotation_12.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_11a.jpg"><img alt="" src="./img/rotation_11.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_10a.jpg"><img alt="" src="./img/rotation_10.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_9a.jpg"><img alt="" src="./img/rotation_9.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_8a.jpg"><img alt="" src="./img/rotation_8.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_7a.jpg"><img alt="" src="./img/rotation_7.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_6a.jpg"><img alt="" src="./img/rotation_6.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_5a.jpg"><img alt="" src="./img/rotation_5.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_4a.jpg"><img alt="" src="./img/rotation_4.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_3a.jpg"><img alt="" src="./img/rotation_3.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_2a.jpg"><img alt="" src="./img/rotation_2.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_1a.jpg"><img alt="" src="./img/rotation_1.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
+						<li><a href="./img/rotation_0a.jpg"><img alt="" src="./img/rotation_0.jpg" data-left="0" data-top="0.2" data-right="1" data-bottom="0.9" width="2304" height="3072"/></a></li>
 					</ul>
 				</div>
 				<script src="./js/viewer.min.js"></script>
@@ -117,9 +116,7 @@
 					// create a new instance of the script
 					var viewerc = new useful.Viewer( document.getElementById('viewerc'), {
 						'urlprefix' : '../',
-						'queryprefix' : '?',
-						'imagesize' : './php/imagesize.php',
-						'imageslice' : './php/imageslice.php',
+						'imageslice' : './php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 						'width' : '100',
 						'widthUnit' : '%',
 						'height' : '450',
@@ -136,6 +133,7 @@
 						'spin' : 'rotation', 		// rotation | slideshow | catalogue
 						'pan' : 'drag', 			// drag | hover
 						'magnification' : '1.1',
+						'max' : '4',
 						'grid' : '256px',
 						'cache' : '32'
 					});
@@ -175,9 +173,7 @@
 					// create a new instance of the script
 					var viewerb = new useful.Viewer( document.getElementById('viewerb'), {
 						'urlprefix' : '../',
-						'queryprefix' : '?',
-						'imagesize' : './php/imagesize.php',
-						'imageslice' : './php/imageslice.php',
+						'imageslice' : './php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 						'width' : '100',
 						'widthUnit' : '%',
 						'height' : '512',
@@ -194,6 +190,7 @@
 						'spin' : 'slideshow', 		// rotation | slideshow | catalogue
 						'pan' : 'drag', 			// drag | hover
 						'magnification' : '1.1',
+						'max' : '4',
 						'grid' : '256px',
 						'cache' : '32'
 					});
