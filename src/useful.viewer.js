@@ -81,10 +81,10 @@
 				context.cfg.descriptions.push(allImages[a].getAttribute('alt'));
 				context.cfg.widths.push(parseInt(allImages[a].getAttribute('width'), 10));
 				context.cfg.heights.push(parseInt(allImages[a].getAttribute('height'), 10));
-				context.cfg.lefts.push(parseFloat(allImages[a].getAttribute('data-left') || 0));
-				context.cfg.tops.push(parseFloat(allImages[a].getAttribute('data-top') || 0));
-				context.cfg.rights.push(parseFloat(allImages[a].getAttribute('data-right') || 1));
-				context.cfg.bottoms.push(parseFloat(allImages[a].getAttribute('data-bottom') || 1));
+				context.cfg.lefts.push(parseFloat(allImages[a].getAttribute('data-left') || context.cfg.left || 0));
+				context.cfg.tops.push(parseFloat(allImages[a].getAttribute('data-top') || context.cfg.top || 0));
+				context.cfg.rights.push(parseFloat(allImages[a].getAttribute('data-right') || context.cfg.right || 1));
+				context.cfg.bottoms.push(parseFloat(allImages[a].getAttribute('data-bottom') || context.cfg.bottom || 1));
 			}
 		};
 		// fix some numbers in the context.cfg
