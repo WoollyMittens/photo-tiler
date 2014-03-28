@@ -6,11 +6,39 @@
   	Definitions
   */
   /*
+  	Constants
+  */
+  /*
+  	Hides text in the margin
+  */
+  /*
+  	Turns a button into an icon
+  */
+  /*
+  	Centres a graphic inside an icon
+  */
+  /*
+  	Offers both the pixel and rem value of a single property
+  */
+  /*
+  	Offers both the pixel and rem values of a shorthand property
+  */
+  /*
+  	Offers the text size as both the pixel and rem value
+  */
+  /*
+  	Adds vendor prefixed to a property
+  */
+  /*
+  	Applies the "clearfix" hack to a container with floating content
+  */
+  /*
   	Typography
   */
   /*
   	viewer
   */
+  /* line 12, ../../src/scss/useful-viewer.scss */
   div.viewer {
     display: block;
     height: 512px;
@@ -19,12 +47,14 @@
     visibility: hidden;
     width: 100%;
   }
+  /* line 19, ../../src/scss/useful-viewer.scss */
   div.viewer * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     -ms-interpolation-mode: bicubic;
   }
+  /* line 23, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper {
     background: Transparent;
     height: 100%;
@@ -35,6 +65,7 @@
     width: 100%;
     z-index: 0;
   }
+  /* line 33, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background,
   div.viewer div.wrapper div.canvas {
     background: Transparent;
@@ -46,6 +77,7 @@
     width: 100%;
     z-index: 3;
   }
+  /* line 42, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background figure,
   div.viewer div.wrapper div.canvas figure {
     display: block;
@@ -56,6 +88,7 @@
     top: 0;
     z-index: 5;
   }
+  /* line 50, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background figure img,
   div.viewer div.wrapper div.canvas figure img {
     -webkit-transition-property: all;
@@ -72,24 +105,29 @@
     transition-timing-function: ease;
     vertical-align: top;
   }
+  /* line 56, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background figure img.tile_hidden,
   div.viewer div.wrapper div.canvas figure img.tile_hidden {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
     opacity: 0;
   }
+  /* line 59, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background figure img.tile_visible,
   div.viewer div.wrapper div.canvas figure img.tile_visible {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
   }
+  /* line 63, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background .figure_passive,
   div.viewer div.wrapper div.canvas .figure_passive {
     visibility: hidden;
   }
+  /* line 66, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background .figure_active,
   div.viewer div.wrapper div.canvas .figure_active {
     visibility: visible;
   }
+  /* line 69, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background .figure_fadeout,
   div.viewer div.wrapper div.canvas .figure_fadeout {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
@@ -108,6 +146,7 @@
     transition-timing-function: ease;
     z-index: 4;
   }
+  /* line 76, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background .figure_fadein,
   div.viewer div.wrapper div.canvas .figure_fadein {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -126,6 +165,7 @@
     transition-timing-function: ease;
     z-index: 5;
   }
+  /* line 83, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background .figure_leafout,
   div.viewer div.wrapper div.canvas .figure_leafout {
     -webkit-transition-property: clip, opacity, -webkit-transform;
@@ -142,6 +182,7 @@
     transition-timing-function: ease, ease, ease;
     z-index: 4;
   }
+  /* line 89, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background .figure_leafin,
   div.viewer div.wrapper div.canvas .figure_leafin {
     -webkit-transition-property: clip, opacity, -webkit-transform;
@@ -158,15 +199,19 @@
     transition-timing-function: ease, ease, ease;
     z-index: 5;
   }
+  /* line 96, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background {
     z-index: 1;
   }
+  /* line 98, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.background figure {
     z-index: 2;
   }
+  /* line 102, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.canvas.canvas_lens {
     border: 5px solid rgba(0, 0, 0, 0.25);
   }
+  /* line 105, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper div.canvas.canvas_hidden {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
     opacity: 0;
@@ -183,6 +228,7 @@
     -o-transition-timing-function: ease;
     transition-timing-function: ease;
   }
+  /* line 112, ../../src/scss/useful-viewer.scss */
   div.viewer div.wrapper:hover div.canvas.canvas_hidden,
   div.viewer div.wrapper div.canvas.canvas_visible {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -200,6 +246,7 @@
     -o-transition-timing-function: ease;
     transition-timing-function: ease;
   }
+  /* line 119, ../../src/scss/useful-viewer.scss */
   div.viewer div.cover {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=1);
     opacity: 0.01;
@@ -216,6 +263,7 @@
   /*
   	Floating Buttons
   */
+  /* line 137, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu button {
     -webkit-transition-property: all;
     -moz-transition-property: all;
@@ -248,6 +296,7 @@
     width: 32px;
     z-index: 10;
   }
+  /* line 152, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu button span {
     background: Transparent url(../img/viewer.png) no-repeat 0 0;
     content: '';
@@ -260,63 +309,80 @@
     top: 50%;
     width: 32px;
   }
+  /* line 157, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu button:hover {
     background-color: #ff9800;
   }
+  /* line 160, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu button.disabled, div.viewer nav.buttons menu button.disabled:hover {
     background-color: #7f7f7f;
   }
+  /* line 165, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.zoom button.increase {
     right: 10px;
     top: 10px;
   }
+  /* line 168, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.zoom button.increase span {
     background-position: 0% -32px;
   }
+  /* line 172, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.zoom button.decrease {
     right: 10px;
     top: 52px;
   }
+  /* line 175, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.zoom button.decrease span {
     background-position: 100% -32px;
   }
+  /* line 180, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.leaf {
     background: Transparent none;
   }
+  /* line 182, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.leaf button.increase {
     right: 10px;
     top: 94px;
   }
+  /* line 185, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.leaf button.increase span {
     background-position: 100% -64px;
   }
+  /* line 189, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.leaf button.decrease {
     display: none;
   }
+  /* line 191, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.leaf button.decrease span {
     background-position: 0% -64px;
   }
+  /* line 195, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.leaf button.reset {
     right: 10px;
     top: 94px;
   }
+  /* line 198, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.leaf button.reset span {
     background-position: 50% -64px;
     margin-left: 1px;
     width: 26px;
   }
+  /* line 206, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.spin button.increase {
     display: none;
     right: 10px;
     top: 136px;
   }
+  /* line 210, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.spin button.increase span {
     background-position: 100% 0;
   }
+  /* line 214, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.spin button.decrease {
     right: 10px;
     top: 94px;
   }
+  /* line 217, ../../src/scss/useful-viewer.scss */
   div.viewer nav.buttons menu.spin button.decrease span {
     background-position: 0% 0;
   }
@@ -324,6 +390,7 @@
   /*
   	Default Toolbar
   */
+  /* line 228, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar {
     -webkit-transition-property: all;
     -moz-transition-property: all;
@@ -352,6 +419,7 @@
     width: 130px;
     z-index: 7;
   }
+  /* line 247, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu button {
     overflow: hidden;
     position: relative;
@@ -372,6 +440,7 @@
     width: 32px;
     z-index: 10;
   }
+  /* line 259, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu button span {
     background: Transparent url(../img/viewer.png) no-repeat 0 0;
     content: '';
@@ -384,44 +453,55 @@
     top: 50%;
     width: 32px;
   }
+  /* line 264, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu button:hover {
     background-color: #ff9800;
   }
+  /* line 267, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu button.disabled, div.viewer nav.toolbar menu button.disabled:hover {
     background-color: #7f7f7f;
     cursor: default;
   }
+  /* line 273, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.zoom button.increase {
     border-left: solid 1px #fff;
     right: 32px;
     top: 0;
   }
+  /* line 277, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.zoom button.increase span {
     background-position: 0% -32px;
   }
+  /* line 281, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.zoom button.decrease {
     left: 32px;
     top: 0;
   }
+  /* line 284, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.zoom button.decrease span {
     background-position: 100% -32px;
   }
+  /* line 290, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.leaf button.increase {
     border-left: solid 1px #fff;
     right: 0;
     top: 0;
   }
+  /* line 294, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.leaf button.increase span {
     background-position: 100% -64px;
   }
+  /* line 298, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.leaf button.decrease {
     border-right: solid 1px #fff;
     left: 0;
     top: 0;
   }
+  /* line 302, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.leaf button.decrease span {
     background-position: 0% -64px;
   }
+  /* line 306, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.leaf button.reset {
     border-right: solid 1px #fff;
     border-left: solid 1px #fff;
@@ -429,6 +509,7 @@
     right: 96px;
     top: 0;
   }
+  /* line 312, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.leaf button.reset span {
     content: '';
     display: block;
@@ -441,30 +522,37 @@
     width: 32px;
     background-position: 50% -64px;
   }
+  /* line 317, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.leaf form {
     left: 36px;
     top: 4px;
   }
+  /* line 323, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.spin button.increase {
     border-right: solid 1px #fff;
     left: 0;
     top: 0;
   }
+  /* line 327, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.spin button.increase span {
     background-position: 100% 0;
   }
+  /* line 331, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.spin button.decrease {
     border-left: solid 1px #fff;
     right: 0;
     top: 0;
   }
+  /* line 335, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar menu.spin button.decrease span {
     background-position: 0% 0;
   }
+  /* line 341, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar.catalogue {
     margin-left: -128px;
     width: 256px;
   }
+  /* line 345, ../../src/scss/useful-viewer.scss */
   div.viewer nav.toolbar.catalogue menu.zoom button.decrease {
     left: auto;
     right: 64px;
@@ -473,6 +561,7 @@
   /*
   	Slider Toolbar
   */
+  /* line 356, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider {
     -webkit-transition-property: all;
     -moz-transition-property: all;
@@ -497,6 +586,7 @@
     visibility: hidden;
     z-index: 7;
   }
+  /* line 369, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider div.meter, div.viewer menu.slider meter {
     background-color: #fff;
     display: block;
@@ -509,6 +599,7 @@
     top: 50%;
     z-index: 8;
   }
+  /* line 380, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider div.meter div, div.viewer menu.slider meter div {
     overflow: hidden;
     position: relative;
@@ -529,6 +620,7 @@
     width: 28px;
     z-index: 9;
   }
+  /* line 392, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider div.meter div span, div.viewer menu.slider meter div span {
     content: '';
     display: block;
@@ -541,9 +633,11 @@
     width: 32px;
     background: Transparent url(../img/viewer.png) no-repeat 0 0;
   }
+  /* line 397, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider div.meter div:hover, div.viewer menu.slider div.meter div.hover, div.viewer menu.slider meter div:hover, div.viewer menu.slider meter div.hover {
     background-color: #ff9800;
   }
+  /* line 401, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider button {
     overflow: hidden;
     position: relative;
@@ -565,6 +659,7 @@
     width: 32px;
     z-index: 10;
   }
+  /* line 414, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider button span {
     content: '';
     display: block;
@@ -577,17 +672,21 @@
     width: 32px;
     background: Transparent url(../img/viewer.png) no-repeat 0 0;
   }
+  /* line 420, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider button:hover {
     background-color: #ff9800;
   }
+  /* line 423, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider button.increase {
     left: 0;
     top: 0;
   }
+  /* line 427, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider button.decrease {
     bottom: 0;
     right: 0;
   }
+  /* line 431, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider div.cover {
     cursor: pointer;
     z-index: 9;
@@ -596,6 +695,7 @@
   /*
   	Spin Toolbar
   */
+  /* line 441, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.spin {
     bottom: 0%;
     margin-bottom: 5%;
@@ -603,18 +703,23 @@
     left: 5%;
     right: 15%;
   }
+  /* line 448, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.spin div.meter span, div.viewer menu.slider.spin meter span {
     background-position: 50% 0;
   }
+  /* line 452, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.spin button.increase {
     border-right: solid 1px #fff;
   }
+  /* line 454, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.spin button.increase span {
     background-position: 0 0;
   }
+  /* line 458, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.spin button.decrease {
     border-left: solid 1px #fff;
   }
+  /* line 460, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.spin button.decrease span {
     background-position: 100% 0;
   }
@@ -622,6 +727,7 @@
   /*
   	Zoom Toolbar
   */
+  /* line 470, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.zoom {
     bottom: 0%;
     margin-bottom: 15%;
@@ -629,6 +735,7 @@
     top: 5%;
     width: 32px;
   }
+  /* line 476, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.zoom div.meter, div.viewer menu.slider.zoom meter {
     bottom: 48px;
     height: auto;
@@ -639,18 +746,23 @@
     -webkit-appearance: none;
     appearance: none;
   }
+  /* line 485, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.zoom div.meter span, div.viewer menu.slider.zoom meter span {
     background-position: 50% -32px;
   }
+  /* line 489, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.zoom button.increase {
     border-bottom: solid 1px #fff;
   }
+  /* line 491, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.zoom button.increase span {
     background-position: 0 -32px;
   }
+  /* line 495, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.zoom button.decrease {
     border-top: solid 1px #fff;
   }
+  /* line 497, ../../src/scss/useful-viewer.scss */
   div.viewer menu.slider.zoom button.decrease span {
     background-position: 100% -32px;
   }
@@ -658,6 +770,7 @@
   /*
   	Leafing Toolbar
   */
+  /* line 507, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf {
     background-color: #ff6a00;
     bottom: 0%;
@@ -667,29 +780,36 @@
     left: 50%;
     width: 200px;
   }
+  /* line 515, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf button {
     background-color: #d45800;
   }
+  /* line 519, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf button.increase {
     left: auto;
     right: 49px;
   }
+  /* line 522, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf button.increase span {
     background-position: 100% -64px;
   }
+  /* line 526, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf button.decrease {
     left: 0;
     right: auto;
   }
+  /* line 529, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf button.decrease span {
     background-position: 0 -64px;
   }
+  /* line 533, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf button.reset {
     border-left: solid 1px #fff;
     right: 0;
     top: 0;
     width: 32px;
   }
+  /* line 538, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf button.reset span {
     content: '';
     display: block;
@@ -702,6 +822,7 @@
     width: 32px;
     background-position: 50% -64px;
   }
+  /* line 543, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf form {
     height: 24px;
     left: 36px;
@@ -711,6 +832,7 @@
     top: 4px;
     width: 80px;
   }
+  /* line 551, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf form input {
     background: #fff;
     border: none;
@@ -725,6 +847,7 @@
     vertical-align: middle;
     width: 32px;
   }
+  /* line 565, ../../src/scss/useful-viewer.scss */
   div.viewer menu.leaf form span.count {
     color: #fff;
     display: inline-block;
@@ -739,6 +862,7 @@
   /*
   	Thumbnails
   */
+  /* line 582, ../../src/scss/useful-viewer.scss */
   div.viewer nav.thumbnails {
     bottom: 0;
     height: 28%;
@@ -747,12 +871,14 @@
     position: absolute;
     width: 100%;
   }
+  /* line 589, ../../src/scss/useful-viewer.scss */
   div.viewer nav.thumbnails div {
     height: 100%;
     margin: 1px 41px 0 41px;
     position: relative;
     overflow: hidden;
   }
+  /* line 594, ../../src/scss/useful-viewer.scss */
   div.viewer nav.thumbnails div ul {
     -webkit-transition-property: all;
     -moz-transition-property: all;
@@ -773,10 +899,12 @@
     white-space: nowrap;
     z-index: 10;
   }
+  /* line 604, ../../src/scss/useful-viewer.scss */
   div.viewer nav.thumbnails div ul li {
     display: inline;
     list-style-type: none;
   }
+  /* line 607, ../../src/scss/useful-viewer.scss */
   div.viewer nav.thumbnails div ul li a {
     margin-right: 1px;
     display: inline-block;
@@ -786,6 +914,7 @@
     height: 100%;
     width: 25%;
   }
+  /* line 615, ../../src/scss/useful-viewer.scss */
   div.viewer nav.thumbnails div ul li a img {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
@@ -811,13 +940,16 @@
     position: absolute;
     top: 0;
   }
+  /* line 632, ../../src/scss/useful-viewer.scss */
   div.viewer nav.thumbnails div ul li a:hover img {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
   }
+  /* line 636, ../../src/scss/useful-viewer.scss */
   div.viewer nav.thumbnails div ul li a.thumbnails_active {
     background-color: #FF6A00;
   }
+  /* line 638, ../../src/scss/useful-viewer.scss */
   div.viewer nav.thumbnails div ul li a.thumbnails_active img {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
     opacity: 0.5;
@@ -826,6 +958,7 @@
   /*
   	Thumbnails Controls
   */
+  /* line 652, ../../src/scss/useful-viewer.scss */
   div.viewer nav menu.scroller {
     position: absolute;
     height: 100%;
@@ -835,6 +968,7 @@
     top: 0;
     width: 100%;
   }
+  /* line 660, ../../src/scss/useful-viewer.scss */
   div.viewer nav menu.scroller button {
     overflow: hidden;
     position: relative;
@@ -856,6 +990,7 @@
     width: 40px;
     z-index: 20;
   }
+  /* line 673, ../../src/scss/useful-viewer.scss */
   div.viewer nav menu.scroller button span {
     background: Transparent url(../img/viewer.png) no-repeat 0 0;
     content: '';
@@ -868,21 +1003,27 @@
     top: 50%;
     width: 32px;
   }
+  /* line 678, ../../src/scss/useful-viewer.scss */
   div.viewer nav menu.scroller button:hover {
     background-color: #ff9800;
   }
+  /* line 681, ../../src/scss/useful-viewer.scss */
   div.viewer nav menu.scroller button.previous {
     left: 0;
   }
+  /* line 683, ../../src/scss/useful-viewer.scss */
   div.viewer nav menu.scroller button.previous span {
     background-position: 0% -64px;
   }
+  /* line 687, ../../src/scss/useful-viewer.scss */
   div.viewer nav menu.scroller button.next {
     right: 0;
   }
+  /* line 689, ../../src/scss/useful-viewer.scss */
   div.viewer nav menu.scroller button.next span {
     background-position: 100% -64px;
   }
+  /* line 693, ../../src/scss/useful-viewer.scss */
   div.viewer nav menu.scroller button.disabled {
     background-color: #7f7f7f;
     cursor: default;
@@ -891,6 +1032,7 @@
   /*
   	hover state
   */
+  /* line 704, ../../src/scss/useful-viewer.scss */
   div.viewer:hover div.canvas.canvas_hidden {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
@@ -907,17 +1049,20 @@
     -o-transition-timing-function: ease;
     transition-timing-function: ease;
   }
+  /* line 710, ../../src/scss/useful-viewer.scss */
   div.viewer:hover nav.toolbar {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
     visibility: visible;
   }
+  /* line 714, ../../src/scss/useful-viewer.scss */
   div.viewer:hover menu.slider {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
     filter: none;
     visibility: visible;
   }
+  /* line 721, ../../src/scss/useful-viewer.scss */
   div.viewer:hover nav.buttons menu button {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
@@ -926,6 +1071,7 @@
   /*
   	3D Rotation Variant
   */
+  /* line 731, ../../src/scss/useful-viewer.scss */
   div.viewer.spin_rotation div.wrapper {
     background: #000;
   }
@@ -933,9 +1079,11 @@
   /*
   	2D Slideshow Variant
   */
+  /* line 739, ../../src/scss/useful-viewer.scss */
   div.viewer.spin_slideshow div.wrapper {
     background: #000;
   }
+  /* line 742, ../../src/scss/useful-viewer.scss */
   div.viewer.spin_slideshow menu.zoom {
     margin-bottom: 5%;
   }
@@ -943,6 +1091,7 @@
   /*
   	2D Catalogue Variant
   */
+  /* line 750, ../../src/scss/useful-viewer.scss */
   div.viewer.spin_catalogue div.wrapper {
     background: #000;
   }
@@ -951,6 +1100,7 @@
   /*
   	The root element
   */
+  /* line 8, ../../src/scss/_typography.scss */
   html {
     font-family: Tahoma, Verdana, Arial, Sans-Serif;
     font-size: 75%;
@@ -960,8 +1110,9 @@
   /*
   	Sections
   */
+  /* line 16, ../../src/scss/_typography.scss */
   body {
-    font-size: "12px";
+    font-size: 12px;
     font-size: 1rem;
     margin-top: 0px;
     margin-top: 0rem;
@@ -987,8 +1138,9 @@
     min-height: 100%;
   }
 
+  /* line 26, ../../src/scss/_typography.scss */
   h1, h2, h3, h4, h5, h6 {
-    font-size: "12px";
+    font-size: 12px;
     font-size: 1rem;
     margin-top: 0px;
     margin-top: 0rem;
@@ -1002,26 +1154,31 @@
     font-weight: normal;
   }
 
+  /* line 32, ../../src/scss/_typography.scss */
   h1 {
-    font-size: "22.5px";
+    font-size: 22.5px;
     font-size: 1.875rem;
   }
 
+  /* line 35, ../../src/scss/_typography.scss */
   h2 {
-    font-size: "19.5px";
+    font-size: 19.5px;
     font-size: 1.625rem;
   }
 
+  /* line 38, ../../src/scss/_typography.scss */
   h3 {
-    font-size: "15px";
+    font-size: 15px;
     font-size: 1.25rem;
   }
 
+  /* line 41, ../../src/scss/_typography.scss */
   address {
     display: block;
     font-style: normal;
   }
 
+  /* line 45, ../../src/scss/_typography.scss */
   section, nav, article, aside, hgroup, header, footer {
     display: block;
   }
@@ -1029,12 +1186,14 @@
   /*
   	Grouping content
   */
+  /* line 51, ../../src/scss/_typography.scss */
   p {
-    font-size: "12px";
+    font-size: 12px;
     font-size: 1rem;
     display: block;
   }
 
+  /* line 55, ../../src/scss/_typography.scss */
   hr {
     margin-top: 12px;
     margin-top: 1rem;
@@ -1053,6 +1212,7 @@
     width: 100%;
   }
 
+  /* line 65, ../../src/scss/_typography.scss */
   ul {
     margin-top: 0px;
     margin-top: 0rem;
@@ -1073,6 +1233,7 @@
     display: block;
   }
 
+  /* line 71, ../../src/scss/_typography.scss */
   dl {
     margin-top: 0px;
     margin-top: 0rem;
@@ -1085,6 +1246,7 @@
     display: block;
   }
 
+  /* line 75, ../../src/scss/_typography.scss */
   dt {
     margin-top: 0px;
     margin-top: 0rem;
@@ -1098,6 +1260,7 @@
     font-weight: bold;
   }
 
+  /* line 80, ../../src/scss/_typography.scss */
   dd {
     margin-top: 0px;
     margin-top: 0rem;
@@ -1110,6 +1273,7 @@
     display: block;
   }
 
+  /* line 84, ../../src/scss/_typography.scss */
   pre, dialog, blockquote, ol {
     display: block;
   }
@@ -1117,24 +1281,29 @@
   /*
   	Text-level semantics
   */
+  /* line 90, ../../src/scss/_typography.scss */
   a {
     color: #ff6a00;
     text-decoration: underline;
   }
 
+  /* line 94, ../../src/scss/_typography.scss */
   a:hover {
     color: #ff9800;
     text-decoration: underline;
   }
 
+  /* line 98, ../../src/scss/_typography.scss */
   sub {
     line-height: 0;
   }
 
+  /* line 101, ../../src/scss/_typography.scss */
   sup {
     line-height: 0;
   }
 
+  /* line 104, ../../src/scss/_typography.scss */
   time, progress, meter {
     display: block;
   }
@@ -1142,16 +1311,19 @@
   /*
   	Embedded content
   */
+  /* line 110, ../../src/scss/_typography.scss */
   img {
     border: none;
     vertical-align: middle;
   }
 
+  /* line 114, ../../src/scss/_typography.scss */
   figure, figcaption, video, audio, canvas {
     display: block;
   }
 
   /* Tabular data */
+  /* line 118, ../../src/scss/_typography.scss */
   table {
     margin-top: 0px;
     margin-top: 0rem;
@@ -1164,20 +1336,24 @@
     border-collapse: collapse;
   }
 
+  /* line 122, ../../src/scss/_typography.scss */
   caption {
-    font-size: "15px";
+    font-size: 15px;
     font-size: 1.25rem;
     font-weight: bold;
     text-align: left;
   }
 
+  /* line 128, ../../src/scss/_typography.scss */
   tr {
     vertical-align: top;
   }
+  /* line 130, ../../src/scss/_typography.scss */
   tr:nth-child(2n) {
     background-color: #eeeeee;
   }
 
+  /* line 132, ../../src/scss/_typography.scss */
   th, td {
     padding-top: 6px;
     padding-top: 0.5rem;
@@ -1189,6 +1365,7 @@
     padding-left: 1rem;
   }
 
+  /* line 135, ../../src/scss/_typography.scss */
   th, th a, th a:hover {
     background-color: #ff9800;
     color: #fff;
@@ -1201,6 +1378,7 @@
   /*
   	Forms
   */
+  /* line 146, ../../src/scss/_typography.scss */
   form {
     margin-top: 0px;
     margin-top: 0rem;
@@ -1212,6 +1390,7 @@
     margin-left: 0rem;
   }
 
+  /* line 149, ../../src/scss/_typography.scss */
   fieldset {
     margin-top: 0px;
     margin-top: 0rem;
@@ -1233,6 +1412,7 @@
     border: none;
   }
 
+  /* line 155, ../../src/scss/_typography.scss */
   legend {
     margin-top: 0px;
     margin-top: 0rem;
@@ -1246,13 +1426,15 @@
     font-weight: bold;
   }
 
+  /* line 161, ../../src/scss/_typography.scss */
   input, button, select, textarea {
-    font-size: "12px";
+    font-size: 12px;
     font-size: 1rem;
     font-family: Tahoma, Verdana, Arial, Sans-Serif;
     vertical-align: baseline;
   }
 
+  /* line 166, ../../src/scss/_typography.scss */
   input[type=color], input[type=range], input[type=number], input[type=date], input[type=text], input[type=password], input[type=email], select, textarea {
     -webkit-box-shadow: inset 0 0 5px #cccccc;
     -moz-box-shadow: inset 0 0 5px #cccccc;
@@ -1276,6 +1458,7 @@
     font-family: Arial, Sans-Serif;
   }
 
+  /* line 176, ../../src/scss/_typography.scss */
   input[type=checkbox], input[type=radio] {
     margin-top: 8.4px;
     margin-top: 0.7rem;
@@ -1287,6 +1470,7 @@
     margin-left: 0rem;
   }
 
+  /* line 179, ../../src/scss/_typography.scss */
   select {
     height: 36px;
     height: 3rem;
@@ -1294,6 +1478,7 @@
     padding: 0.7rem;
   }
 
+  /* line 183, ../../src/scss/_typography.scss */
   textarea {
     height: 120px;
     height: 10rem;
@@ -1301,6 +1486,7 @@
     padding: 0.7rem;
   }
 
+  /* line 187, ../../src/scss/_typography.scss */
   button, .button {
     -webkit-transition-property: background-color;
     -moz-transition-property: background-color;
@@ -1342,11 +1528,13 @@
     overflow: visible;
     text-decoration: none;
   }
+  /* line 202, ../../src/scss/_typography.scss */
   button:hover, .button:hover {
     background-color: #ff9800;
     color: #fff;
     text-decoration: none;
   }
+  /* line 207, ../../src/scss/_typography.scss */
   button.disabled, button.disabled:hover, .button.disabled, .button.disabled:hover {
     background-color: #7f7f7f;
   }
@@ -1354,6 +1542,7 @@
   /*
   	Interactive elements
   */
+  /* line 214, ../../src/scss/_typography.scss */
   menu {
     margin-top: 0px;
     margin-top: 0rem;
@@ -1377,11 +1566,13 @@
   /*
   	Miscellaneous elements
   */
+  /* line 222, ../../src/scss/_typography.scss */
   div {
     display: block;
   }
 }
 @media all and (max-width: 480px) {
+  /* line 231, ../../src/scss/_typography.scss */
   html {
     font-size: 62.5%;
   }

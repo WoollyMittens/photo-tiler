@@ -76,7 +76,8 @@
 
 	// allow console.log
 	polyfills.consoleLog = function () {
-		if (!window.console) {
+		var overrideTest = new RegExp('console-log', 'i');
+		if (!window.console || overrideTest.test(document.querySelectorAll('html')[0].className)) {
 			window.console = {};
 			window.console.log = function () {
 				// if the reporting panel doesn't exist
@@ -107,6 +108,8 @@
 				for (a = 0, b = arguments.length; a < b; a += 1) {
 					messages += arguments[a] + '<br/>';
 				}
+				// add a break after the message
+				messages += '<hr/>';
 				// output the queue to the panel
 				reportPanel.innerHTML = messages + reportString;
 			};
@@ -459,16 +462,21 @@
 		// methods
 		this.start = function () {
 			var context = this;
-			// gather the input
-			context.gatherInput(context);
-			// validate the input
-			context.validateInput(context);
-			// set the start parameters
-			this.startingStatus(context);
-			// apply the custom styles
-			context.styling(context);
-			// run the viewer
-			context.run(context);
+			// wait until the page has loaded
+			window.addEventListener('load', function () {
+				// gather the input
+				context.gatherInput(context);
+				// validate the input
+				context.validateInput(context);
+				// set the start parameters
+				context.startingStatus(context);
+				// apply the custom styles
+				context.styling(context);
+				// run the viewer
+				context.run(context);
+			});
+			// disable the start function so it can't be started twice
+			this.start = function () {};
 		};
 		// set the start parameters
 		this.startingStatus = function (context) {
@@ -2487,6 +2495,8 @@
 			this.cfg.status.index += 1;
 			this.update(this);
 		};
+		// go
+		this.start();
 	};
 
 }(window.useful = window.useful || {}));
