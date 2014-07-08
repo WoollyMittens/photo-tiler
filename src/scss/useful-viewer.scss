@@ -1,26 +1,31 @@
+@import "compass/css3";
+@import "compass/utilities";
+@import "mixins";
 /*
-	Reference Styling for a Pan and Zoom Viewer
+	viewer
 */
-@media all {
-	@import "compass/css3";
-	@import "compass/utilities";
-	@import "_definitions";
-	@import "_typography" ;
-	/*
-		viewer
-	*/
-	div.viewer {
-		display : block;
-		height : 512px;
+div.viewer {
+	display : block;
+	height : 512px;
+	overflow : hidden;
+	position : relative;
+	visibility : hidden;
+	width : 100%;
+	* {
+		@include box-sizing(border-box);
+		-ms-interpolation-mode: bicubic;
+	}
+	div.wrapper {
+		background : Transparent;
+		height : 100%;
+		left : 0;
 		overflow : hidden;
-		position : relative;
-		visibility : hidden;
+		position : absolute;
+		top : 0;
 		width : 100%;
-		* {
-			@include box-sizing(border-box);
-			-ms-interpolation-mode: bicubic;
-		}
-		div.wrapper {
+		z-index : 0;
+		div.background,
+		div.canvas {
 			background : Transparent;
 			height : 100%;
 			left : 0;
@@ -28,376 +33,212 @@
 			position : absolute;
 			top : 0;
 			width : 100%;
-			z-index : 0;
-			div.background,
-			div.canvas {
-				background : Transparent;
-				height : 100%;
+			z-index : 3;
+			figure {
+				display : block;
 				left : 0;
-				overflow : hidden;
+				margin : 0;
+				padding : 0;
 				position : absolute;
 				top : 0;
-				width : 100%;
-				z-index : 3;
-				figure {
-					display : block;
-					left : 0;
-					margin : 0;
-					padding : 0;
-					position : absolute;
-					top : 0;
-					z-index : 5;
-					img {
-						@include transition-property(all);
-						@include transition-duration(0.3s);
-						@include transition-timing-function(ease);
-						vertical-align : top;
-					}
-					img.tile_hidden {
-						@include opacity(0);
-					}
-					img.tile_visible {
-						@include opacity(1);
-					}
+				z-index : 5;
+				img {
+					@include transition-property(all);
+					@include transition-duration(0.3s);
+					@include transition-timing-function(ease);
+					vertical-align : top;
 				}
-				.figure_passive {
-					visibility : hidden;
-				}
-				.figure_active {
-					visibility : visible;
-				}
-				.figure_fadeout {
+				img.tile_hidden {
 					@include opacity(0);
-					@include transition-property(opacity);
-					@include transition-duration(0.3s);
-					@include transition-timing-function(ease);
-					z-index : 4;
 				}
-				.figure_fadein {
+				img.tile_visible {
 					@include opacity(1);
-					@include transition-property(opacity);
-					@include transition-duration(0.3s);
-					@include transition-timing-function(ease);
-					z-index : 5;
-				}
-				.figure_leafout {
-					@include transition-property(clip, opacity, transform);
-					@include transition-duration(0.6s, 0.6s, 0.6s);
-					@include transition-timing-function(ease, ease, ease);
-					z-index : 4;
-				}
-				.figure_leafin {
-					@include transition-property(clip, opacity, transform);
-					@include transition-duration(0.6s, 0.6s, 0.6s);
-					@include transition-timing-function(ease, ease, ease);
-					z-index : 5;
 				}
 			}
-			div.background {
-				z-index : 1;
-				figure {
-					z-index : 2;
-				}
+			.figure_passive {
+				visibility : hidden;
 			}
-			div.canvas.canvas_lens {
-				border : 5px solid rgba(0, 0, 0, 0.25);
+			.figure_active {
+				visibility : visible;
 			}
-			div.canvas.canvas_hidden {
+			.figure_fadeout {
 				@include opacity(0);
 				@include transition-property(opacity);
 				@include transition-duration(0.3s);
 				@include transition-timing-function(ease);
+				z-index : 4;
 			}
-			&:hover div.canvas.canvas_hidden,
-			div.canvas.canvas_visible {
+			.figure_fadein {
 				@include opacity(1);
 				@include transition-property(opacity);
 				@include transition-duration(0.3s);
 				@include transition-timing-function(ease);
+				z-index : 5;
+			}
+			.figure_leafout {
+				@include transition-property(clip, opacity, transform);
+				@include transition-duration(0.6s, 0.6s, 0.6s);
+				@include transition-timing-function(ease, ease, ease);
+				z-index : 4;
+			}
+			.figure_leafin {
+				@include transition-property(clip, opacity, transform);
+				@include transition-duration(0.6s, 0.6s, 0.6s);
+				@include transition-timing-function(ease, ease, ease);
+				z-index : 5;
 			}
 		}
-		div.cover {
-			@include opacity(0.01);
-			background : #000;
-			display : block;
-			height : 100%;
-			left : 0;
-			position : absolute;
-			top : 0;
-			width : 100%;
-			z-index : 6;
-		}
-	}
-	/*
-		Floating Buttons
-	*/
-	div.viewer {
-		nav.buttons {
-			menu {
-				button {
-					@include transition-property(all);
-					@include transition-duration(0.3s);
-					@include transition-timing-function(ease);
-					@include iconParent(48);
-					background-color : $color-passive;
-					border : none;
-					cursor : pointer;
-					height : 32px;
-					margin : 0;
-					opacity : 0.3;
-					padding : 0;
-					position : absolute;
-					width : 32px;
-					z-index : 10;
-					span {
-						background : Transparent url(../img/viewer.png) no-repeat 0 0;
-						@include iconCenter(32);
-					}
-				}
-				button:hover {
-					background-color : $color-hover;
-				}
-				button.disabled, button.disabled:hover {
-					background-color : $color-disabled;
-				}
-			}
-			menu.zoom {
-				button.increase {
-					right : 10px;
-					top : 10px;
-					span {
-						background-position : 0% -32px;
-					}
-				}
-				button.decrease {
-					right : 10px;
-					top : 52px;
-					span {
-						background-position : 100% -32px;
-					}
-				}
-			}
-			menu.leaf {
-				background : Transparent none;
-				button.increase {
-					right : 10px;
-					top : 94px;
-					span {
-						background-position : 100% -64px;
-					}
-				}
-				button.decrease {
-					display : none;
-					span {
-						background-position : 0% -64px;
-					}
-				}
-				button.reset {
-					right : 10px;
-					top : 94px;
-					span {
-						background-position : 50% -64px;
-						margin-left : 1px;
-						width : 26px;
-					}
-				}
-			}
-			menu.spin {
-				button.increase {
-					display : none;
-					right : 10px;
-					top : 136px;
-					span {
-						background-position : 100% 0;
-					}
-				}
-				button.decrease {
-					right : 10px;
-					top : 94px;
-					span {
-						background-position : 0% 0;
-					}
-				}
+		div.background {
+			z-index : 1;
+			figure {
+				z-index : 2;
 			}
 		}
-	}
-	/*
-		Default Toolbar
-	*/
-	div.viewer {
-		nav.toolbar {
-			@include transition-property(all);
-			@include transition-duration(0.3s);
-			@include transition-timing-function(ease);
-			background-color : $color-passive;
-			border : solid 1px #fff;
-			bottom : 0%;
-			display : block;
-			height : 34px;
-			left : 50%;
-			margin : 0 0 5% -64px;
-			opacity : 0.3;
-			overflow : hidden;
-			padding : 0;
-			position : absolute;
-			visibility : hidden;
-			width : 130px;
-			z-index : 7;
-			menu {
-				button {
-					@include iconParent(48);
-					background-color : $color-passive;
-					border : none;
-					cursor : pointer;
-					height : 32px;
-					margin : 0;
-					padding : 0;
-					position : absolute;
-					position : absolute;
-					width : 32px;
-					z-index : 10;
-					span {
-						background : Transparent url(../img/viewer.png) no-repeat 0 0;
-						@include iconCenter(32);
-					}
-				}
-				button:hover {
-					background-color : $color-hover;
-				}
-				button.disabled, button.disabled:hover {
-					background-color : $color-disabled;
-					cursor : default;
-				}
-			}
-			menu.zoom {
-				button.increase {
-					border-left : solid 1px #fff;
-					right : 32px;
-					top : 0;
-					span {
-						background-position : 0% -32px;
-					}
-				}
-				button.decrease {
-					left : 32px;
-					top : 0;
-					span {
-						background-position : 100% -32px;
-					}
-				}
-			}
-			menu.leaf {
-				button.increase {
-					border-left : solid 1px #fff;
-					right : 0;
-					top : 0;
-					span {
-						background-position : 100% -64px;
-					}
-				}
-				button.decrease {
-					border-right : solid 1px #fff;
-					left : 0;
-					top : 0;
-					span {
-						background-position : 0% -64px;
-					}
-				}
-				button.reset {
-					border-right : solid 1px #fff;
-					border-left : solid 1px #fff;
-					left : auto;
-					right : 96px;
-					top : 0;
-					span {
-						@include iconCenter(32);
-						background-position : 50% -64px;
-					}
-				}
-				form {
-					left : 36px;
-					top : 4px;
-				}
-			}
-			menu.spin {
-				button.increase {
-					border-right : solid 1px #fff;
-					left : 0;
-					top : 0;
-					span {
-						background-position : 100% 0;
-					}
-				}
-				button.decrease {
-					border-left : solid 1px #fff;
-					right : 0;
-					top : 0;
-					span {
-						background-position : 0% 0;
-					}
-				}
-			}
+		div.canvas.canvas_lens {
+			border : 5px solid rgba(0, 0, 0, 0.25);
 		}
-		nav.toolbar.catalogue {
-			margin-left : -128px;
-			width : 256px;
-			menu.zoom  {
-				button.decrease {
-					left : auto;
-					right : 64px;
-				}
-			}
-		}
-	}
-	/*
-		Slider Toolbar
-	*/
-	div.viewer {
-		menu.slider {
-			@include transition-property(all);
-			@include transition-duration(0.3s);
-			@include transition-timing-function(ease);
+		div.canvas.canvas_hidden {
 			@include opacity(0);
-			background-color : $color-passive;
-			display : block;
-			margin : 0;
-			overflow : hidden;
-			padding : 0;
-			position : absolute;
-			visibility : hidden;
-			z-index : 7;
-			div.meter, meter {
-				background-color : #fff;
-				display : block;
-				height : 8px;
-				left : 48px;
-				margin : -4px 0 0 0;
-				overflow : visible;
+			@include transition-property(opacity);
+			@include transition-duration(0.3s);
+			@include transition-timing-function(ease);
+		}
+		&:hover div.canvas.canvas_hidden,
+		div.canvas.canvas_visible {
+			@include opacity(1);
+			@include transition-property(opacity);
+			@include transition-duration(0.3s);
+			@include transition-timing-function(ease);
+		}
+	}
+	div.cover {
+		@include opacity(0.01);
+		background : #000;
+		display : block;
+		height : 100%;
+		left : 0;
+		position : absolute;
+		top : 0;
+		width : 100%;
+		z-index : 6;
+	}
+}
+/*
+	Floating Buttons
+*/
+div.viewer {
+	nav.buttons {
+		menu {
+			button {
+				@include transition-property(all);
+				@include transition-duration(0.3s);
+				@include transition-timing-function(ease);
+				@include iconParent(48);
+				background-color : $color-passive;
+				border : none;
+				cursor : pointer;
+				height : 32px;
+				margin : 0;
+				opacity : 0.3;
+				padding : 0;
 				position : absolute;
-				right : 48px;
-				top : 50%;
-				z-index : 8;
-				div {
-					@include iconParent(48);
-					background-color : $color-passive;
-					border : solid 1px #fff;
-					display : block;
-					height : 28px;
-					left : 50%;
-					margin : -14px 0 0 -14px;
-					position : absolute;
-					top : 50%;
-					width : 28px;
-					z-index : 9;
-					span {
-						@include iconCenter(32);
-						background : Transparent url(../img/viewer.png) no-repeat 0 0;
-					}
-				}
-				div:hover, div.hover {
-					background-color : $color-hover;
+				width : 32px;
+				z-index : 10;
+				span {
+					background : Transparent url(../img/viewer.png) no-repeat 0 0;
+					@include iconCenter(32);
 				}
 			}
+			button:hover {
+				background-color : $color-hover;
+			}
+			button.disabled, button.disabled:hover {
+				background-color : $color-disabled;
+			}
+		}
+		menu.zoom {
+			button.increase {
+				right : 10px;
+				top : 10px;
+				span {
+					background-position : 0% -32px;
+				}
+			}
+			button.decrease {
+				right : 10px;
+				top : 52px;
+				span {
+					background-position : 100% -32px;
+				}
+			}
+		}
+		menu.leaf {
+			background : Transparent none;
+			button.increase {
+				right : 10px;
+				top : 94px;
+				span {
+					background-position : 100% -64px;
+				}
+			}
+			button.decrease {
+				display : none;
+				span {
+					background-position : 0% -64px;
+				}
+			}
+			button.reset {
+				right : 10px;
+				top : 94px;
+				span {
+					background-position : 50% -64px;
+					margin-left : 1px;
+					width : 26px;
+				}
+			}
+		}
+		menu.spin {
+			button.increase {
+				display : none;
+				right : 10px;
+				top : 136px;
+				span {
+					background-position : 100% 0;
+				}
+			}
+			button.decrease {
+				right : 10px;
+				top : 94px;
+				span {
+					background-position : 0% 0;
+				}
+			}
+		}
+	}
+}
+/*
+	Default Toolbar
+*/
+div.viewer {
+	nav.toolbar {
+		@include transition-property(all);
+		@include transition-duration(0.3s);
+		@include transition-timing-function(ease);
+		background-color : $color-passive;
+		border : solid 1px #fff;
+		bottom : 0%;
+		display : block;
+		height : 34px;
+		left : 50%;
+		margin : 0 0 5% -64px;
+		opacity : 0.3;
+		overflow : hidden;
+		padding : 0;
+		position : absolute;
+		visibility : hidden;
+		width : 130px;
+		z-index : 7;
+		menu {
 			button {
 				@include iconParent(48);
 				background-color : $color-passive;
@@ -407,354 +248,501 @@
 				margin : 0;
 				padding : 0;
 				position : absolute;
-				visibility : visible;
 				position : absolute;
 				width : 32px;
 				z-index : 10;
 				span {
-					@include iconCenter(32);
 					background : Transparent url(../img/viewer.png) no-repeat 0 0;
-
+					@include iconCenter(32);
 				}
 			}
 			button:hover {
 				background-color : $color-hover;
 			}
-			button.increase {
-				left : 0;
-				top : 0;
-			}
-			button.decrease {
-				bottom : 0;
-				right : 0;
-			}
-			div.cover {
-				cursor : pointer;
-				z-index : 9;
+			button.disabled, button.disabled:hover {
+				background-color : $color-disabled;
+				cursor : default;
 			}
 		}
-	}
-	/*
-		Spin Toolbar
-	*/
-	div.viewer {
-		menu.slider.spin {
-			bottom : 0%;
-			margin-bottom : 5%;
-			height : 32px;
-			left : 5%;
-			right : 15%;
-			div.meter, meter {
-				span {
-					background-position : 50% 0;
-				}
-			}
+		menu.zoom {
 			button.increase {
-				border-right : solid 1px #fff;
-				span {
-					background-position : 0 0;
-				}
-			}
-			button.decrease {
 				border-left : solid 1px #fff;
+				right : 32px;
+				top : 0;
 				span {
-					background-position : 100% 0;
-				}
-			}
-		}
-	}
-	/*
-		Zoom Toolbar
-	*/
-	div.viewer {
-		menu.slider.zoom {
-			bottom : 0%;
-			margin-bottom : 15%;
-			right : 5%;
-			top : 5%;
-			width : 32px;
-			div.meter, meter {
-				bottom : 48px;
-				height : auto;
-				left : 50%;
-				margin : 0 0 0 -4px;
-				top : 48px;
-				width : 8px;
-				-webkit-appearance: none;
-				appearance: none;
-				span {
-					background-position : 50% -32px;
-				}
-			}
-			button.increase {
-				border-bottom : solid 1px #fff;
-				span {
-					background-position : 0 -32px;
+					background-position : 0% -32px;
 				}
 			}
 			button.decrease {
-				border-top : solid 1px #fff;
+				left : 32px;
+				top : 0;
 				span {
 					background-position : 100% -32px;
 				}
 			}
 		}
-	}
-	/*
-		Leafing Toolbar
-	*/
-	div.viewer {
 		menu.leaf {
-			background-color : $color-passive;
-			bottom : 0%;
-			margin-bottom : 5%;
-			margin-left : -100px;
-			height : 32px;
-			left : 50%;
-			width : 200px;
-			button {
-				background-color : $color-active;
-				span {}
-			}
 			button.increase {
-				left : auto;
-				right : 49px;
+				border-left : solid 1px #fff;
+				right : 0;
+				top : 0;
 				span {
 					background-position : 100% -64px;
 				}
 			}
 			button.decrease {
+				border-right : solid 1px #fff;
 				left : 0;
-				right : auto;
+				top : 0;
 				span {
-					background-position : 0 -64px;
+					background-position : 0% -64px;
 				}
 			}
 			button.reset {
+				border-right : solid 1px #fff;
 				border-left : solid 1px #fff;
-				right : 0;
+				left : auto;
+				right : 96px;
 				top : 0;
-				width : 32px;
 				span {
 					@include iconCenter(32);
 					background-position : 50% -64px;
 				}
 			}
 			form {
-				height : 24px;
 				left : 36px;
-				margin : 0;
-				padding : 0;
-				position : absolute;
 				top : 4px;
-				width : 80px;
-				input {
-					background : #fff;
-					border : none;
-					color : #333;
-					font-size : 14px;
-					font-family : Arial, Sans-Serif;
-					height : 24px;
-					line-height : 16px;
-					margin : 0;
-					padding : 4px;
-					text-align : center;
-					vertical-align : middle;
-					width : 32px;
-				}
-				span.count {
-					color : #fff;
-					display : inline-block;
-					font-size : 14px;
-					font-family : Arial, Sans-Serif;
-					height : 24px;
-					padding : 4px;
-					line-height : 16px;
-					vertical-align : middle;
-				}
 			}
 		}
-	}
-	/*
-		Thumbnails
-	*/
-	div.viewer {
-		nav.thumbnails {
-			bottom : 0;
-			height : 28%;
-			left : 0;
-			overflow : hidden;
-			position : absolute;
-			width : 100%;
-			div {
-				height : 100%;
-				margin : 1px 41px 0 41px;
-				position : relative;
-				overflow : hidden;
-				ul {
-					@include transition-property(all);
-					@include transition-duration(0.3s);
-					@include transition-timing-function(ease);
-					height : 100%;
-					margin : 0;
-					padding : 0;
-					position : relative;
-					white-space : nowrap;
-					z-index : 10;
-					li {
-						display : inline;
-						list-style-type : none;
-						a {
-							margin-right : 1px;
-							display : inline-block;
-							overflow : hidden;
-							position : relative;
-							vertical-align : top;
-							height : 100%;
-							width : 25%;
-							img {
-								@include opacity(1);
-								@include transition-property(opacity);
-								@include transition-duration(0.3s);
-								@include transition-timing-function(ease);
-								filter : none;
-								border : none;
-								left : 0;
-								margin-left : 0;
-								margin-top : 0;
-								min-height : 101%;
-								min-width : 101%;
-								position : absolute;
-								top : 0;
-							}
-						}
-						a:hover {
-							img {
-								@include opacity(1);
-							}
-						}
-						a.thumbnails_active {
-							background-color : #FF6A00;
-							img {
-								@include opacity(0.5);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	/*
-		Thumbnails Controls
-	*/
-	div.viewer {
-		nav {
-			menu.scroller {
-				position : absolute;
-				height : 100%;
+		menu.spin {
+			button.increase {
+				border-right : solid 1px #fff;
 				left : 0;
-				margin : 1px 0 0 0;
-				padding : 0;
 				top : 0;
-				width : 100%;
-				button {
-					@include iconParent(48);
-					background-color : $color-passive;
-					border : none;
-					color : #fff;
-					cursor : pointer;
-					height : 100%;
-					margin : 0;
-					padding : 0;
-					position : absolute;
-					top : 0;
-					width : 40px;
-					z-index : 20;
-					span {
-						background : Transparent url(../img/viewer.png) no-repeat 0 0;
-						@include iconCenter(32);
-					}
+				span {
+					background-position : 100% 0;
 				}
-				button:hover {
-					background-color : $color-hover;
-				}
-				button.previous {
-					left : 0;
-					span {
-						background-position : 0% -64px;
-					}
-				}
-				button.next {
-					right : 0;
-					span {
-						background-position : 100% -64px;
-					}
-				}
-				button.disabled {
-					background-color : $color-disabled;
-					cursor : default;
+			}
+			button.decrease {
+				border-left : solid 1px #fff;
+				right : 0;
+				top : 0;
+				span {
+					background-position : 0% 0;
 				}
 			}
 		}
 	}
-	/*
-		hover state
-	*/
-	div.viewer:hover {
-		div.canvas.canvas_hidden {
-			@include opacity(1);
-			@include transition-property(opacity);
-			@include transition-duration(0.3s);
-			@include transition-timing-function(ease);
-		}
-		nav.toolbar {
-			@include opacity(1);
-			visibility : visible;
-		}
-		menu.slider {
-			@include opacity(1);
-			filter : none;
-			visibility : visible;
-		}
-		nav.buttons {
-			menu {
-				button {
-					@include opacity(1);
-				}
+	nav.toolbar.catalogue {
+		margin-left : -128px;
+		width : 256px;
+		menu.zoom  {
+			button.decrease {
+				left : auto;
+				right : 64px;
 			}
-		}
-	}
-	/*
-		3D Rotation Variant
-	*/
-	div.viewer.spin_rotation {
-		div.wrapper {
-			background : #000;
-		}
-	}
-	/*
-		2D Slideshow Variant
-	*/
-	div.viewer.spin_slideshow {
-		div.wrapper {
-			background : #000;
-		}
-		menu.zoom {
-			margin-bottom : 5%;
-		}
-	}
-	/*
-		2D Catalogue Variant
-	*/
-	div.viewer.spin_catalogue {
-		div.wrapper {
-			background : #000;
 		}
 	}
 }
-@media (min-width: 1200px) {}
-@media (min-width: 980px) and (max-width: 1199px) {}
-@media (min-width: 768px) and (max-width: 979px) {}
-@media (max-width: 767px) {}
-@media (max-width: 480px) {}
-@media print {}
+/*
+	Slider Toolbar
+*/
+div.viewer {
+	menu.slider {
+		@include transition-property(all);
+		@include transition-duration(0.3s);
+		@include transition-timing-function(ease);
+		@include opacity(0);
+		background-color : $color-passive;
+		display : block;
+		margin : 0;
+		overflow : hidden;
+		padding : 0;
+		position : absolute;
+		visibility : hidden;
+		z-index : 7;
+		div.meter, meter {
+			background-color : #fff;
+			display : block;
+			height : 8px;
+			left : 48px;
+			margin : -4px 0 0 0;
+			overflow : visible;
+			position : absolute;
+			right : 48px;
+			top : 50%;
+			z-index : 8;
+			div {
+				@include iconParent(48);
+				background-color : $color-passive;
+				border : solid 1px #fff;
+				display : block;
+				height : 28px;
+				left : 50%;
+				margin : -14px 0 0 -14px;
+				position : absolute;
+				top : 50%;
+				width : 28px;
+				z-index : 9;
+				span {
+					@include iconCenter(32);
+					background : Transparent url(../img/viewer.png) no-repeat 0 0;
+				}
+			}
+			div:hover, div.hover {
+				background-color : $color-hover;
+			}
+		}
+		button {
+			@include iconParent(48);
+			background-color : $color-passive;
+			border : none;
+			cursor : pointer;
+			height : 32px;
+			margin : 0;
+			padding : 0;
+			position : absolute;
+			visibility : visible;
+			position : absolute;
+			width : 32px;
+			z-index : 10;
+			span {
+				@include iconCenter(32);
+				background : Transparent url(../img/viewer.png) no-repeat 0 0;
+
+			}
+		}
+		button:hover {
+			background-color : $color-hover;
+		}
+		button.increase {
+			left : 0;
+			top : 0;
+		}
+		button.decrease {
+			bottom : 0;
+			right : 0;
+		}
+		div.cover {
+			cursor : pointer;
+			z-index : 9;
+		}
+	}
+}
+/*
+	Spin Toolbar
+*/
+div.viewer {
+	menu.slider.spin {
+		bottom : 0%;
+		margin-bottom : 5%;
+		height : 32px;
+		left : 5%;
+		right : 15%;
+		div.meter, meter {
+			span {
+				background-position : 50% 0;
+			}
+		}
+		button.increase {
+			border-right : solid 1px #fff;
+			span {
+				background-position : 100% 0;
+			}
+		}
+		button.decrease {
+			border-left : solid 1px #fff;
+			span {
+				background-position : 0 0;
+			}
+		}
+	}
+}
+/*
+	Zoom Toolbar
+*/
+div.viewer {
+	menu.slider.zoom {
+		bottom : 0%;
+		margin-bottom : 15%;
+		right : 5%;
+		top : 5%;
+		width : 32px;
+		div.meter, meter {
+			bottom : 48px;
+			height : auto;
+			left : 50%;
+			margin : 0 0 0 -4px;
+			top : 48px;
+			width : 8px;
+			-webkit-appearance: none;
+			appearance: none;
+			span {
+				background-position : 50% -32px;
+			}
+		}
+		button.increase {
+			border-bottom : solid 1px #fff;
+			span {
+				background-position : 0 -32px;
+			}
+		}
+		button.decrease {
+			border-top : solid 1px #fff;
+			span {
+				background-position : 100% -32px;
+			}
+		}
+	}
+}
+/*
+	Leafing Toolbar
+*/
+div.viewer {
+	menu.leaf {
+		background-color : $color-passive;
+		bottom : 0%;
+		margin-bottom : 5%;
+		margin-left : -100px;
+		height : 32px;
+		left : 50%;
+		width : 200px;
+		button {
+			background-color : $color-active;
+			span {}
+		}
+		button.increase {
+			left : auto;
+			right : 49px;
+			span {
+				background-position : 100% -64px;
+			}
+		}
+		button.decrease {
+			left : 0;
+			right : auto;
+			span {
+				background-position : 0 -64px;
+			}
+		}
+		button.reset {
+			border-left : solid 1px #fff;
+			right : 0;
+			top : 0;
+			width : 32px;
+			span {
+				@include iconCenter(32);
+				background-position : 50% -64px;
+			}
+		}
+		form {
+			height : 24px;
+			left : 36px;
+			margin : 0;
+			padding : 0;
+			position : absolute;
+			top : 4px;
+			width : 80px;
+			input {
+				background : #fff;
+				border : none;
+				color : #333;
+				font-size : 14px;
+				font-family : Arial, Sans-Serif;
+				height : 24px;
+				line-height : 16px;
+				margin : 0;
+				padding : 4px;
+				text-align : center;
+				vertical-align : middle;
+				width : 32px;
+			}
+			span.count {
+				color : #fff;
+				display : inline-block;
+				font-size : 14px;
+				font-family : Arial, Sans-Serif;
+				height : 24px;
+				padding : 4px;
+				line-height : 16px;
+				vertical-align : middle;
+			}
+		}
+	}
+}
+/*
+	Thumbnails
+*/
+div.viewer {
+	nav.thumbnails {
+		bottom : 0;
+		height : 28%;
+		left : 0;
+		overflow : hidden;
+		position : absolute;
+		width : 100%;
+		div {
+			height : 100%;
+			margin : 1px 41px 0 41px;
+			position : relative;
+			overflow : hidden;
+			ul {
+				@include transition-property(all);
+				@include transition-duration(0.3s);
+				@include transition-timing-function(ease);
+				height : 100%;
+				margin : 0;
+				padding : 0;
+				position : relative;
+				white-space : nowrap;
+				z-index : 10;
+				li {
+					display : inline;
+					list-style-type : none;
+					a {
+						margin-right : 1px;
+						display : inline-block;
+						overflow : hidden;
+						position : relative;
+						vertical-align : top;
+						height : 100%;
+						width : 25%;
+						img {
+							@include opacity(1);
+							@include transition-property(opacity);
+							@include transition-duration(0.3s);
+							@include transition-timing-function(ease);
+							filter : none;
+							border : none;
+							left : 0;
+							margin-left : 0;
+							margin-top : 0;
+							min-height : 101%;
+							min-width : 101%;
+							position : absolute;
+							top : 0;
+						}
+					}
+					a:hover {
+						img {
+							@include opacity(1);
+						}
+					}
+					a.thumbnails_active {
+						background-color : #FF6A00;
+						img {
+							@include opacity(0.5);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+/*
+	Thumbnails Controls
+*/
+div.viewer {
+	nav {
+		menu.scroller {
+			position : absolute;
+			height : 100%;
+			left : 0;
+			margin : 1px 0 0 0;
+			padding : 0;
+			top : 0;
+			width : 100%;
+			button {
+				@include iconParent(48);
+				background-color : $color-passive;
+				border : none;
+				color : #fff;
+				cursor : pointer;
+				height : 100%;
+				margin : 0;
+				padding : 0;
+				position : absolute;
+				top : 0;
+				width : 40px;
+				z-index : 20;
+				span {
+					background : Transparent url(../img/viewer.png) no-repeat 0 0;
+					@include iconCenter(32);
+				}
+			}
+			button:hover {
+				background-color : $color-hover;
+			}
+			button.previous {
+				left : 0;
+				span {
+					background-position : 0% -64px;
+				}
+			}
+			button.next {
+				right : 0;
+				span {
+					background-position : 100% -64px;
+				}
+			}
+			button.disabled {
+				background-color : $color-disabled;
+				cursor : default;
+			}
+		}
+	}
+}
+/*
+	hover state
+*/
+div.viewer:hover {
+	div.canvas.canvas_hidden {
+		@include opacity(1);
+		@include transition-property(opacity);
+		@include transition-duration(0.3s);
+		@include transition-timing-function(ease);
+	}
+	nav.toolbar {
+		@include opacity(1);
+		visibility : visible;
+	}
+	menu.slider {
+		@include opacity(1);
+		filter : none;
+		visibility : visible;
+	}
+	nav.buttons {
+		menu {
+			button {
+				@include opacity(1);
+			}
+		}
+	}
+}
+/*
+	3D Rotation Variant
+*/
+div.viewer.spin_rotation {
+	div.wrapper {
+		background : #000;
+	}
+}
+/*
+	2D Slideshow Variant
+*/
+div.viewer.spin_slideshow {
+	div.wrapper {
+		background : #000;
+	}
+	menu.zoom {
+		margin-bottom : 5%;
+	}
+}
+/*
+	2D Catalogue Variant
+*/
+div.viewer.spin_catalogue {
+	div.wrapper {
+		background : #000;
+	}
+}
