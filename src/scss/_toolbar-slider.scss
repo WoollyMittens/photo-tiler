@@ -1,0 +1,85 @@
+/*
+	Slider Toolbar
+*/
+div.viewer {
+	menu.slider {
+		@include transition-property(all);
+		@include transition-duration(0.3s);
+		@include transition-timing-function(ease);
+		@include opacity(0);
+		background-color : $color-passive;
+		display : block;
+		margin : 0;
+		overflow : hidden;
+		padding : 0;
+		position : absolute;
+		visibility : hidden;
+		z-index : 7;
+		div.meter, meter {
+			background-color : #fff;
+			display : block;
+			height : 8px;
+			left : 48px;
+			margin : -4px 0 0 0;
+			overflow : visible;
+			position : absolute;
+			right : 48px;
+			top : 50%;
+			z-index : 8;
+			div {
+				@include iconParent(48);
+				background-color : $color-passive;
+				border : solid 1px #fff;
+				display : block;
+				height : 28px;
+				left : 50%;
+				margin : -14px 0 0 -14px;
+				position : absolute;
+				top : 50%;
+				width : 28px;
+				z-index : 9;
+				span {
+					@include iconCenter(32);
+					background : Transparent url(../img/viewer.png) no-repeat 0 0;
+				}
+			}
+			div:hover, div.hover {
+				background-color : $color-hover;
+			}
+		}
+		button {
+			@include iconParent(48);
+			background-color : $color-passive;
+			border : none;
+			cursor : pointer;
+			height : 32px;
+			margin : 0;
+			padding : 0;
+			position : absolute;
+			visibility : visible;
+			position : absolute;
+			width : 32px;
+			z-index : 10;
+			span {
+				@include iconCenter(32);
+				background : Transparent url(../img/viewer.png) no-repeat 0 0;
+
+			}
+		}
+		button:hover {
+			background-color : $color-hover;
+		}
+		button.increase {
+			left : 0;
+			top : 0;
+		}
+		button.decrease {
+			bottom : 0;
+			right : 0;
+		}
+		div.cover {
+			cursor : pointer;
+			z-index : 9;
+		}
+	}
+}

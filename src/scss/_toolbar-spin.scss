@@ -1,0 +1,29 @@
+/*
+	Spin Toolbar
+*/
+div.viewer {
+	menu.slider.spin {
+		bottom : 0%;
+		margin-bottom : 5%;
+		height : 32px;
+		left : 5%;
+		right : 15%;
+		div.meter, meter {
+			span {
+				background-position : 50% 0;
+			}
+		}
+		button.increase {
+			border-right : solid 1px #fff;
+			span {
+				background-position : 100% 0;
+			}
+		}
+		button.decrease {
+			border-left : solid 1px #fff;
+			span {
+				background-position : 0 0;
+			}
+		}
+	}
+}

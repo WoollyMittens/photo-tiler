@@ -1,0 +1,93 @@
+/*
+	Floating Buttons
+*/
+div.viewer {
+	nav.buttons {
+		menu {
+			button {
+				@include transition-property(all);
+				@include transition-duration(0.3s);
+				@include transition-timing-function(ease);
+				@include iconParent(48);
+				background-color : $color-passive;
+				border : none;
+				cursor : pointer;
+				height : 32px;
+				margin : 0;
+				opacity : 0.3;
+				padding : 0;
+				position : absolute;
+				width : 32px;
+				z-index : 10;
+				span {
+					background : Transparent url(../img/viewer.png) no-repeat 0 0;
+					@include iconCenter(32);
+				}
+			}
+			button:hover {
+				background-color : $color-hover;
+			}
+			button.disabled, button.disabled:hover {
+				background-color : $color-disabled;
+			}
+		}
+		menu.zoom {
+			button.increase {
+				right : 10px;
+				top : 10px;
+				span {
+					background-position : 0% -32px;
+				}
+			}
+			button.decrease {
+				right : 10px;
+				top : 52px;
+				span {
+					background-position : 100% -32px;
+				}
+			}
+		}
+		menu.leaf {
+			background : Transparent none;
+			button.increase {
+				right : 10px;
+				top : 94px;
+				span {
+					background-position : 100% -64px;
+				}
+			}
+			button.decrease {
+				display : none;
+				span {
+					background-position : 0% -64px;
+				}
+			}
+			button.reset {
+				right : 10px;
+				top : 94px;
+				span {
+					background-position : 50% -64px;
+					margin-left : 1px;
+					width : 26px;
+				}
+			}
+		}
+		menu.spin {
+			button.increase {
+				display : none;
+				right : 10px;
+				top : 136px;
+				span {
+					background-position : 100% 0;
+				}
+			}
+			button.decrease {
+				right : 10px;
+				top : 94px;
+				span {
+					background-position : 0% 0;
+				}
+			}
+		}
+	}
+}

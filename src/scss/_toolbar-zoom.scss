@@ -1,0 +1,37 @@
+/*
+	Zoom Toolbar
+*/
+div.viewer {
+	menu.slider.zoom {
+		bottom : 0%;
+		margin-bottom : 15%;
+		right : 5%;
+		top : 5%;
+		width : 32px;
+		div.meter, meter {
+			bottom : 48px;
+			height : auto;
+			left : 50%;
+			margin : 0 0 0 -4px;
+			top : 48px;
+			width : 8px;
+			-webkit-appearance: none;
+			appearance: none;
+			span {
+				background-position : 50% -32px;
+			}
+		}
+		button.increase {
+			border-bottom : solid 1px #fff;
+			span {
+				background-position : 0 -32px;
+			}
+		}
+		button.decrease {
+			border-top : solid 1px #fff;
+			span {
+				background-position : 100% -32px;
+			}
+		}
+	}
+}

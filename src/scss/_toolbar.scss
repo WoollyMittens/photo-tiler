@@ -1,0 +1,128 @@
+/*
+	Default Toolbar
+*/
+div.viewer {
+	nav.toolbar {
+		@include transition-property(all);
+		@include transition-duration(0.3s);
+		@include transition-timing-function(ease);
+		background-color : $color-passive;
+		border : solid 1px #fff;
+		bottom : 0%;
+		display : block;
+		height : 34px;
+		left : 50%;
+		margin : 0 0 5% -64px;
+		opacity : 0.3;
+		overflow : hidden;
+		padding : 0;
+		position : absolute;
+		visibility : hidden;
+		width : 130px;
+		z-index : 7;
+		menu {
+			button {
+				@include iconParent(48);
+				background-color : $color-passive;
+				border : none;
+				cursor : pointer;
+				height : 32px;
+				margin : 0;
+				padding : 0;
+				position : absolute;
+				position : absolute;
+				width : 32px;
+				z-index : 10;
+				span {
+					background : Transparent url(../img/viewer.png) no-repeat 0 0;
+					@include iconCenter(32);
+				}
+			}
+			button:hover {
+				background-color : $color-hover;
+			}
+			button.disabled, button.disabled:hover {
+				background-color : $color-disabled;
+				cursor : default;
+			}
+		}
+		menu.zoom {
+			button.increase {
+				border-left : solid 1px #fff;
+				right : 32px;
+				top : 0;
+				span {
+					background-position : 0% -32px;
+				}
+			}
+			button.decrease {
+				left : 32px;
+				top : 0;
+				span {
+					background-position : 100% -32px;
+				}
+			}
+		}
+		menu.leaf {
+			button.increase {
+				border-left : solid 1px #fff;
+				right : 0;
+				top : 0;
+				span {
+					background-position : 100% -64px;
+				}
+			}
+			button.decrease {
+				border-right : solid 1px #fff;
+				left : 0;
+				top : 0;
+				span {
+					background-position : 0% -64px;
+				}
+			}
+			button.reset {
+				border-right : solid 1px #fff;
+				border-left : solid 1px #fff;
+				left : auto;
+				right : 96px;
+				top : 0;
+				span {
+					@include iconCenter(32);
+					background-position : 50% -64px;
+				}
+			}
+			form {
+				left : 36px;
+				top : 4px;
+			}
+		}
+		menu.spin {
+			button.increase {
+				border-right : solid 1px #fff;
+				left : 0;
+				top : 0;
+				span {
+					background-position : 100% 0;
+				}
+			}
+			button.decrease {
+				border-left : solid 1px #fff;
+				right : 0;
+				top : 0;
+				span {
+					background-position : 0% 0;
+				}
+			}
+		}
+	}
+	nav.toolbar.catalogue {
+		margin-left : -128px;
+		width : 256px;
+		menu.zoom  {
+			button.decrease {
+				left : auto;
+				right : 64px;
+			}
+		}
+	}
+}

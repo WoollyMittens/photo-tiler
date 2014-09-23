@@ -28,7 +28,7 @@
 /*
 	viewer
 */
-/* line 7, ../../src/scss/useful-viewer.scss */
+/* line 4, ../../src/scss/_main.scss */
 div.viewer {
   display: block;
   height: 512px;
@@ -37,12 +37,12 @@ div.viewer {
   visibility: hidden;
   width: 100%;
 }
-/* line 14, ../../src/scss/useful-viewer.scss */
+/* line 11, ../../src/scss/_main.scss */
 div.viewer * {
   box-sizing: border-box;
   -ms-interpolation-mode: bicubic;
 }
-/* line 18, ../../src/scss/useful-viewer.scss */
+/* line 15, ../../src/scss/_main.scss */
 div.viewer div.wrapper {
   background: Transparent;
   height: 100%;
@@ -53,7 +53,7 @@ div.viewer div.wrapper {
   width: 100%;
   z-index: 0;
 }
-/* line 28, ../../src/scss/useful-viewer.scss */
+/* line 25, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background,
 div.viewer div.wrapper div.canvas {
   background: Transparent;
@@ -65,7 +65,7 @@ div.viewer div.wrapper div.canvas {
   width: 100%;
   z-index: 3;
 }
-/* line 37, ../../src/scss/useful-viewer.scss */
+/* line 34, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background figure,
 div.viewer div.wrapper div.canvas figure {
   display: block;
@@ -76,7 +76,7 @@ div.viewer div.wrapper div.canvas figure {
   top: 0;
   z-index: 5;
 }
-/* line 45, ../../src/scss/useful-viewer.scss */
+/* line 42, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background figure img,
 div.viewer div.wrapper div.canvas figure img {
   -webkit-transition-property: all;
@@ -87,29 +87,29 @@ div.viewer div.wrapper div.canvas figure img {
   transition-timing-function: ease;
   vertical-align: top;
 }
-/* line 51, ../../src/scss/useful-viewer.scss */
+/* line 48, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background figure img.tile_hidden,
 div.viewer div.wrapper div.canvas figure img.tile_hidden {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
 }
-/* line 54, ../../src/scss/useful-viewer.scss */
+/* line 51, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background figure img.tile_visible,
 div.viewer div.wrapper div.canvas figure img.tile_visible {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-/* line 58, ../../src/scss/useful-viewer.scss */
+/* line 55, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background .figure_passive,
 div.viewer div.wrapper div.canvas .figure_passive {
   visibility: hidden;
 }
-/* line 61, ../../src/scss/useful-viewer.scss */
+/* line 58, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background .figure_active,
 div.viewer div.wrapper div.canvas .figure_active {
   visibility: visible;
 }
-/* line 64, ../../src/scss/useful-viewer.scss */
+/* line 61, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background .figure_fadeout,
 div.viewer div.wrapper div.canvas .figure_fadeout {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
@@ -122,7 +122,7 @@ div.viewer div.wrapper div.canvas .figure_fadeout {
   transition-timing-function: ease;
   z-index: 4;
 }
-/* line 71, ../../src/scss/useful-viewer.scss */
+/* line 68, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background .figure_fadein,
 div.viewer div.wrapper div.canvas .figure_fadein {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -135,7 +135,7 @@ div.viewer div.wrapper div.canvas .figure_fadein {
   transition-timing-function: ease;
   z-index: 5;
 }
-/* line 78, ../../src/scss/useful-viewer.scss */
+/* line 75, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background .figure_leafout,
 div.viewer div.wrapper div.canvas .figure_leafout {
   -webkit-transition-property: clip, opacity, -webkit-transform;
@@ -146,7 +146,7 @@ div.viewer div.wrapper div.canvas .figure_leafout {
   transition-timing-function: ease, ease, ease;
   z-index: 4;
 }
-/* line 84, ../../src/scss/useful-viewer.scss */
+/* line 81, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background .figure_leafin,
 div.viewer div.wrapper div.canvas .figure_leafin {
   -webkit-transition-property: clip, opacity, -webkit-transform;
@@ -157,19 +157,19 @@ div.viewer div.wrapper div.canvas .figure_leafin {
   transition-timing-function: ease, ease, ease;
   z-index: 5;
 }
-/* line 91, ../../src/scss/useful-viewer.scss */
+/* line 88, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background {
   z-index: 1;
 }
-/* line 93, ../../src/scss/useful-viewer.scss */
+/* line 90, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background figure {
   z-index: 2;
 }
-/* line 97, ../../src/scss/useful-viewer.scss */
+/* line 94, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.canvas.canvas_lens {
   border: 5px solid rgba(0, 0, 0, 0.25);
 }
-/* line 100, ../../src/scss/useful-viewer.scss */
+/* line 97, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.canvas.canvas_hidden {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
@@ -180,7 +180,7 @@ div.viewer div.wrapper div.canvas.canvas_hidden {
   -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
 }
-/* line 107, ../../src/scss/useful-viewer.scss */
+/* line 104, ../../src/scss/_main.scss */
 div.viewer div.wrapper:hover div.canvas.canvas_hidden,
 div.viewer div.wrapper div.canvas.canvas_visible {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -192,7 +192,7 @@ div.viewer div.wrapper div.canvas.canvas_visible {
   -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
 }
-/* line 114, ../../src/scss/useful-viewer.scss */
+/* line 111, ../../src/scss/_main.scss */
 div.viewer div.cover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=1);
   opacity: 0.01;
@@ -207,9 +207,71 @@ div.viewer div.cover {
 }
 
 /*
+	hover state
+*/
+/* line 127, ../../src/scss/_main.scss */
+div.viewer:hover div.canvas.canvas_hidden {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  -webkit-transition-property: opacity;
+  transition-property: opacity;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease;
+  transition-timing-function: ease;
+}
+/* line 133, ../../src/scss/_main.scss */
+div.viewer:hover nav.toolbar {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  visibility: visible;
+}
+/* line 137, ../../src/scss/_main.scss */
+div.viewer:hover menu.slider {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  -webkit-filter: none;
+          filter: none;
+  visibility: visible;
+}
+/* line 144, ../../src/scss/_main.scss */
+div.viewer:hover nav.buttons menu button {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/*
+	3D Rotation Variant
+*/
+/* line 154, ../../src/scss/_main.scss */
+div.viewer.spin_rotation div.wrapper {
+  background: #000;
+}
+
+/*
+	2D Slideshow Variant
+*/
+/* line 162, ../../src/scss/_main.scss */
+div.viewer.spin_slideshow div.wrapper {
+  background: #000;
+}
+/* line 165, ../../src/scss/_main.scss */
+div.viewer.spin_slideshow menu.zoom {
+  margin-bottom: 5%;
+}
+
+/*
+	2D Catalogue Variant
+*/
+/* line 173, ../../src/scss/_main.scss */
+div.viewer.spin_catalogue div.wrapper {
+  background: #000;
+}
+
+/*
 	Floating Buttons
 */
-/* line 132, ../../src/scss/useful-viewer.scss */
+/* line 7, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu button {
   -webkit-transition-property: all;
   transition-property: all;
@@ -236,7 +298,7 @@ div.viewer nav.buttons menu button {
   width: 32px;
   z-index: 10;
 }
-/* line 147, ../../src/scss/useful-viewer.scss */
+/* line 22, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu button span {
   background: Transparent url(../img/viewer.png) no-repeat 0 0;
   content: "";
@@ -253,80 +315,80 @@ div.viewer nav.buttons menu button span {
   text-align: center;
   top: 50%;
 }
-/* line 152, ../../src/scss/useful-viewer.scss */
+/* line 27, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu button:hover {
   background-color: #ff9800;
 }
-/* line 155, ../../src/scss/useful-viewer.scss */
+/* line 30, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu button.disabled, div.viewer nav.buttons menu button.disabled:hover {
   background-color: #7f7f7f;
 }
-/* line 160, ../../src/scss/useful-viewer.scss */
+/* line 35, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.zoom button.increase {
   right: 10px;
   top: 10px;
 }
-/* line 163, ../../src/scss/useful-viewer.scss */
+/* line 38, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.zoom button.increase span {
   background-position: 0% -32px;
 }
-/* line 167, ../../src/scss/useful-viewer.scss */
+/* line 42, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.zoom button.decrease {
   right: 10px;
   top: 52px;
 }
-/* line 170, ../../src/scss/useful-viewer.scss */
+/* line 45, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.zoom button.decrease span {
   background-position: 100% -32px;
 }
-/* line 175, ../../src/scss/useful-viewer.scss */
+/* line 50, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.leaf {
   background: Transparent none;
 }
-/* line 177, ../../src/scss/useful-viewer.scss */
+/* line 52, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.leaf button.increase {
   right: 10px;
   top: 94px;
 }
-/* line 180, ../../src/scss/useful-viewer.scss */
+/* line 55, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.leaf button.increase span {
   background-position: 100% -64px;
 }
-/* line 184, ../../src/scss/useful-viewer.scss */
+/* line 59, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.leaf button.decrease {
   display: none;
 }
-/* line 186, ../../src/scss/useful-viewer.scss */
+/* line 61, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.leaf button.decrease span {
   background-position: 0% -64px;
 }
-/* line 190, ../../src/scss/useful-viewer.scss */
+/* line 65, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.leaf button.reset {
   right: 10px;
   top: 94px;
 }
-/* line 193, ../../src/scss/useful-viewer.scss */
+/* line 68, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.leaf button.reset span {
   background-position: 50% -64px;
   margin-left: 1px;
   width: 26px;
 }
-/* line 201, ../../src/scss/useful-viewer.scss */
+/* line 76, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.spin button.increase {
   display: none;
   right: 10px;
   top: 136px;
 }
-/* line 205, ../../src/scss/useful-viewer.scss */
+/* line 80, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.spin button.increase span {
   background-position: 100% 0;
 }
-/* line 209, ../../src/scss/useful-viewer.scss */
+/* line 84, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.spin button.decrease {
   right: 10px;
   top: 94px;
 }
-/* line 212, ../../src/scss/useful-viewer.scss */
+/* line 87, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu.spin button.decrease span {
   background-position: 0% 0;
 }
@@ -334,7 +396,7 @@ div.viewer nav.buttons menu.spin button.decrease span {
 /*
 	Default Toolbar
 */
-/* line 223, ../../src/scss/useful-viewer.scss */
+/* line 5, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar {
   -webkit-transition-property: all;
   transition-property: all;
@@ -357,7 +419,7 @@ div.viewer nav.toolbar {
   width: 130px;
   z-index: 7;
 }
-/* line 242, ../../src/scss/useful-viewer.scss */
+/* line 24, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu button {
   overflow: hidden;
   position: relative;
@@ -378,7 +440,7 @@ div.viewer nav.toolbar menu button {
   width: 32px;
   z-index: 10;
 }
-/* line 254, ../../src/scss/useful-viewer.scss */
+/* line 36, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu button span {
   background: Transparent url(../img/viewer.png) no-repeat 0 0;
   content: "";
@@ -395,55 +457,55 @@ div.viewer nav.toolbar menu button span {
   text-align: center;
   top: 50%;
 }
-/* line 259, ../../src/scss/useful-viewer.scss */
+/* line 41, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu button:hover {
   background-color: #ff9800;
 }
-/* line 262, ../../src/scss/useful-viewer.scss */
+/* line 44, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu button.disabled, div.viewer nav.toolbar menu button.disabled:hover {
   background-color: #7f7f7f;
   cursor: default;
 }
-/* line 268, ../../src/scss/useful-viewer.scss */
+/* line 50, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.zoom button.increase {
   border-left: solid 1px #fff;
   right: 32px;
   top: 0;
 }
-/* line 272, ../../src/scss/useful-viewer.scss */
+/* line 54, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.zoom button.increase span {
   background-position: 0% -32px;
 }
-/* line 276, ../../src/scss/useful-viewer.scss */
+/* line 58, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.zoom button.decrease {
   left: 32px;
   top: 0;
 }
-/* line 279, ../../src/scss/useful-viewer.scss */
+/* line 61, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.zoom button.decrease span {
   background-position: 100% -32px;
 }
-/* line 285, ../../src/scss/useful-viewer.scss */
+/* line 67, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.leaf button.increase {
   border-left: solid 1px #fff;
   right: 0;
   top: 0;
 }
-/* line 289, ../../src/scss/useful-viewer.scss */
+/* line 71, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.leaf button.increase span {
   background-position: 100% -64px;
 }
-/* line 293, ../../src/scss/useful-viewer.scss */
+/* line 75, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.leaf button.decrease {
   border-right: solid 1px #fff;
   left: 0;
   top: 0;
 }
-/* line 297, ../../src/scss/useful-viewer.scss */
+/* line 79, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.leaf button.decrease span {
   background-position: 0% -64px;
 }
-/* line 301, ../../src/scss/useful-viewer.scss */
+/* line 83, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.leaf button.reset {
   border-right: solid 1px #fff;
   border-left: solid 1px #fff;
@@ -451,7 +513,7 @@ div.viewer nav.toolbar menu.leaf button.reset {
   right: 96px;
   top: 0;
 }
-/* line 307, ../../src/scss/useful-viewer.scss */
+/* line 89, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.leaf button.reset span {
   content: "";
   display: block;
@@ -468,46 +530,121 @@ div.viewer nav.toolbar menu.leaf button.reset span {
   top: 50%;
   background-position: 50% -64px;
 }
-/* line 312, ../../src/scss/useful-viewer.scss */
+/* line 94, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.leaf form {
   left: 36px;
   top: 4px;
 }
-/* line 318, ../../src/scss/useful-viewer.scss */
+/* line 100, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.spin button.increase {
   border-right: solid 1px #fff;
   left: 0;
   top: 0;
 }
-/* line 322, ../../src/scss/useful-viewer.scss */
+/* line 104, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.spin button.increase span {
   background-position: 100% 0;
 }
-/* line 326, ../../src/scss/useful-viewer.scss */
+/* line 108, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.spin button.decrease {
   border-left: solid 1px #fff;
   right: 0;
   top: 0;
 }
-/* line 330, ../../src/scss/useful-viewer.scss */
+/* line 112, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar menu.spin button.decrease span {
   background-position: 0% 0;
 }
-/* line 336, ../../src/scss/useful-viewer.scss */
+/* line 118, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar.catalogue {
   margin-left: -128px;
   width: 256px;
 }
-/* line 340, ../../src/scss/useful-viewer.scss */
+/* line 122, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar.catalogue menu.zoom button.decrease {
   left: auto;
   right: 64px;
 }
 
 /*
+	Zoom Toolbar
+*/
+/* line 5, ../../src/scss/_toolbar-zoom.scss */
+div.viewer menu.slider.zoom {
+  bottom: 0%;
+  margin-bottom: 15%;
+  right: 5%;
+  top: 5%;
+  width: 32px;
+}
+/* line 11, ../../src/scss/_toolbar-zoom.scss */
+div.viewer menu.slider.zoom div.meter, div.viewer menu.slider.zoom meter {
+  bottom: 48px;
+  height: auto;
+  left: 50%;
+  margin: 0 0 0 -4px;
+  top: 48px;
+  width: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* line 20, ../../src/scss/_toolbar-zoom.scss */
+div.viewer menu.slider.zoom div.meter span, div.viewer menu.slider.zoom meter span {
+  background-position: 50% -32px;
+}
+/* line 24, ../../src/scss/_toolbar-zoom.scss */
+div.viewer menu.slider.zoom button.increase {
+  border-bottom: solid 1px #fff;
+}
+/* line 26, ../../src/scss/_toolbar-zoom.scss */
+div.viewer menu.slider.zoom button.increase span {
+  background-position: 0 -32px;
+}
+/* line 30, ../../src/scss/_toolbar-zoom.scss */
+div.viewer menu.slider.zoom button.decrease {
+  border-top: solid 1px #fff;
+}
+/* line 32, ../../src/scss/_toolbar-zoom.scss */
+div.viewer menu.slider.zoom button.decrease span {
+  background-position: 100% -32px;
+}
+
+/*
+	Spin Toolbar
+*/
+/* line 5, ../../src/scss/_toolbar-spin.scss */
+div.viewer menu.slider.spin {
+  bottom: 0%;
+  margin-bottom: 5%;
+  height: 32px;
+  left: 5%;
+  right: 15%;
+}
+/* line 12, ../../src/scss/_toolbar-spin.scss */
+div.viewer menu.slider.spin div.meter span, div.viewer menu.slider.spin meter span {
+  background-position: 50% 0;
+}
+/* line 16, ../../src/scss/_toolbar-spin.scss */
+div.viewer menu.slider.spin button.increase {
+  border-right: solid 1px #fff;
+}
+/* line 18, ../../src/scss/_toolbar-spin.scss */
+div.viewer menu.slider.spin button.increase span {
+  background-position: 100% 0;
+}
+/* line 22, ../../src/scss/_toolbar-spin.scss */
+div.viewer menu.slider.spin button.decrease {
+  border-left: solid 1px #fff;
+}
+/* line 24, ../../src/scss/_toolbar-spin.scss */
+div.viewer menu.slider.spin button.decrease span {
+  background-position: 0 0;
+}
+
+/*
 	Slider Toolbar
 */
-/* line 351, ../../src/scss/useful-viewer.scss */
+/* line 5, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider {
   -webkit-transition-property: all;
   transition-property: all;
@@ -526,7 +663,7 @@ div.viewer menu.slider {
   visibility: hidden;
   z-index: 7;
 }
-/* line 364, ../../src/scss/useful-viewer.scss */
+/* line 18, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider div.meter, div.viewer menu.slider meter {
   background-color: #fff;
   display: block;
@@ -539,7 +676,7 @@ div.viewer menu.slider div.meter, div.viewer menu.slider meter {
   top: 50%;
   z-index: 8;
 }
-/* line 375, ../../src/scss/useful-viewer.scss */
+/* line 29, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider div.meter div, div.viewer menu.slider meter div {
   overflow: hidden;
   position: relative;
@@ -560,7 +697,7 @@ div.viewer menu.slider div.meter div, div.viewer menu.slider meter div {
   width: 28px;
   z-index: 9;
 }
-/* line 387, ../../src/scss/useful-viewer.scss */
+/* line 41, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider div.meter div span, div.viewer menu.slider meter div span {
   content: "";
   display: block;
@@ -577,11 +714,11 @@ div.viewer menu.slider div.meter div span, div.viewer menu.slider meter div span
   top: 50%;
   background: Transparent url(../img/viewer.png) no-repeat 0 0;
 }
-/* line 392, ../../src/scss/useful-viewer.scss */
+/* line 46, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider div.meter div:hover, div.viewer menu.slider div.meter div.hover, div.viewer menu.slider meter div:hover, div.viewer menu.slider meter div.hover {
   background-color: #ff9800;
 }
-/* line 396, ../../src/scss/useful-viewer.scss */
+/* line 50, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider button {
   overflow: hidden;
   position: relative;
@@ -603,7 +740,7 @@ div.viewer menu.slider button {
   width: 32px;
   z-index: 10;
 }
-/* line 409, ../../src/scss/useful-viewer.scss */
+/* line 63, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider button span {
   content: "";
   display: block;
@@ -620,105 +757,30 @@ div.viewer menu.slider button span {
   top: 50%;
   background: Transparent url(../img/viewer.png) no-repeat 0 0;
 }
-/* line 415, ../../src/scss/useful-viewer.scss */
+/* line 69, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider button:hover {
   background-color: #ff9800;
 }
-/* line 418, ../../src/scss/useful-viewer.scss */
+/* line 72, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider button.increase {
   left: 0;
   top: 0;
 }
-/* line 422, ../../src/scss/useful-viewer.scss */
+/* line 76, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider button.decrease {
   bottom: 0;
   right: 0;
 }
-/* line 426, ../../src/scss/useful-viewer.scss */
+/* line 80, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider div.cover {
   cursor: pointer;
   z-index: 9;
 }
 
 /*
-	Spin Toolbar
-*/
-/* line 436, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.spin {
-  bottom: 0%;
-  margin-bottom: 5%;
-  height: 32px;
-  left: 5%;
-  right: 15%;
-}
-/* line 443, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.spin div.meter span, div.viewer menu.slider.spin meter span {
-  background-position: 50% 0;
-}
-/* line 447, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.spin button.increase {
-  border-right: solid 1px #fff;
-}
-/* line 449, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.spin button.increase span {
-  background-position: 100% 0;
-}
-/* line 453, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.spin button.decrease {
-  border-left: solid 1px #fff;
-}
-/* line 455, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.spin button.decrease span {
-  background-position: 0 0;
-}
-
-/*
-	Zoom Toolbar
-*/
-/* line 465, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.zoom {
-  bottom: 0%;
-  margin-bottom: 15%;
-  right: 5%;
-  top: 5%;
-  width: 32px;
-}
-/* line 471, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.zoom div.meter, div.viewer menu.slider.zoom meter {
-  bottom: 48px;
-  height: auto;
-  left: 50%;
-  margin: 0 0 0 -4px;
-  top: 48px;
-  width: 8px;
-  -webkit-appearance: none;
-  appearance: none;
-}
-/* line 480, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.zoom div.meter span, div.viewer menu.slider.zoom meter span {
-  background-position: 50% -32px;
-}
-/* line 484, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.zoom button.increase {
-  border-bottom: solid 1px #fff;
-}
-/* line 486, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.zoom button.increase span {
-  background-position: 0 -32px;
-}
-/* line 490, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.zoom button.decrease {
-  border-top: solid 1px #fff;
-}
-/* line 492, ../../src/scss/useful-viewer.scss */
-div.viewer menu.slider.zoom button.decrease span {
-  background-position: 100% -32px;
-}
-
-/*
 	Leafing Toolbar
 */
-/* line 502, ../../src/scss/useful-viewer.scss */
+/* line 5, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf {
   background-color: #ff6a00;
   bottom: 0%;
@@ -728,36 +790,36 @@ div.viewer menu.leaf {
   left: 50%;
   width: 200px;
 }
-/* line 510, ../../src/scss/useful-viewer.scss */
+/* line 13, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf button {
   background-color: #d45800;
 }
-/* line 514, ../../src/scss/useful-viewer.scss */
+/* line 17, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf button.increase {
   left: auto;
   right: 49px;
 }
-/* line 517, ../../src/scss/useful-viewer.scss */
+/* line 20, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf button.increase span {
   background-position: 100% -64px;
 }
-/* line 521, ../../src/scss/useful-viewer.scss */
+/* line 24, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf button.decrease {
   left: 0;
   right: auto;
 }
-/* line 524, ../../src/scss/useful-viewer.scss */
+/* line 27, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf button.decrease span {
   background-position: 0 -64px;
 }
-/* line 528, ../../src/scss/useful-viewer.scss */
+/* line 31, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf button.reset {
   border-left: solid 1px #fff;
   right: 0;
   top: 0;
   width: 32px;
 }
-/* line 533, ../../src/scss/useful-viewer.scss */
+/* line 36, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf button.reset span {
   content: "";
   display: block;
@@ -774,7 +836,7 @@ div.viewer menu.leaf button.reset span {
   top: 50%;
   background-position: 50% -64px;
 }
-/* line 538, ../../src/scss/useful-viewer.scss */
+/* line 41, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf form {
   height: 24px;
   left: 36px;
@@ -784,7 +846,7 @@ div.viewer menu.leaf form {
   top: 4px;
   width: 80px;
 }
-/* line 546, ../../src/scss/useful-viewer.scss */
+/* line 49, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf form input {
   background: #fff;
   border: none;
@@ -799,7 +861,7 @@ div.viewer menu.leaf form input {
   vertical-align: middle;
   width: 32px;
 }
-/* line 560, ../../src/scss/useful-viewer.scss */
+/* line 63, ../../src/scss/_toolbar-leaf.scss */
 div.viewer menu.leaf form span.count {
   color: #fff;
   display: inline-block;
@@ -814,7 +876,7 @@ div.viewer menu.leaf form span.count {
 /*
 	Thumbnails
 */
-/* line 577, ../../src/scss/useful-viewer.scss */
+/* line 5, ../../src/scss/_thumbnails.scss */
 div.viewer nav.thumbnails {
   bottom: 0;
   height: 28%;
@@ -823,14 +885,14 @@ div.viewer nav.thumbnails {
   position: absolute;
   width: 100%;
 }
-/* line 584, ../../src/scss/useful-viewer.scss */
+/* line 12, ../../src/scss/_thumbnails.scss */
 div.viewer nav.thumbnails div {
   height: 100%;
   margin: 1px 41px 0 41px;
   position: relative;
   overflow: hidden;
 }
-/* line 589, ../../src/scss/useful-viewer.scss */
+/* line 17, ../../src/scss/_thumbnails.scss */
 div.viewer nav.thumbnails div ul {
   -webkit-transition-property: all;
   transition-property: all;
@@ -845,12 +907,12 @@ div.viewer nav.thumbnails div ul {
   white-space: nowrap;
   z-index: 10;
 }
-/* line 599, ../../src/scss/useful-viewer.scss */
+/* line 27, ../../src/scss/_thumbnails.scss */
 div.viewer nav.thumbnails div ul li {
   display: inline;
   list-style-type: none;
 }
-/* line 602, ../../src/scss/useful-viewer.scss */
+/* line 30, ../../src/scss/_thumbnails.scss */
 div.viewer nav.thumbnails div ul li a {
   margin-right: 1px;
   display: inline-block;
@@ -860,7 +922,7 @@ div.viewer nav.thumbnails div ul li a {
   height: 100%;
   width: 25%;
 }
-/* line 610, ../../src/scss/useful-viewer.scss */
+/* line 38, ../../src/scss/_thumbnails.scss */
 div.viewer nav.thumbnails div ul li a img {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
@@ -881,16 +943,16 @@ div.viewer nav.thumbnails div ul li a img {
   position: absolute;
   top: 0;
 }
-/* line 627, ../../src/scss/useful-viewer.scss */
+/* line 55, ../../src/scss/_thumbnails.scss */
 div.viewer nav.thumbnails div ul li a:hover img {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-/* line 631, ../../src/scss/useful-viewer.scss */
+/* line 59, ../../src/scss/_thumbnails.scss */
 div.viewer nav.thumbnails div ul li a.thumbnails_active {
   background-color: #FF6A00;
 }
-/* line 633, ../../src/scss/useful-viewer.scss */
+/* line 61, ../../src/scss/_thumbnails.scss */
 div.viewer nav.thumbnails div ul li a.thumbnails_active img {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
@@ -899,7 +961,7 @@ div.viewer nav.thumbnails div ul li a.thumbnails_active img {
 /*
 	Thumbnails Controls
 */
-/* line 647, ../../src/scss/useful-viewer.scss */
+/* line 6, ../../src/scss/_thumbnails-controls.scss */
 div.viewer nav menu.scroller {
   position: absolute;
   height: 100%;
@@ -909,7 +971,7 @@ div.viewer nav menu.scroller {
   top: 0;
   width: 100%;
 }
-/* line 655, ../../src/scss/useful-viewer.scss */
+/* line 14, ../../src/scss/_thumbnails-controls.scss */
 div.viewer nav menu.scroller button {
   overflow: hidden;
   position: relative;
@@ -931,7 +993,7 @@ div.viewer nav menu.scroller button {
   width: 40px;
   z-index: 20;
 }
-/* line 668, ../../src/scss/useful-viewer.scss */
+/* line 27, ../../src/scss/_thumbnails-controls.scss */
 div.viewer nav menu.scroller button span {
   background: Transparent url(../img/viewer.png) no-repeat 0 0;
   content: "";
@@ -948,90 +1010,28 @@ div.viewer nav menu.scroller button span {
   text-align: center;
   top: 50%;
 }
-/* line 673, ../../src/scss/useful-viewer.scss */
+/* line 32, ../../src/scss/_thumbnails-controls.scss */
 div.viewer nav menu.scroller button:hover {
   background-color: #ff9800;
 }
-/* line 676, ../../src/scss/useful-viewer.scss */
+/* line 35, ../../src/scss/_thumbnails-controls.scss */
 div.viewer nav menu.scroller button.previous {
   left: 0;
 }
-/* line 678, ../../src/scss/useful-viewer.scss */
+/* line 37, ../../src/scss/_thumbnails-controls.scss */
 div.viewer nav menu.scroller button.previous span {
   background-position: 0% -64px;
 }
-/* line 682, ../../src/scss/useful-viewer.scss */
+/* line 41, ../../src/scss/_thumbnails-controls.scss */
 div.viewer nav menu.scroller button.next {
   right: 0;
 }
-/* line 684, ../../src/scss/useful-viewer.scss */
+/* line 43, ../../src/scss/_thumbnails-controls.scss */
 div.viewer nav menu.scroller button.next span {
   background-position: 100% -64px;
 }
-/* line 688, ../../src/scss/useful-viewer.scss */
+/* line 47, ../../src/scss/_thumbnails-controls.scss */
 div.viewer nav menu.scroller button.disabled {
   background-color: #7f7f7f;
   cursor: default;
-}
-
-/*
-	hover state
-*/
-/* line 699, ../../src/scss/useful-viewer.scss */
-div.viewer:hover div.canvas.canvas_hidden {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  -webkit-transition-property: opacity;
-  transition-property: opacity;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
-  transition-timing-function: ease;
-}
-/* line 705, ../../src/scss/useful-viewer.scss */
-div.viewer:hover nav.toolbar {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  visibility: visible;
-}
-/* line 709, ../../src/scss/useful-viewer.scss */
-div.viewer:hover menu.slider {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  -webkit-filter: none;
-          filter: none;
-  visibility: visible;
-}
-/* line 716, ../../src/scss/useful-viewer.scss */
-div.viewer:hover nav.buttons menu button {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-}
-
-/*
-	3D Rotation Variant
-*/
-/* line 726, ../../src/scss/useful-viewer.scss */
-div.viewer.spin_rotation div.wrapper {
-  background: #000;
-}
-
-/*
-	2D Slideshow Variant
-*/
-/* line 734, ../../src/scss/useful-viewer.scss */
-div.viewer.spin_slideshow div.wrapper {
-  background: #000;
-}
-/* line 737, ../../src/scss/useful-viewer.scss */
-div.viewer.spin_slideshow menu.zoom {
-  margin-bottom: 5%;
-}
-
-/*
-	2D Catalogue Variant
-*/
-/* line 745, ../../src/scss/useful-viewer.scss */
-div.viewer.spin_catalogue div.wrapper {
-  background: #000;
 }

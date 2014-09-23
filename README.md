@@ -34,6 +34,7 @@ This is the safest way of starting the script, but allows for only one target el
 var viewer = new useful.Viewer( document.getElementById('id'), {
 	'urlprefix' : '../',
 	'imageslice' : './php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
+	'transforms' : true,
 	'width' : '100',
 	'widthUnit' : '%',
 	'height' : '512',
@@ -61,6 +62,8 @@ var viewer = new useful.Viewer( document.getElementById('id'), {
 **links : {string}** - A CSS Rule that describes the toggle buttons within *parent*.
 
 **imageslice : {string}** - A web-service for requesting cropped tiles of an image on the server. An example is provided as *./php/imageslice.php*.
+
+**transforms : {boolean}** - Allow CSS3 transforms over CSS2. This should be faster on mobile devices.
 
 **width : {integer}** - The width of the slideshow.
 

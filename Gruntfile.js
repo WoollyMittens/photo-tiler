@@ -124,8 +124,8 @@ module.exports = function(grunt) {
 	// tasts
 	grunt.registerTask('default', ['watch']);
 	grunt.registerTask('serve', ['connect', 'watch']);
-	grunt.registerTask('dev', ['compass', 'autoprefixer', 'jshint', 'concat']);
-	grunt.registerTask('prod', ['compass', 'autoprefixer', 'jshint', 'uglify']);
+	grunt.registerTask('dev', ['compass:dev', 'autoprefixer', 'jshint', 'concat']);
+	grunt.registerTask('prod', ['compass:prod', 'autoprefixer', 'jshint', 'uglify']);
 	grunt.registerTask('import', ['copy']);
 	grunt.registerTask('fonts', ['font_optimizer']);
 
