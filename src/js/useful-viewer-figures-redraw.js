@@ -166,8 +166,9 @@ var useful = useful || {};
 				// formulate the css rule
 				var transformation = 'translate(' + x + '%, ' + y + '%) scale(' + z + ', ' + z + ')';
 				// set the transformation styles
-				cfg.status.figures[cfg.status.index].style.transform = transformation;
+				cfg.status.figures[cfg.status.index].style.msTransform = transformation;
 				cfg.status.figures[cfg.status.index].style.webkitTransform = transformation;
+				cfg.status.figures[cfg.status.index].style.transform = transformation;
 			// else use CSS2
 			} else {
 				// set the zoomed figure dimensions
