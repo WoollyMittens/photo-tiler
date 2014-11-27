@@ -28,12 +28,11 @@ To enable the use of HTML5 tags in Internet Explorer 8 and lower, include *html5
 
 ## How to start the script
 
-This is the safest way of starting the script, but allows for only one target element at a time.
-
 ```javascript
-var viewer = new useful.Viewer( document.getElementById('id'), {
-	'urlprefix' : '../',
-	'imageslice' : './php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
+var viewer = new useful.Viewer().init({
+	'element' : document.getElementById('viewer'),
+	'urlprefix' : '',
+	'imageslice' : 'inc/php/imageslice.php?src=../../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 	'transforms' : true,
 	'width' : '100',
 	'widthUnit' : '%',
@@ -53,7 +52,11 @@ var viewer = new useful.Viewer( document.getElementById('id'), {
 	'magnification' : '1.1',
 	'max' : '4',
 	'grid' : '256px',
-	'cache' : '32'
+	'cache' : '32',
+	'left' : 0,
+	'top' : 0,
+	'right' : 1,
+	'bottom' : 1
 });
 ```
 

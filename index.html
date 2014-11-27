@@ -49,7 +49,8 @@
 				<script>
 				//<!--
 					// create a new instance of the script
-					var viewera = new useful.Viewer( document.getElementById('viewera'), {
+					var viewera = new useful.Viewer().init({
+						'element' : document.getElementById('viewera'),
 						'urlprefix' : '',
 						'imageslice' : 'inc/php/imageslice.php?src=../../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 						'transforms' : true,
@@ -114,7 +115,8 @@
 				<script>
 				//<!--
 					// create a new instance of the script
-					var viewerc = new useful.Viewer( document.getElementById('viewerc'), {
+					var viewerc = new useful.Viewer().init({
+						'element' : document.getElementById('viewerc'),
 						'urlprefix' : '',
 						'imageslice' : 'inc/php/imageslice.php?src=../../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 						'transforms' : true,
@@ -174,7 +176,8 @@
 				<script>
 				//<!--
 					// create a new instance of the script
-					var viewerb = new useful.Viewer( document.getElementById('viewerb'), {
+					var viewerb = new useful.Viewer().init({
+						'element' : document.getElementById('viewerb'),
 						'urlprefix' : '',
 						'imageslice' : 'inc/php/imageslice.php?src=../../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 						'transforms' : true,
