@@ -79,11 +79,8 @@ div.viewer div.wrapper div.canvas figure {
 /* line 42, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background figure img,
 div.viewer div.wrapper div.canvas figure img {
-  -webkit-transition-property: all;
   transition-property: all;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
   vertical-align: top;
 }
@@ -114,11 +111,8 @@ div.viewer div.wrapper div.background .figure_fadeout,
 div.viewer div.wrapper div.canvas .figure_fadeout {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
-  -webkit-transition-property: opacity;
   transition-property: opacity;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
   z-index: 4;
 }
@@ -127,33 +121,26 @@ div.viewer div.wrapper div.background .figure_fadein,
 div.viewer div.wrapper div.canvas .figure_fadein {
   filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
   opacity: 1;
-  -webkit-transition-property: opacity;
   transition-property: opacity;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
   z-index: 5;
 }
 /* line 75, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background .figure_leafout,
 div.viewer div.wrapper div.canvas .figure_leafout {
-  -webkit-transition-property: clip, opacity, -webkit-transform;
+  transition-property: clip, opacity, -webkit-transform;
   transition-property: clip, opacity, transform;
-  -webkit-transition-duration: 0.6s, 0.6s, 0.6s;
   transition-duration: 0.6s, 0.6s, 0.6s;
-  -webkit-transition-timing-function: ease, ease, ease;
   transition-timing-function: ease, ease, ease;
   z-index: 4;
 }
 /* line 81, ../../src/scss/_main.scss */
 div.viewer div.wrapper div.background .figure_leafin,
 div.viewer div.wrapper div.canvas .figure_leafin {
-  -webkit-transition-property: clip, opacity, -webkit-transform;
+  transition-property: clip, opacity, -webkit-transform;
   transition-property: clip, opacity, transform;
-  -webkit-transition-duration: 0.6s, 0.6s, 0.6s;
   transition-duration: 0.6s, 0.6s, 0.6s;
-  -webkit-transition-timing-function: ease, ease, ease;
   transition-timing-function: ease, ease, ease;
   z-index: 5;
 }
@@ -173,11 +160,8 @@ div.viewer div.wrapper div.canvas.canvas_lens {
 div.viewer div.wrapper div.canvas.canvas_hidden {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
-  -webkit-transition-property: opacity;
   transition-property: opacity;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
 }
 /* line 103, ../../src/scss/_main.scss */
@@ -185,11 +169,8 @@ div.viewer div.wrapper:hover div.canvas.canvas_hidden,
 div.viewer div.wrapper div.canvas.canvas_visible {
   filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
   opacity: 1;
-  -webkit-transition-property: opacity;
   transition-property: opacity;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
 }
 /* line 111, ../../src/scss/_main.scss */
@@ -213,11 +194,8 @@ div.viewer div.cover {
 div.viewer:hover div.canvas.canvas_hidden {
   filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
   opacity: 1;
-  -webkit-transition-property: opacity;
   transition-property: opacity;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
 }
 /* line 133, ../../src/scss/_main.scss */
@@ -273,11 +251,8 @@ div.viewer.spin_catalogue div.wrapper {
 */
 /* line 7, ../../src/scss/_buttons.scss */
 div.viewer nav.buttons menu button {
-  -webkit-transition-property: all;
   transition-property: all;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
   overflow: hidden;
   position: relative;
@@ -398,11 +373,8 @@ div.viewer nav.buttons menu.spin button.decrease span {
 */
 /* line 5, ../../src/scss/_toolbar.scss */
 div.viewer nav.toolbar {
-  -webkit-transition-property: all;
   transition-property: all;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
   background-color: #ff6a00;
   border: solid 1px #fff;
@@ -646,11 +618,8 @@ div.viewer menu.slider.spin button.decrease span {
 */
 /* line 5, ../../src/scss/_toolbar-slider.scss */
 div.viewer menu.slider {
-  -webkit-transition-property: all;
   transition-property: all;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
@@ -894,11 +863,8 @@ div.viewer nav.thumbnails div {
 }
 /* line 17, ../../src/scss/_thumbnails.scss */
 div.viewer nav.thumbnails div ul {
-  -webkit-transition-property: all;
   transition-property: all;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
   height: 100%;
   margin: 0;
@@ -926,11 +892,8 @@ div.viewer nav.thumbnails div ul li a {
 div.viewer nav.thumbnails div ul li a img {
   filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
   opacity: 1;
-  -webkit-transition-property: opacity;
   transition-property: opacity;
-  -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
   -webkit-filter: none;
           filter: none;
