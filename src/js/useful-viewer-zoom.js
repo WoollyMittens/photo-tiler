@@ -14,59 +14,60 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Zoom = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
-		cfg.status.menus = cfg.status.menus || {};
-		cfg.status.menus.zoomMenu = document.createElement('menu');
-		cfg.status.menus.zoomMenu.className = 'slider zoom';
-		cfg.status.menus.zoomMenu.style.bottom = ((1 - cfg.divide) * 100) + '%';
+		config.status.menus = config.status.menus || {};
+		config.status.menus.zoomMenu = document.createElement('menu');
+		config.status.menus.zoomMenu.className = 'slider zoom';
+		config.status.menus.zoomMenu.style.bottom = ((1 - config.divide) * 100) + '%';
 		// add the slider to the menu
-		this.build.slider(cfg.status.menus.zoomMenu);
+		this.build.slider(config.status.menus.zoomMenu);
 		// add a touch cover to the menu
-		this.build.cover(cfg.status.menus.zoomMenu);
+		this.build.cover(config.status.menus.zoomMenu);
 		// add the increase button
-		this.build.increaser(cfg.status.menus.zoomMenu);
+		this.build.increaser(config.status.menus.zoomMenu);
 		// add the decrease button
-		this.build.decreaser(cfg.status.menus.zoomMenu);
+		this.build.decreaser(config.status.menus.zoomMenu);
 		// add the menu to the interface
-		cfg.element.appendChild(cfg.status.menus.zoomMenu);
+		config.element.appendChild(config.status.menus.zoomMenu);
 	};
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// gather the constants
 		var minZoom = 1,
-			maxZoom = cfg.heights[cfg.status.index] / cfg.status.canvas.offsetHeight,
-			curZoom = cfg.status.zoom;
+			maxZoom = config.heights[config.status.index] / config.status.canvas.offsetHeight,
+			curZoom = config.status.zoom;
 		// update the value
-		cfg.status.menus.zoomIndicator.setAttribute('value', curZoom);
-		cfg.status.menus.zoomSliderIcon.innerHTML = curZoom;
+		config.status.menus.zoomIndicator.setAttribute('value', curZoom);
+		config.status.menus.zoomSliderIcon.innerHTML = curZoom;
 		// reposition the slider
-		cfg.status.menus.zoomSlider.style.top = (100 - (curZoom - minZoom) / (maxZoom - minZoom) * 100) + '%';
+		config.status.menus.zoomSlider.style.top = (100 - (curZoom - minZoom) / (maxZoom - minZoom) * 100) + '%';
 	};
 	this.increase = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// increase the zoom factor
-		cfg.status.zoom = cfg.status.zoom * cfg.magnification;
+		config.status.zoom = config.status.zoom * config.magnification;
 		// order a redraw
 		parent.update();
 	};
 	this.decrease = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the zoom factor
-		cfg.status.zoom = cfg.status.zoom / cfg.magnification;
+		config.status.zoom = config.status.zoom / config.magnification;
 		// order a redraw
 		parent.update();
 	};
 	// build functionality
-	this.build = new this.parent.Zoom_Build(this);
+	this.build = new this.context.Zoom_Build(this);
 	// mouse controls
-	this.mouse = new this.parent.Zoom_Mouse(this);
+	this.mouse = new this.context.Zoom_Mouse(this);
 	// touch screen controls
-	this.touch = new this.parent.Zoom_Touch(this);
+	this.touch = new this.context.Zoom_Touch(this);
 };
 
 // return as a require.js module

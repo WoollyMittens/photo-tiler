@@ -14,63 +14,64 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Thumbnails = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// build the thumbnail list
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the navigation bar
-		cfg.status.slideNav = document.createElement('nav');
-		cfg.status.slideNav.className = 'thumbnails';
-		cfg.status.slideDiv = document.createElement('div');
-		cfg.status.slideUl = document.createElement('ul');
+		config.status.slideNav = document.createElement('nav');
+		config.status.slideNav.className = 'thumbnails';
+		config.status.slideDiv = document.createElement('div');
+		config.status.slideUl = document.createElement('ul');
 		// force the height of the nav if desired
-		if (cfg.divide !== '100%') {
-			cfg.status.slideNav.style.height = (100 - cfg.divide * 100 - parseInt(cfg.margin, 10)) + '%';
+		if (config.divide !== '100%') {
+			config.status.slideNav.style.height = (100 - config.divide * 100 - parseInt(config.margin, 10)) + '%';
 		}
-		if (cfg.margin) {
-			cfg.pixelMargin = parseInt(cfg.element.offsetWidth * parseInt(cfg.margin, 10) / 100, 10);
+		if (config.margin) {
+			config.pixelMargin = parseInt(config.element.offsetWidth * parseInt(config.margin, 10) / 100, 10);
 		}
-		// for all thumbnails in the root.cfg
-		cfg.status.thumbnails = [0];
-		for (var a = 1; a < cfg.thumbnails.length; a += 1) {
+		// for all thumbnails in the this.config
+		config.status.thumbnails = [0];
+		for (var a = 1; a < config.thumbnails.length; a += 1) {
 			// create a new thumbnail
 			var newLi = document.createElement('li');
 			var newA = document.createElement('a');
-			newA.className = (a === 1) ? cfg.navigation + '_active' : cfg.navigation + '_passive';
+			newA.className = (a === 1) ? config.navigation + '_active' : config.navigation + '_passive';
 			var newImage = document.createElement('img');
 			newImage.alt = '';
-			newImage.src = cfg.thumbnails[a];
+			newImage.src = config.thumbnails[a];
 			newA.appendChild(newImage);
 			newLi.appendChild(newA);
 			// insert the new nodes
-			cfg.status.slideUl.appendChild(newLi);
+			config.status.slideUl.appendChild(newLi);
 			// store the dom pointers to the images
-			cfg.status.thumbnails[a] = newA;
+			config.status.thumbnails[a] = newA;
 		}
 		// insert the navigation bar
-		cfg.status.slideDiv.appendChild(cfg.status.slideUl);
-		cfg.status.slideNav.appendChild(cfg.status.slideDiv);
-		cfg.element.appendChild(cfg.status.slideNav);
-		// for all thumbnails in the root.cfg
-		for (a = 1; a < cfg.thumbnails.length; a += 1) {
+		config.status.slideDiv.appendChild(config.status.slideUl);
+		config.status.slideNav.appendChild(config.status.slideDiv);
+		config.element.appendChild(config.status.slideNav);
+		// for all thumbnails in the this.config
+		for (a = 1; a < config.thumbnails.length; a += 1) {
 			// assign the event handler
-			this.onThumbnailClick(cfg.status.thumbnails[a]);
+			this.onThumbnailClick(config.status.thumbnails[a]);
 		}
 		// start the menu
 		this.menu.setup();
 	};
 	// event handlers
 	this.onThumbnailClick = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		var _this = this;
 		element.addEventListener('click', function (event) {
 			_this.set(event, element);
 		}, false);
 	};
-	// redraw/recentre the thumbnails according to the root.cfg
+	// redraw/recentre the thumbnails according to the this.config
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// update the thumbnails menu
 		this.menu.update();
 		/// highlight the icons
@@ -82,24 +83,24 @@ useful.Viewer.prototype.Thumbnails = function (parent) {
 	};
 	// highlight active icon
 	this.hightlightIcons = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// for all thumbnails
-		for (var a = 1, b = cfg.thumbnails.length; a < b; a += 1) {
+		for (var a = 1, b = config.thumbnails.length; a < b; a += 1) {
 			// highlight the active slide
-			cfg.status.thumbnails[a].className = (cfg.status.index === a) ? cfg.navigation + '_active' : cfg.navigation + '_passive';
+			config.status.thumbnails[a].className = (config.status.index === a) ? config.navigation + '_active' : config.navigation + '_passive';
 		}
 	};
 	// centre the icons in containers
 	this.centreIcons = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		var imageObject, imageWidth, imageHeight, rowHeight;
 		// measure the available space
-		rowHeight = cfg.status.slideNav.offsetHeight;
+		rowHeight = config.status.slideNav.offsetHeight;
 		// for all thumbnails
-		for (var a = 1, b = cfg.thumbnails.length; a < b; a += 1) {
+		for (var a = 1, b = config.thumbnails.length; a < b; a += 1) {
 			// centre the image in its surroundings
-			cfg.status.thumbnails[a].style.width =  rowHeight + 'px';
-			imageObject = cfg.status.thumbnails[a].getElementsByTagName('img')[0];
+			config.status.thumbnails[a].style.width =  rowHeight + 'px';
+			imageObject = config.status.thumbnails[a].getElementsByTagName('img')[0];
 			imageWidth = imageObject.offsetWidth;
 			imageHeight = imageObject.offsetHeight;
 			if (imageWidth > imageHeight) {
@@ -119,42 +120,42 @@ useful.Viewer.prototype.Thumbnails = function (parent) {
 	};
 	// centre the container around the active one
 	this.centreSlider = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// scroll the slider enough to center the active slide
-		var activeThumbnail = cfg.status.thumbnails[cfg.status.index];
+		var activeThumbnail = config.status.thumbnails[config.status.index];
 		var activePosition = activeThumbnail.offsetLeft;
 		var activeWidth = activeThumbnail.offsetWidth;
-		var scrollDistance = cfg.status.slideDiv.offsetWidth;
+		var scrollDistance = config.status.slideDiv.offsetWidth;
 		var centeredPosition = -activePosition + scrollDistance / 2 - activeWidth / 2;
 		centeredPosition = (centeredPosition > 0) ? 0 : centeredPosition;
-		centeredPosition = (centeredPosition < cfg.scrollMax && cfg.scrollMax < 0) ? cfg.scrollMax : centeredPosition;
+		centeredPosition = (centeredPosition < config.scrollMax && config.scrollMax < 0) ? config.scrollMax : centeredPosition;
 		// transition to the new position
 		useful.transitions.byRules(
-			cfg.status.slideUl,
+			config.status.slideUl,
 			{'marginLeft' : centeredPosition + 'px'}
 		);
 	};
 	// activate a corresponding figure
 	this.set = function (event, node) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// count which thumbnail this is
-		for (var a = 1; a < cfg.status.thumbnails.length; a += 1) {
-			if (cfg.status.thumbnails[a] === node) {
+		for (var a = 1; a < config.status.thumbnails.length; a += 1) {
+			if (config.status.thumbnails[a] === node) {
 				// change the index to this slide
-				cfg.status.index = a;
+				config.status.index = a;
 				// reset the zoom
-				cfg.status.zoom = (cfg.zoom !== 'static') ? cfg.max : 1;
+				config.status.zoom = (config.zoom !== 'static') ? config.max : 1;
 				// redraw all
-				root.update();
+				parent.update();
 			}
 		}
 		// cancel the click
 		event.preventDefault();
 	};
 	// manages the thumbnail controls
-	this.menu = new this.parent.Thumbnails_Menu(this);
+	this.menu = new this.context.Thumbnails_Menu(this);
 };
 
 // return as a require.js module

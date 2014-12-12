@@ -14,27 +14,28 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Figures = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// builds the figure
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// enable the streaming of images
-		cfg.status.stream = true;
+		config.status.stream = true;
 		// set up a counter for the amount of images streamed
-		cfg.status.count = 0;
+		config.status.count = 0;
 		// create a storage place for the transition timeouts
-		cfg.status.transitions = [];
+		config.status.transitions = [];
 		// create a wrapper for overflow management
-		cfg.status.wrapper = document.createElement('div');
-		cfg.status.wrapper.className = 'wrapper';
+		config.status.wrapper = document.createElement('div');
+		config.status.wrapper.className = 'wrapper';
 		// force the height of the wrapper if desired
-		cfg.status.wrapper.style.height = (cfg.divide * 100) + '%';
+		config.status.wrapper.style.height = (config.divide * 100) + '%';
 		// create a canvas layer to contain the images
-		cfg.status.canvas = document.createElement('div');
-		cfg.status.canvas.className = 'canvas';
+		config.status.canvas = document.createElement('div');
+		config.status.canvas.className = 'canvas';
 		// add the canvas to the parent
-		cfg.status.wrapper.appendChild(cfg.status.canvas);
+		config.status.wrapper.appendChild(config.status.canvas);
 		// add the figures to the construct
 		this.addFigures();
 		// add the cover layer to the construct
@@ -42,110 +43,110 @@ useful.Viewer.prototype.Figures = function (parent) {
 		// add the lens to the construct
 		this.addLens();
 		// add the wrapper to the parent
-		cfg.element.appendChild(cfg.status.wrapper);
+		config.element.appendChild(config.status.wrapper);
 		// add a place to contain the tiles
-		cfg.status.tiles = {};
+		config.status.tiles = {};
 	};
 	// add the figures to the construct
 	this.addFigures = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
-		// for all figures in the root.cfg
-		cfg.status.figures = [0];
+		var context = this.context, parent = this.parent, config = this.config;
+		// for all figures in the this.config
+		config.status.figures = [0];
 		var newImage, newWidth, newHeight, croppedWidth, croppedHeight;
-		for (var a = 1, b = cfg.figures.length; a < b; a += 1) {
+		for (var a = 1, b = config.figures.length; a < b; a += 1) {
 			// calculate the cropped dimensions
-			croppedWidth = cfg.widths[a] * (cfg.rights[a] - cfg.lefts[a]);
-			croppedHeight = cfg.heights[a] * (cfg.bottoms[a] - cfg.tops[a]);
+			croppedWidth = config.widths[a] * (config.rights[a] - config.lefts[a]);
+			croppedHeight = config.heights[a] * (config.bottoms[a] - config.tops[a]);
 			// calculate the starting dimensions
-			newHeight = cfg.element.offsetHeight * cfg.divide;
+			newHeight = config.element.offsetHeight * config.divide;
 			newWidth = newHeight / croppedHeight * croppedWidth;
 			// create a new slide
-			cfg.status.figures[a] = document.createElement('figure');
-			cfg.status.figures[a].className = (a === 1) ? 'figure_active' : 'figure_passive';
-			cfg.status.figures[a].style.width = parseInt(newWidth, 10) + 'px';
-			cfg.status.figures[a].style.height = parseInt(newHeight, 10) + 'px';
-			cfg.status.figures[a].style.left = (cfg.status.pan.x * 100) + '%';
-			cfg.status.figures[a].style.top = (cfg.status.pan.y * 100) + '%';
-			cfg.status.figures[a].style.marginLeft = parseInt(newWidth / -2, 10) + 'px';
-			cfg.status.figures[a].style.marginTop = parseInt(newHeight / -2, 10) + 'px';
+			config.status.figures[a] = document.createElement('figure');
+			config.status.figures[a].className = (a === 1) ? 'figure_active' : 'figure_passive';
+			config.status.figures[a].style.width = parseInt(newWidth, 10) + 'px';
+			config.status.figures[a].style.height = parseInt(newHeight, 10) + 'px';
+			config.status.figures[a].style.left = (config.status.pan.x * 100) + '%';
+			config.status.figures[a].style.top = (config.status.pan.y * 100) + '%';
+			config.status.figures[a].style.marginLeft = parseInt(newWidth / -2, 10) + 'px';
+			config.status.figures[a].style.marginTop = parseInt(newHeight / -2, 10) + 'px';
 			// add the default image to the slide
 			newImage = document.createElement('img');
 			// load starting images
-			newImage.src = cfg.imageslice
-				.replace(cfg.regSrc, cfg.figures[a])
-				.replace(cfg.regWidth, parseInt(newWidth, 10))
-				.replace(cfg.regHeight, parseInt(newHeight, 10))
-				.replace(cfg.regLeft, cfg.lefts[a])
-				.replace(cfg.regTop, cfg.tops[a])
-				.replace(cfg.regRight, cfg.rights[a])
-				.replace(cfg.regBottom, cfg.bottoms[a]);
+			newImage.src = config.imageslice
+				.replace(config.regSrc, config.figures[a])
+				.replace(config.regWidth, parseInt(newWidth, 10))
+				.replace(config.regHeight, parseInt(newHeight, 10))
+				.replace(config.regLeft, config.lefts[a])
+				.replace(config.regTop, config.tops[a])
+				.replace(config.regRight, config.rights[a])
+				.replace(config.regBottom, config.bottoms[a]);
 			// set the image properties
 			newImage.style.width = '100%';
 			newImage.style.height = '100%';
 			newImage.className = 'zoom_0';
-			if (cfg.descriptions) {
-				newImage.setAttribute('alt', cfg.descriptions[a]);
+			if (config.descriptions) {
+				newImage.setAttribute('alt', config.descriptions[a]);
 			} else {
 				newImage.setAttribute('alt', '');
 			}
-			if (cfg.titles) {
-				newImage.setAttribute('title', cfg.titles[a]);
+			if (config.titles) {
+				newImage.setAttribute('title', config.titles[a]);
 			} else {
 				newImage.setAttribute('title', '');
 			}
-			cfg.status.figures[a].appendChild(newImage);
+			config.status.figures[a].appendChild(newImage);
 			// insert the new nodes
-			cfg.status.canvas.appendChild(cfg.status.figures[a]);
+			config.status.canvas.appendChild(config.status.figures[a]);
 		}
 	};
 	// add the lens to the construct
 	this.addLens = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// clone the initial figure into a background layer on non-static zooms
-		if (cfg.zoom !== 'static') {
+		if (config.zoom !== 'static') {
 			// create a background layer to contain all the low res backgrounds
-			cfg.status.background = cfg.status.canvas.cloneNode(true);
-			cfg.status.background.className = 'background';
+			config.status.background = config.status.canvas.cloneNode(true);
+			config.status.background.className = 'background';
 			// insert the background into the parent
-			cfg.status.wrapper.insertBefore(cfg.status.background, cfg.status.canvas);
+			config.status.wrapper.insertBefore(config.status.background, config.status.canvas);
 			// apply a lens style to the canvas
-			cfg.status.canvas.className += ' canvas_lens canvas_hidden';
+			config.status.canvas.className += ' canvas_lens canvas_hidden';
 			// set a starting zoom factor
-			cfg.status.zoom = cfg.max;
+			config.status.zoom = config.max;
 			// set the lens dimensions
-			if (cfg.zoom === 'lens') {
-				var lensSize = cfg.element.offsetWidth * cfg.lens;
-				cfg.status.canvas.style.width = lensSize + 'px';
-				cfg.status.canvas.style.height = lensSize + 'px';
+			if (config.zoom === 'lens') {
+				var lensSize = config.element.offsetWidth * config.lens;
+				config.status.canvas.style.width = lensSize + 'px';
+				config.status.canvas.style.height = lensSize + 'px';
 				if (navigator.userAgent.match(/firefox|webkit/gi)) {
-					cfg.status.canvas.style.borderRadius = '50%';	//(lensSize / 2) + 'px';
+					config.status.canvas.style.borderRadius = '50%';	//(lensSize / 2) + 'px';
 				}
 			}
 			// store the backgrounds
-			var backgroundFigures = cfg.status.background.getElementsByTagName('figure');
-			cfg.status.backgrounds = [];
+			var backgroundFigures = config.status.background.getElementsByTagName('figure');
+			config.status.backgrounds = [];
 			for (var a = 0, b = backgroundFigures.length; a < b; a += 1) {
-				cfg.status.backgrounds[a + 1] = backgroundFigures[a];
-				cfg.status.backgrounds[a + 1].style.display = 'block';
-				cfg.status.backgrounds[a + 1].style.position = 'absolute';
+				config.status.backgrounds[a + 1] = backgroundFigures[a];
+				config.status.backgrounds[a + 1].style.display = 'block';
+				config.status.backgrounds[a + 1].style.position = 'absolute';
 			}
 		}
 	};
 	// add the cover to the construct
 	this.addCover = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add a top layer for uninterrupted touch events
-		cfg.status.cover = document.createElement('div');
-		cfg.status.cover.className = 'cover';
-		cfg.status.wrapper.appendChild(cfg.status.cover);
+		config.status.cover = document.createElement('div');
+		config.status.cover.className = 'cover';
+		config.status.wrapper.appendChild(config.status.cover);
 		// add the mouse events for the cover layer
-		this.onCoverScroll(cfg.status.cover);
-		this.onCoverMouse(cfg.status.cover);
-		this.onCoverTouch(cfg.status.cover);
+		this.onCoverScroll(config.status.cover);
+		this.onCoverMouse(config.status.cover);
+		this.onCoverTouch(config.status.cover);
 	};
 	// set the mouse wheel events
 	this.onCoverScroll = function (cover) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		var _this = this;
 		cover.addEventListener('mousewheel', function (event) {
 			_this.mouse.wheel(event);
@@ -156,10 +157,10 @@ useful.Viewer.prototype.Figures = function (parent) {
 	};
 	// add the mouse events
 	this.onCoverMouse = function (cover) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// set the right interactions for the zoom mode
 		var _this = this;
-		if (cfg.zoom !== 'static') {
+		if (config.zoom !== 'static') {
 			cover.addEventListener('mousemove', function (event) {
 				_this.mouse.mirror(event);
 			}, false);
@@ -180,10 +181,10 @@ useful.Viewer.prototype.Figures = function (parent) {
 	};
 	// add the touch events
 	this.onCoverTouch = function (cover) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		var _this = this;
 		// set the right interactions for the zoom mode
-		if (cfg.zoom !== 'static') {
+		if (config.zoom !== 'static') {
 			cover.addEventListener('move', function (event) {
 				_this.touch.mirror(event);
 			}, false);
@@ -201,7 +202,7 @@ useful.Viewer.prototype.Figures = function (parent) {
 	};
 	// redraws the figure
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// validate the input
 		this.redraw.validate();
 		// calculate the values
@@ -220,11 +221,11 @@ useful.Viewer.prototype.Figures = function (parent) {
 		this.redraw.spin();
 	};
 	// redrawing functionality
-	this.redraw = new this.parent.Figures_Redraw(this);
+	this.redraw = new this.context.Figures_Redraw(this);
 	// mouse controls
-	this.mouse = new this.parent.Figures_Mouse(this);
+	this.mouse = new this.context.Figures_Mouse(this);
 	// touch screen controls
-	this.touch = new this.parent.Figures_Touch(this);
+	this.touch = new this.context.Figures_Touch(this);
 };
 
 // return as a require.js module

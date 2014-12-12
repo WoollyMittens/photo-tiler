@@ -14,63 +14,64 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Spin = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
-		cfg.status.menus = cfg.status.menus || {};
-		cfg.status.menus.spinMenu = document.createElement('menu');
-		cfg.status.menus.spinMenu.className = 'slider spin';
-		cfg.status.menus.spinMenu.style.bottom = ((1 - cfg.divide) * 100) + '%';
+		config.status.menus = config.status.menus || {};
+		config.status.menus.spinMenu = document.createElement('menu');
+		config.status.menus.spinMenu.className = 'slider spin';
+		config.status.menus.spinMenu.style.bottom = ((1 - config.divide) * 100) + '%';
 		// add the slider to the menu
-		this.build.slider(cfg.status.menus.spinMenu);
+		this.build.slider(config.status.menus.spinMenu);
 		// add a touch cover to the menu
-		this.build.cover(cfg.status.menus.spinMenu);
+		this.build.cover(config.status.menus.spinMenu);
 		// add the increase button
-		this.build.increaser(cfg.status.menus.spinMenu);
+		this.build.increaser(config.status.menus.spinMenu);
 		// add the decrease button
-		this.build.decreaser(cfg.status.menus.spinMenu);
+		this.build.decreaser(config.status.menus.spinMenu);
 		// add the menu to the interface
-		cfg.element.appendChild(cfg.status.menus.spinMenu);
+		config.element.appendChild(config.status.menus.spinMenu);
 	};
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// reposition the slider
-		cfg.status.menus.spinSlider.style.left = ((cfg.status.index - 1) / (cfg.status.figures.length - 2) * 100) + '%';
+		config.status.menus.spinSlider.style.left = ((config.status.index - 1) / (config.status.figures.length - 2) * 100) + '%';
 		// update the value
-		cfg.status.menus.spinIndicator.setAttribute('value', cfg.status.index);
-		cfg.status.menus.spinSliderIcon.innerHTML = cfg.status.index;
+		config.status.menus.spinIndicator.setAttribute('value', config.status.index);
+		config.status.menus.spinSliderIcon.innerHTML = config.status.index;
 	};
 	this.increase = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
-		cfg.status.index -= 1;
+		config.status.index -= 1;
 		// loop the value if needed
-		if (cfg.status.index <= 0) {
-			cfg.status.index = cfg.status.figures.length - 1;
+		if (config.status.index <= 0) {
+			config.status.index = config.status.figures.length - 1;
 		}
 		// order a redraw
-		root.update();
+		parent.update();
 	};
 	this.decrease = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// increase the spin index
-		cfg.status.index += 1;
+		config.status.index += 1;
 		// loop the value if needed
-		if (cfg.status.index >= cfg.status.figures.length) {
-			cfg.status.index = 1;
+		if (config.status.index >= config.status.figures.length) {
+			config.status.index = 1;
 		}
 		// order a redraw
-		root.update();
+		parent.update();
 	};
 	// build functionality
-	this.build = new this.parent.Spin_Build(this);
+	this.build = new this.context.Spin_Build(this);
 	// mouse wheel controls
-	this.mouse = new this.parent.Spin_Mouse(this);
+	this.mouse = new this.context.Spin_Mouse(this);
 	// touch screen controls
-	this.touch = new this.parent.Spin_Touch(this);
+	this.touch = new this.context.Spin_Touch(this);
 };
 
 // return as a require.js module

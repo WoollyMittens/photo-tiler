@@ -14,45 +14,44 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 	// properties
 	"use strict";
-	// methods
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	this.y = null;
 	this.distance = null;
 	this.sensitivity = null;
 	this.fudge = 1.1;
-	// mouse wheel controls
+	// methods
 	this.wheel = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the reading from the mouse wheel
 		var distance = (window.event) ? window.event.wheelDelta / 120 : -event.detail / 3;
 		// do not loop around
 		if (distance < 0) {
 			// increase the zoom factor
-			cfg.status.zoom = cfg.status.zoom * cfg.magnification;
+			config.status.zoom = config.status.zoom * config.magnification;
 		} else if (distance > 0) {
 			// decrease the zoom factor
-			cfg.status.zoom = cfg.status.zoom / cfg.magnification;
+			config.status.zoom = config.status.zoom / config.magnification;
 		}
 		// call for a redraw
-		root.update();
+		parent.parent.update();
 		// cancel the scrolling
 		event.preventDefault();
 	};
-	// mouse gesture controls
 	this.start = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// store the touch positions
 		this.y = event.pageY || event.y;
-		this.distance = cfg.status.menus.zoomCover.offsetHeight - cfg.status.menus.zoomIn.offsetHeight - cfg.status.menus.zoomOut.offsetHeight;
-		this.sensitivity = cfg.heights[cfg.status.index] / cfg.status.canvas.offsetHeight - 1;
+		this.distance = config.status.menus.zoomCover.offsetHeight - config.status.menus.zoomIn.offsetHeight - config.status.menus.zoomOut.offsetHeight;
+		this.sensitivity = config.heights[config.status.index] / config.status.canvas.offsetHeight - 1;
 		// cancel the click
 		event.preventDefault();
 	};
 	this.move = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// if there is a touch in progress
@@ -60,27 +59,27 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 			// store the touch positions
 			var y = event.pageY || event.y;
 			// calculate the drag distance into %
-			cfg.status.zoom += (this.y - y) / this.distance * this.sensitivity * this.fudge;
+			config.status.zoom += (this.y - y) / this.distance * this.sensitivity * this.fudge;
 			// reset the distance
 			this.y = y;
 			// disable streaming new images
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// order a redraw
-			root.update();
+			parent.parent.update();
 		}
 		// cancel the click
 		event.preventDefault();
 	};
 	this.end = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// clear the positions
 		this.y = null;
 		// enable streaming new images
-		cfg.status.stream = true;
+		config.status.stream = true;
 		// order a redraw
-		root.update();
+		parent.parent.update();
 		// cancel the click
 		event.preventDefault();
 	};

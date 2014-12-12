@@ -14,87 +14,88 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Leaf = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// build the leafing toolbar
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
-		cfg.status.menus = cfg.status.menus || {};
-		cfg.status.menus.leafMenu = document.createElement('menu');
-		cfg.status.menus.leafMenu.className = 'slider leaf';
-		cfg.status.menus.leafMenu.style.bottom = ((1 - cfg.divide) * 100) + '%';
+		config.status.menus = config.status.menus || {};
+		config.status.menus.leafMenu = document.createElement('menu');
+		config.status.menus.leafMenu.className = 'slider leaf';
+		config.status.menus.leafMenu.style.bottom = ((1 - config.divide) * 100) + '%';
 		// create the page indicator
-		this.build.indicator(cfg.status.menus.leafMenu);
+		this.build.indicator(config.status.menus.leafMenu);
 		// create the reset button
-		this.build.resetter(cfg.status.menus.leafMenu);
+		this.build.resetter(config.status.menus.leafMenu);
 		// create the next button
-		this.build.increaser(cfg.status.menus.leafMenu);
+		this.build.increaser(config.status.menus.leafMenu);
 		// create the previous button
-		this.build.decreaser(cfg.status.menus.leafMenu);
+		this.build.decreaser(config.status.menus.leafMenu);
 		// add the menu to the interface
-		cfg.element.appendChild(cfg.status.menus.leafMenu);
+		config.element.appendChild(config.status.menus.leafMenu);
 	};
 	// updates the leafing toolbar
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// fill in the current page
-		cfg.status.menus.leafPageInput.value = cfg.status.index;
+		config.status.menus.leafPageInput.value = config.status.index;
 		// fill in the page total
-		cfg.status.menus.leafPageCount.innerHTML = 'of ' +	(cfg.status.figures.length - 1);
+		config.status.menus.leafPageCount.innerHTML = 'of ' +	(config.status.figures.length - 1);
 	};
 	this.increase = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
-		cfg.status.index += 1;
+		config.status.index += 1;
 		// look if needed
-		if (cfg.toolbars === 'buttons') {
+		if (config.toolbars === 'buttons') {
 			// loop the value if needed
-			if (cfg.status.index >= cfg.status.figures.length) {
-				cfg.status.index = 1;
+			if (config.status.index >= config.status.figures.length) {
+				config.status.index = 1;
 			}
 			// loop the value if needed
-			if (cfg.status.index <= 0) {
-				cfg.status.index = cfg.status.figures.length - 1;
+			if (config.status.index <= 0) {
+				config.status.index = config.status.figures.length - 1;
 			}
 		}
 		// redraw
-		root.update();
+		parent.update();
 		// cancel the click
 		event.preventDefault();
 	};
 	this.decrease = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
-		cfg.status.index -= 1;
+		config.status.index -= 1;
 		// redraw
-		root.update();
+		parent.update();
 		// cancel the click
 		event.preventDefault();
 	};
 	this.typed = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the typed number
-		var number = parseInt(cfg.status.menus.leafPageInput.value, 10);
+		var number = parseInt(config.status.menus.leafPageInput.value, 10);
 		// if the typed number is acceptable
 		if (!isNaN(number)) {
 			// accept the value
-			cfg.status.index = number;
+			config.status.index = number;
 		}
 		// update the interface
-		root.update();
+		parent.update();
 	};
 	this.reset = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// reset the zoom level
-		cfg.status.zoom = (cfg.zoom !== 'static') ? cfg.max : 1;
+		config.status.zoom = (config.zoom !== 'static') ? config.max : 1;
 		// redraw
-		root.update();
+		parent.update();
 		// cancel the click
 		event.preventDefault();
 	};
 	// build functionality
-	this.build = new this.parent.Leaf_Build(this);
+	this.build = new this.context.Leaf_Build(this);
 };
 
 // return as a require.js module

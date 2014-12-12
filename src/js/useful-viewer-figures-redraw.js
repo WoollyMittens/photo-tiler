@@ -14,45 +14,46 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Figures_Redraw = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.validate = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// reset the stored limits
-		cfg.status.atMinZoom = false;
-		cfg.status.atMaxZoom = false;
-		cfg.status.atMinLeaf = false;
-		cfg.status.atMaxLeaf = false;
+		config.status.atMinZoom = false;
+		config.status.atMaxZoom = false;
+		config.status.atMinLeaf = false;
+		config.status.atMaxLeaf = false;
 		// check the zoom level
-		var minZoom = (cfg.zoom !== 'static') ? (1 / cfg.lens) : 1;
-		if (cfg.status.zoom <= minZoom) {
-			cfg.status.zoom = minZoom;
-			cfg.status.atMinZoom = true;
+		var minZoom = (config.zoom !== 'static') ? (1 / config.lens) : 1;
+		if (config.status.zoom <= minZoom) {
+			config.status.zoom = minZoom;
+			config.status.atMinZoom = true;
 		}
-		if (cfg.status.index <= 1) {
-			cfg.status.index = 1;
-			cfg.status.atMinLeaf = true;
+		if (config.status.index <= 1) {
+			config.status.index = 1;
+			config.status.atMinLeaf = true;
 		}
-		if (cfg.status.index >= cfg.status.figures.length) {
-			cfg.status.index = cfg.status.figures.length - 1;
-			cfg.status.atMaxLeaf = true;
+		if (config.status.index >= config.status.figures.length) {
+			config.status.index = config.status.figures.length - 1;
+			config.status.atMaxLeaf = true;
 		}
 	};
 	this.calculate = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// calculate dimensions for a given zoom level
-		this.canvasWidth = cfg.status.canvas.offsetWidth;
-		this.canvasHeight = cfg.status.canvas.offsetHeight;
-		this.canvasLeft = cfg.status.pos.x - this.canvasWidth / 2;
-		this.canvasTop = cfg.status.pos.y - this.canvasHeight / 2;
-		this.maxWidth = cfg.widths[cfg.status.index] * (cfg.rights[cfg.status.index] - cfg.lefts[cfg.status.index]);
-		this.maxHeight = cfg.heights[cfg.status.index] * (cfg.bottoms[cfg.status.index] - cfg.tops[cfg.status.index]);
+		this.canvasWidth = config.status.canvas.offsetWidth;
+		this.canvasHeight = config.status.canvas.offsetHeight;
+		this.canvasLeft = config.status.pos.x - this.canvasWidth / 2;
+		this.canvasTop = config.status.pos.y - this.canvasHeight / 2;
+		this.maxWidth = config.widths[config.status.index] * (config.rights[config.status.index] - config.lefts[config.status.index]);
+		this.maxHeight = config.heights[config.status.index] * (config.bottoms[config.status.index] - config.tops[config.status.index]);
 		this.figureAspect = this.maxWidth / this.maxHeight;
-		this.figureWidth = this.canvasHeight * this.figureAspect * cfg.status.zoom;
-		this.figureHeight = this.canvasHeight * cfg.status.zoom;
-		this.figureLeft = (cfg.status.pan.x - 0.5) * this.canvasWidth;
-		this.figureTop = (cfg.status.pan.y - 0.5) * this.canvasHeight;
+		this.figureWidth = this.canvasHeight * this.figureAspect * config.status.zoom;
+		this.figureHeight = this.canvasHeight * config.status.zoom;
+		this.figureLeft = (config.status.pan.x - 0.5) * this.canvasWidth;
+		this.figureTop = (config.status.pan.y - 0.5) * this.canvasHeight;
 		this.overscanLeft = (this.figureWidth - this.canvasWidth) / 2;
 		this.overscanTop = (this.figureHeight - this.canvasHeight) / 2;
 		this.offsetLeft = this.overscanLeft - this.figureLeft;
@@ -63,141 +64,141 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 		this.maxPanTop = this.overscanTop / this.canvasHeight + 0.5;
 		this.maxZoom = this.maxHeight / this.canvasHeight;
 		// extra dimensions for non static zooms
-		if (cfg.zoom !== 'static') {
-			this.backgroundWidth = cfg.status.background.offsetWidth;
-			this.backgroundHeight = cfg.status.background.offsetHeight;
+		if (config.zoom !== 'static') {
+			this.backgroundWidth = config.status.background.offsetWidth;
+			this.backgroundHeight = config.status.background.offsetHeight;
 			this.backgroundLeft = (this.backgroundHeight * this.figureAspect - this.backgroundWidth) / 2;
 			this.backgroundTop = 0;
 		}
 	};
 	this.normalise = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// normalise the figure position
 		if (this.figureWidth >= this.maxWidth || this.figureHeight >= this.maxHeight) {
 			this.figureWidth = this.maxWidth;
 			this.figureHeight = this.maxHeight;
-			cfg.status.zoom = this.maxZoom;
-			cfg.status.atMaxZoom = true;
+			config.status.zoom = this.maxZoom;
+			config.status.atMaxZoom = true;
 		}
 		if (this.figureLeft > this.overscanLeft) {
 			this.figureLeft = this.overscanLeft;
-			cfg.status.pan.x = this.maxPanLeft;
+			config.status.pan.x = this.maxPanLeft;
 		}
 		if (this.figureLeft < -this.overscanLeft) {
 			this.figureLeft = -this.overscanLeft;
-			cfg.status.pan.x = this.minPanLeft;
+			config.status.pan.x = this.minPanLeft;
 		}
 		if (this.figureTop > this.overscanTop) {
 			this.figureTop = this.overscanTop;
-			cfg.status.pan.y = this.maxPanTop;
+			config.status.pan.y = this.maxPanTop;
 		}
 		if (this.figureTop < -this.overscanTop) {
 			this.figureTop = -this.overscanTop;
-			cfg.status.pan.y = this.minPanTop;
+			config.status.pan.y = this.minPanTop;
 		}
 		if (this.figureHeight < this.canvasHeight) {
 			this.figureWidth = this.canvasHeight / this.maxHeight * this.maxWidth;
 			this.figureHeight = this.canvasHeight;
-			cfg.status.zoom = 1;
-			cfg.status.pan.y = 0.5;
+			config.status.zoom = 1;
+			config.status.pan.y = 0.5;
 		}
 		if (this.figureWidth < this.canvasWidth) {
 			this.figureLeft = 0;
-			cfg.status.pan.x = 0.5;
+			config.status.pan.x = 0.5;
 		}
 	};
 	this.canvas = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// figure out the relevant movement
-		switch (cfg.zoom) {
+		switch (config.zoom) {
 		case 'lens' :
 			var fraction, extra, range, offset;
 			// set the horizontal shift
-			fraction = (1 - (cfg.status.pos.x + this.backgroundLeft) / (this.backgroundHeight * this.figureAspect));
+			fraction = (1 - (config.status.pos.x + this.backgroundLeft) / (this.backgroundHeight * this.figureAspect));
 			extra = this.canvasWidth / this.figureWidth;
 			range = this.maxPanLeft - this.minPanLeft + extra * 2;
 			offset = this.minPanLeft - extra;
-			cfg.status.pan.x = fraction * range + offset;
+			config.status.pan.x = fraction * range + offset;
 			// set the vertical shift
-			fraction = (1 - (cfg.status.pos.y + this.backgroundTop) / this.backgroundHeight);
+			fraction = (1 - (config.status.pos.y + this.backgroundTop) / this.backgroundHeight);
 			extra = this.canvasHeight / this.figureHeight;
 			range = this.maxPanTop - this.minPanTop + extra * 2;
 			offset = this.minPanTop - extra;
-			cfg.status.pan.y = fraction * range + offset;
+			config.status.pan.y = fraction * range + offset;
 			// set the positions
-			cfg.status.canvas.style.left = parseInt(this.canvasLeft, 10) + 'px';
-			cfg.status.canvas.style.top = parseInt(this.canvasTop, 10) + 'px';
+			config.status.canvas.style.left = parseInt(this.canvasLeft, 10) + 'px';
+			config.status.canvas.style.top = parseInt(this.canvasTop, 10) + 'px';
 			break;
 		case 'top' :
-			cfg.status.canvas.style.left = '0px';
-			cfg.status.canvas.style.top = '-' + cfg.status.canvas.offsetHeight + 'px';
+			config.status.canvas.style.left = '0px';
+			config.status.canvas.style.top = '-' + config.status.canvas.offsetHeight + 'px';
 			break;
 		case 'right' :
-			cfg.status.canvas.style.left = cfg.status.canvas.offsetWidth + 'px';
-			cfg.status.canvas.style.top = '0px';
+			config.status.canvas.style.left = config.status.canvas.offsetWidth + 'px';
+			config.status.canvas.style.top = '0px';
 			break;
 		case 'bottom' :
-			cfg.status.canvas.style.left = '0px';
-			cfg.status.canvas.style.top = cfg.status.canvas.offsetHeight + 'px';
+			config.status.canvas.style.left = '0px';
+			config.status.canvas.style.top = config.status.canvas.offsetHeight + 'px';
 			break;
 		case 'left' :
-			cfg.status.canvas.style.left = '-' + cfg.status.canvas.offsetHeight + 'px';
-			cfg.status.canvas.style.top = '0px';
+			config.status.canvas.style.left = '-' + config.status.canvas.offsetHeight + 'px';
+			config.status.canvas.style.top = '0px';
 			break;
 		}
 		// show the appropriate cursor
-		if (cfg.zoom === 'lens') {
-			cfg.status.cover.style.cursor = 'crosshair';
-		} else if (cfg.status.zoom > 1 || cfg.spin === 'rotation') {
-			cfg.status.cover.style.cursor = 'move';
+		if (config.zoom === 'lens') {
+			config.status.cover.style.cursor = 'crosshair';
+		} else if (config.status.zoom > 1 || config.spin === 'rotation') {
+			config.status.cover.style.cursor = 'move';
 		} else {
-			cfg.status.cover.style.cursor = 'auto';
+			config.status.cover.style.cursor = 'auto';
 		}
 	};
 	this.figures = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// use CSS3 transforms if allowed
-		if (root.cfg.transforms) {
+		if (this.config.transforms) {
 			// calculate the transformation properties
-			var x = (cfg.status.pan.x * 100 - 50) / this.figureAspect,
-				y = cfg.status.pan.y * 100 - 50,
-				z =	cfg.status.zoom;
+			var x = (config.status.pan.x * 100 - 50) / this.figureAspect,
+				y = config.status.pan.y * 100 - 50,
+				z =	config.status.zoom;
 			// formulate the css rule
 			var transformation = 'translate(' + x + '%, ' + y + '%) scale(' + z + ', ' + z + ')';
 			// set the transformation styles
-			cfg.status.figures[cfg.status.index].style.msTransform = transformation;
-			cfg.status.figures[cfg.status.index].style.webkitTransform = transformation;
-			cfg.status.figures[cfg.status.index].style.transform = transformation;
+			config.status.figures[config.status.index].style.msTransform = transformation;
+			config.status.figures[config.status.index].style.webkitTransform = transformation;
+			config.status.figures[config.status.index].style.transform = transformation;
 		// else use CSS2
 		} else {
 			// set the zoomed figure dimensions
-			cfg.status.figures[cfg.status.index].style.left = (cfg.status.pan.x * 100) + '%';
-			cfg.status.figures[cfg.status.index].style.top = (cfg.status.pan.y * 100) + '%';
-			cfg.status.figures[cfg.status.index].style.marginLeft = parseInt(this.figureWidth / -2, 10) + 'px';
-			cfg.status.figures[cfg.status.index].style.marginTop = parseInt(this.figureHeight / -2, 10) + 'px';
-			cfg.status.figures[cfg.status.index].style.width = parseInt(this.figureWidth, 10) + 'px';
-			cfg.status.figures[cfg.status.index].style.height = parseInt(this.figureHeight, 10) + 'px';
+			config.status.figures[config.status.index].style.left = (config.status.pan.x * 100) + '%';
+			config.status.figures[config.status.index].style.top = (config.status.pan.y * 100) + '%';
+			config.status.figures[config.status.index].style.marginLeft = parseInt(this.figureWidth / -2, 10) + 'px';
+			config.status.figures[config.status.index].style.marginTop = parseInt(this.figureHeight / -2, 10) + 'px';
+			config.status.figures[config.status.index].style.width = parseInt(this.figureWidth, 10) + 'px';
+			config.status.figures[config.status.index].style.height = parseInt(this.figureHeight, 10) + 'px';
 		}
 	};
 	this.create = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// if streaming new tiles is allowed
 		if (
 			// allow/disallow streaming switch
-			cfg.status.stream &&
+			config.status.stream &&
 			// don't stream at the initial zoom in the rotation (the initial images will be of high enough resolution)
-			cfg.status.zoom > 1
+			config.status.zoom > 1
 		) {
 			// divide the dimension into tiles
-			var horizontalTiles = Math.ceil(this.figureWidth / cfg.grid);
-			var verticalTiles = Math.ceil(this.figureHeight / cfg.grid);
+			var horizontalTiles = Math.ceil(this.figureWidth / config.grid);
+			var verticalTiles = Math.ceil(this.figureHeight / config.grid);
 			var tileName, tileWidth, tileHeight, tileTop, tileRight, tileBottom, tileLeft,
-				tileId = cfg.figures[cfg.status.index],
-				tileZoom = cfg.status.zoom.toString().replace('.', 'D'),
-				cropLeft = cfg.lefts[cfg.status.index],
-				cropTop = cfg.tops[cfg.status.index],
-				cropWidth = cfg.rights[cfg.status.index] - cropLeft,
-				cropHeight = cfg.bottoms[cfg.status.index] - cropTop;
+				tileId = config.figures[config.status.index],
+				tileZoom = config.status.zoom.toString().replace('.', 'D'),
+				cropLeft = config.lefts[config.status.index],
+				cropTop = config.tops[config.status.index],
+				cropWidth = config.rights[config.status.index] - cropLeft,
+				cropHeight = config.bottoms[config.status.index] - cropTop;
 			// for all columns
 			for (var x = 0; x < horizontalTiles; x += 1) {
 				// for all rows
@@ -206,30 +207,30 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 					tileName = 'fig_' + tileId + '_zoom_' + tileZoom + '_x_' + x + '_y_' + y;
 					// if the tile is within the bounds of the canvas
 					if (
-						(x + 1) * cfg.grid >= this.offsetLeft &&
-						(x) * cfg.grid <= this.offsetLeft + this.canvasWidth &&
-						(y + 1) * cfg.grid >= this.offsetTop &&
-						(y) * cfg.grid <= this.offsetTop + this.canvasHeight
+						(x + 1) * config.grid >= this.offsetLeft &&
+						(x) * config.grid <= this.offsetLeft + this.canvasWidth &&
+						(y + 1) * config.grid >= this.offsetTop &&
+						(y) * config.grid <= this.offsetTop + this.canvasHeight
 					) {
 						// if this tile doesn't exist (naming convention: tiles['fig_1_zoom_1_x_1_y_1'] = {})
-						if (!cfg.status.tiles[tileName]) {
+						if (!config.status.tiles[tileName]) {
 							// count the new tile
-							cfg.status.count += 1;
+							config.status.count += 1;
 							// create a tile at this zoom level
-							cfg.status.tiles[tileName] = {
+							config.status.tiles[tileName] = {
 								'object' : document.createElement('img'),
-								'figure' : cfg.status.index,
-								'zoom' : cfg.status.zoom,
+								'figure' : config.status.index,
+								'zoom' : config.status.zoom,
 								'x' : x,
 								'y' : y,
-								'index' : cfg.status.count
+								'index' : config.status.count
 							};
 							// reveal it onload
-							cfg.status.tiles[tileName].object.className = 'tile_hidden';
-							this.onTileLoad(cfg.status.tiles[tileName].object);
+							config.status.tiles[tileName].object.className = 'tile_hidden';
+							this.onTileLoad(config.status.tiles[tileName].object);
 							// calculate the positions
-							tileWidth = cfg.grid;
-							tileHeight = cfg.grid;
+							tileWidth = config.grid;
+							tileHeight = config.grid;
 							tileTop = (y * tileHeight / this.figureHeight);
 							tileRight = ((x + 1) * tileWidth / this.figureWidth);
 							tileBottom = ((y + 1) * tileHeight / this.figureHeight);
@@ -244,24 +245,24 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 								tileBottom = 1;
 							}
 							// costruct the tile url
-							cfg.status.tiles[tileName].object.className = 'tile_hidden';
-							cfg.status.tiles[tileName].object.src = cfg.imageslice
-								.replace(cfg.regSrc, cfg.figures[cfg.status.index])
-								.replace(cfg.regWidth, tileWidth)
-								.replace(cfg.regHeight, tileHeight)
-								.replace(cfg.regLeft, tileLeft * cropWidth + cropLeft)
-								.replace(cfg.regTop, tileTop * cropHeight + cropTop)
-								.replace(cfg.regRight, tileRight * cropWidth + cropLeft)
-								.replace(cfg.regBottom, tileBottom * cropHeight + cropTop);
+							config.status.tiles[tileName].object.className = 'tile_hidden';
+							config.status.tiles[tileName].object.src = config.imageslice
+								.replace(config.regSrc, config.figures[config.status.index])
+								.replace(config.regWidth, tileWidth)
+								.replace(config.regHeight, tileHeight)
+								.replace(config.regLeft, tileLeft * cropWidth + cropLeft)
+								.replace(config.regTop, tileTop * cropHeight + cropTop)
+								.replace(config.regRight, tileRight * cropWidth + cropLeft)
+								.replace(config.regBottom, tileBottom * cropHeight + cropTop);
 							// position it on the grid
-							cfg.status.tiles[tileName].object.style.position = 'absolute';
-							cfg.status.tiles[tileName].object.style.left = (tileLeft * 100) + '%';
-							cfg.status.tiles[tileName].object.style.top = (tileTop * 100) + '%';
-							cfg.status.tiles[tileName].object.style.width = (tileWidth / this.figureWidth * 100) + '%';
-							cfg.status.tiles[tileName].object.style.height = (tileHeight / this.figureHeight * 100) + '%';
-							cfg.status.tiles[tileName].object.style.zIndex = parseInt(cfg.status.zoom * 100, 10);
+							config.status.tiles[tileName].object.style.position = 'absolute';
+							config.status.tiles[tileName].object.style.left = (tileLeft * 100) + '%';
+							config.status.tiles[tileName].object.style.top = (tileTop * 100) + '%';
+							config.status.tiles[tileName].object.style.width = (tileWidth / this.figureWidth * 100) + '%';
+							config.status.tiles[tileName].object.style.height = (tileHeight / this.figureHeight * 100) + '%';
+							config.status.tiles[tileName].object.style.zIndex = parseInt(config.status.zoom * 100, 10);
 							// add it to the figure
-							cfg.status.figures[cfg.status.index].appendChild(cfg.status.tiles[tileName].object);
+							config.status.figures[config.status.index].appendChild(config.status.tiles[tileName].object);
 						}
 					}
 				}
@@ -269,26 +270,26 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 		}
 	};
 	this.display = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// for all tiles
 		var tile = '', checkedTile;
-		for (tile in cfg.status.tiles) {
+		for (tile in config.status.tiles) {
 			// validate
-			if (cfg.status.tiles.hasOwnProperty(tile)) {
+			if (config.status.tiles.hasOwnProperty(tile)) {
 				// get the target tile
-				checkedTile = cfg.status.tiles[tile];
+				checkedTile = config.status.tiles[tile];
 				// if this is a surplus tile
-				if (cfg.status.tiles[tile].index < cfg.status.count - cfg.cache) {
+				if (config.status.tiles[tile].index < config.status.count - config.cache) {
 					// remove it
-					cfg.status.tiles[tile].object.parentNode.removeChild(cfg.status.tiles[tile].object);
-					delete cfg.status.tiles[tile];
+					config.status.tiles[tile].object.parentNode.removeChild(config.status.tiles[tile].object);
+					delete config.status.tiles[tile];
 				// if the tile is within the bounds of the canvas
 				} else if (
-					(checkedTile.x + 1) * cfg.grid >= this.offsetLeft &&
-					(checkedTile.x) * cfg.grid <= this.offsetLeft + this.canvasWidth &&
-					(checkedTile.y + 1) * cfg.grid >= this.offsetTop &&
-					(checkedTile.y) * cfg.grid <= this.offsetTop + this.canvasHeight &&
-					checkedTile.zoom <= cfg.status.zoom
+					(checkedTile.x + 1) * config.grid >= this.offsetLeft &&
+					(checkedTile.x) * config.grid <= this.offsetLeft + this.canvasWidth &&
+					(checkedTile.y + 1) * config.grid >= this.offsetTop &&
+					(checkedTile.y) * config.grid <= this.offsetTop + this.canvasHeight &&
+					checkedTile.zoom <= config.status.zoom
 				) {
 					// display the tile
 					checkedTile.object.style.display = 'block';
@@ -301,33 +302,33 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 		}
 	};
 	this.spin = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// decide on the transition effect
-		switch (cfg.spin) {
+		switch (config.spin) {
 		// in case of a catalogue
 		case 'catalogue' :
 			// for all figures
 			var clipWidth;
-			for (var a = 1, b = cfg.status.figures.length; a < b; a += 1) {
+			for (var a = 1, b = config.status.figures.length; a < b; a += 1) {
 				// clear any transition that may be in effect on this figure
-				clearTimeout(cfg.status.transitions[a]);
+				clearTimeout(config.status.transitions[a]);
 				// measure the slide width
-				clipWidth = cfg.status.figures[a].offsetWidth;
+				clipWidth = config.status.figures[a].offsetWidth;
 				// if this is an active slide
-				if (a === cfg.status.index) {
+				if (a === config.status.index) {
 					// if there is a zoom factor, disable the clipping
-					if (cfg.status.zoom > 1) {
-						cfg.status.figures[a].style.clip = 'rect(auto 10000px auto 0px)';
+					if (config.status.zoom > 1) {
+						config.status.figures[a].style.clip = 'rect(auto 10000px auto 0px)';
 					}
 					// else if the figure wasn't revealed yet
-					else if (cfg.status.figures[a].className !== 'figure_leafin') {
+					else if (config.status.figures[a].className !== 'figure_leafin') {
 						// force the clip's start situation
-						cfg.status.figures[a].style.clip = 'rect(auto ' + clipWidth + 'px auto ' + clipWidth + 'px)';
+						config.status.figures[a].style.clip = 'rect(auto ' + clipWidth + 'px auto ' + clipWidth + 'px)';
 						// apply the figure class
-						cfg.status.figures[a].className = 'figure_leafin';
+						config.status.figures[a].className = 'figure_leafin';
 						// apply the figure style
 						useful.transitions.byRules(
-							cfg.status.figures[a],
+							config.status.figures[a],
 							{'clip' : 'rect(auto ' + clipWidth + 'px auto 0px)', 'transform' : 'translate(0%,0%) rotate(0deg)'},
 							null,
 							600
@@ -335,54 +336,54 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 					}
 				}
 				// else if this is a passive slide, but not unrevealed yet
-				else if (cfg.status.figures[a].className !== 'figure_leafout') {
+				else if (config.status.figures[a].className !== 'figure_leafout') {
 					// delay its return
 					this.onFigureUnreveal(a, clipWidth);
 					// apply the figure class
-					cfg.status.figures[a].className = 'figure_leafout';
+					config.status.figures[a].className = 'figure_leafout';
 				}
 			}
 			break;
 		// in case of a slideshow
 		case 'slideshow' :
 			// for all figures
-			for (a = 1, b = cfg.status.figures.length; a < b; a += 1) {
+			for (a = 1, b = config.status.figures.length; a < b; a += 1) {
 				// apply the figure class
-				cfg.status.figures[a].className = (a === cfg.status.index) ? 'figure_fadein' : 'figure_fadeout';
-				if (cfg.zoom !== 'static') {
-					cfg.status.backgrounds[a].className = (a === cfg.status.index) ? 'figure_fadein' : 'figure_fadeout';
+				config.status.figures[a].className = (a === config.status.index) ? 'figure_fadein' : 'figure_fadeout';
+				if (config.zoom !== 'static') {
+					config.status.backgrounds[a].className = (a === config.status.index) ? 'figure_fadein' : 'figure_fadeout';
 				}
 			}
 			break;
 		// for a generic transition
 		default :
 			// for all figures
-			for (a = 1, b = cfg.status.figures.length; a < b; a += 1) {
+			for (a = 1, b = config.status.figures.length; a < b; a += 1) {
 				// apply the figure class
-				cfg.status.figures[a].className = (a === cfg.status.index) ? 'figure_active' : 'figure_passive';
-				if (cfg.zoom !== 'static') {
-					cfg.status.backgrounds[a].className = (a === cfg.status.index) ? 'figure_active' : 'figure_passive';
+				config.status.figures[a].className = (a === config.status.index) ? 'figure_active' : 'figure_passive';
+				if (config.zoom !== 'static') {
+					config.status.backgrounds[a].className = (a === config.status.index) ? 'figure_active' : 'figure_passive';
 				}
 			}
 		}
 	};
 	// handlers for the events
 	this.onTileLoad = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		element.addEventListener('load', function () {
 			element.className = 'tile_visible';
 		}, false);
 	};
 	this.onFigureUnreveal = function (a, clipWidth) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		setTimeout(function () {
 			// apply the figure style
-			cfg.status.figures[a].style.clip = 'rect(auto ' + clipWidth + 'px auto ' + clipWidth + 'px)';
-			cfg.status.figures[a].style.webkitTransform = 'translate(25%,25%) rotate(45deg)';
-			cfg.status.figures[a].style.MozTransform = 'translate(25%,25%) rotate(45deg)';
-			cfg.status.figures[a].style.msTransform = 'translate(25%,25%) rotate(45deg)';
-			cfg.status.figures[a].style.oTransform = 'translate(25%,25%) rotate(45deg)';
-			cfg.status.figures[a].style.transform = 'translate(25%,25%) rotate(45deg)';
+			config.status.figures[a].style.clip = 'rect(auto ' + clipWidth + 'px auto ' + clipWidth + 'px)';
+			config.status.figures[a].style.webkitTransform = 'translate(25%,25%) rotate(45deg)';
+			config.status.figures[a].style.MozTransform = 'translate(25%,25%) rotate(45deg)';
+			config.status.figures[a].style.msTransform = 'translate(25%,25%) rotate(45deg)';
+			config.status.figures[a].style.oTransform = 'translate(25%,25%) rotate(45deg)';
+			config.status.figures[a].style.transform = 'translate(25%,25%) rotate(45deg)';
 		}, 750);
 	};
 };

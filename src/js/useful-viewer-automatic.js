@@ -14,8 +14,9 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Automatic = function (parent) {
 // properties
 "use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.setup = function () {};
 };

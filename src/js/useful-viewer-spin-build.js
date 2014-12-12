@@ -14,31 +14,32 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Spin_Build = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.slider = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the slider to the menu
-		cfg.status.menus.spinIndicator = (navigator.userAgent.match(/WebKit/) || true) ? document.createElement('div') : document.createElement('meter');
-		cfg.status.menus.spinIndicator.className = 'meter';
-		cfg.status.menus.spinIndicator.setAttribute('min', 1);
-		cfg.status.menus.spinIndicator.setAttribute('max', cfg.figures.length);
-		cfg.status.menus.spinIndicator.setAttribute('value', cfg.status.index);
-		cfg.status.menus.spinSlider = document.createElement('div');
-		cfg.status.menus.spinSliderIcon = document.createElement('span');
-		cfg.status.menus.spinSliderIcon.innerHTML = cfg.status.index;
-		cfg.status.menus.spinSlider.appendChild(cfg.status.menus.spinSliderIcon);
-		cfg.status.menus.spinIndicator.appendChild(cfg.status.menus.spinSlider);
-		element.appendChild(cfg.status.menus.spinIndicator);
+		config.status.menus.spinIndicator = (navigator.userAgent.match(/WebKit/) || true) ? document.createElement('div') : document.createElement('meter');
+		config.status.menus.spinIndicator.className = 'meter';
+		config.status.menus.spinIndicator.setAttribute('min', 1);
+		config.status.menus.spinIndicator.setAttribute('max', config.figures.length);
+		config.status.menus.spinIndicator.setAttribute('value', config.status.index);
+		config.status.menus.spinSlider = document.createElement('div');
+		config.status.menus.spinSliderIcon = document.createElement('span');
+		config.status.menus.spinSliderIcon.innerHTML = config.status.index;
+		config.status.menus.spinSlider.appendChild(config.status.menus.spinSliderIcon);
+		config.status.menus.spinIndicator.appendChild(config.status.menus.spinSlider);
+		element.appendChild(config.status.menus.spinIndicator);
 	};
 	this.cover = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add a touch cover to the menu
-		cfg.status.menus.spinCover = document.createElement('div');
-		cfg.status.menus.spinCover.className = 'cover';
-		element.appendChild(cfg.status.menus.spinCover);
-		var sims = cfg.status.menus.spinCover;
+		config.status.menus.spinCover = document.createElement('div');
+		config.status.menus.spinCover.className = 'cover';
+		element.appendChild(config.status.menus.spinCover);
+		var sims = config.status.menus.spinCover;
 		// add the event handler
 		sims.addEventListener('mousewheel', function (event) {
 			parent.mouse.wheel(event);
@@ -70,59 +71,59 @@ useful.Viewer.prototype.Spin_Build = function (parent) {
 		}, false);
 	};
 	this.increaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the increase button
-		cfg.status.menus.spinIn = document.createElement('button');
-		cfg.status.menus.spinIn.className = 'increase';
-		cfg.status.menus.spinInIcon = document.createElement('span');
-		cfg.status.menus.spinInIcon.innerHTML = 'Spin left';
-		cfg.status.menus.spinIn.appendChild(cfg.status.menus.spinInIcon);
-		element.appendChild(cfg.status.menus.spinIn);
-		cfg.status.menus.spinIn.addEventListener('mousedown', function (event) {
+		config.status.menus.spinIn = document.createElement('button');
+		config.status.menus.spinIn.className = 'increase';
+		config.status.menus.spinInIcon = document.createElement('span');
+		config.status.menus.spinInIcon.innerHTML = 'Spin left';
+		config.status.menus.spinIn.appendChild(config.status.menus.spinInIcon);
+		element.appendChild(config.status.menus.spinIn);
+		config.status.menus.spinIn.addEventListener('mousedown', function (event) {
 			// increase the zoom
 			parent.increase();
 			// cancel streaming
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// repeat
-			cfg.status.menus.spinInRepeat = setInterval(function () { parent.increase(); }, 100);
+			config.status.menus.spinInRepeat = setInterval(function () { parent.increase(); }, 100);
 			// cancel this event
 			event.preventDefault();
 		}, false);
-		cfg.status.menus.spinIn.addEventListener('mouseup', function () {
+		config.status.menus.spinIn.addEventListener('mouseup', function () {
 			// stop repeating
-			clearInterval(cfg.status.menus.spinInRepeat);
+			clearInterval(config.status.menus.spinInRepeat);
 			// allow streaming
-			cfg.status.stream = true;
+			config.status.stream = true;
 			// redraw
-			root.update();
+			parent.parent.update();
 		}, false);
 	};
 	this.decreaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the decrease button
-		cfg.status.menus.spinOut = document.createElement('button');
-		cfg.status.menus.spinOut.className = 'decrease';
-		cfg.status.menus.spinOutIcon = document.createElement('span');
-		cfg.status.menus.spinOutIcon.innerHTML = 'Spin right';
-		cfg.status.menus.spinOut.appendChild(cfg.status.menus.spinOutIcon);
-		element.appendChild(cfg.status.menus.spinOut);
-		cfg.status.menus.spinOut.addEventListener('mousedown', function (event) {
+		config.status.menus.spinOut = document.createElement('button');
+		config.status.menus.spinOut.className = 'decrease';
+		config.status.menus.spinOutIcon = document.createElement('span');
+		config.status.menus.spinOutIcon.innerHTML = 'Spin right';
+		config.status.menus.spinOut.appendChild(config.status.menus.spinOutIcon);
+		element.appendChild(config.status.menus.spinOut);
+		config.status.menus.spinOut.addEventListener('mousedown', function (event) {
 			// increase the zoom
 			parent.decrease();
 			// cancel streaming
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// repeat
-			cfg.status.menus.spinOutRepeat = setInterval(function () { parent.decrease(); }, 100);
+			config.status.menus.spinOutRepeat = setInterval(function () { parent.decrease(); }, 100);
 			// cancel this event
 			event.preventDefault();
 		}, false);
-		cfg.status.menus.spinOut.addEventListener('mouseup', function () {
+		config.status.menus.spinOut.addEventListener('mouseup', function () {
 			// stop repeating
-			clearInterval(cfg.status.menus.spinOutRepeat);
+			clearInterval(config.status.menus.spinOutRepeat);
 			// allow streaming
-			cfg.status.stream = true;
+			config.status.stream = true;
 			// redraw
-			root.update();
+			parent.parent.update();
 		}, false);
 	};
 };

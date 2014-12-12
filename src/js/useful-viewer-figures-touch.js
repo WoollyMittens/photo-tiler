@@ -14,8 +14,9 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Figures_Touch = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	this.x = null;
 	this.y = null;
 	this.sensitivity = null;
@@ -24,7 +25,7 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 	this.delay = null;
 	// methods
 	this.start = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// store the touch positions
 		this.x = [];
 		this.y = [];
@@ -33,12 +34,12 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 			this.y.push(event.touches[a].pageY);
 		}
 		// adjust the sensitivity
-		this.sensitivity = (cfg.magnification - 1) / 2 + 1;
-		this.treshold = cfg.status.cover.offsetWidth / 10;
-		this.flick = cfg.status.cover.offsetWidth * 0.6;
+		this.sensitivity = (config.magnification - 1) / 2 + 1;
+		this.treshold = config.status.cover.offsetWidth / 10;
+		this.flick = config.status.cover.offsetWidth * 0.6;
 	};
 	this.move = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		var target = event.target || event.srcElement;
@@ -61,11 +62,11 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 					Math.abs(this.x[0] - this.x[1]) + Math.abs(this.y[0] - this.y[1])
 				) {
 					// zoom out
-					cfg.status.zoom = cfg.status.zoom / this.sensitivity;
+					config.status.zoom = config.status.zoom / this.sensitivity;
 				// else
 				} else {
 					// zoom in
-					cfg.status.zoom = cfg.status.zoom * this.sensitivity;
+					config.status.zoom = config.status.zoom * this.sensitivity;
 				}
 				// reset the distance
 				this.x[0] = x[0];
@@ -73,68 +74,68 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 				this.x[1] = x[1];
 				this.y[1] = y[1];
 				// temporarily disable streaming for a while to avoid flooding
-				cfg.status.stream = false;
+				config.status.stream = false;
 				clearTimeout(this.delay);
 				this.delay = setTimeout(function () {
-					cfg.status.stream = true;
-					root.update();
+					config.status.stream = true;
+					parent.parent.update();
 				}, 500);
 			// else if there was a drag motion
-			} else if (cfg.status.zoom > 1 || cfg.spin === 'slideshow') {
+			} else if (config.status.zoom > 1 || config.spin === 'slideshow') {
 				// calculate the drag distance into %
-				cfg.status.pan.x -= xDelta * cfg.status.zoom / cfg.status.figures[cfg.status.index].offsetWidth;
-				cfg.status.pan.y -= yDelta * cfg.status.zoom / cfg.status.figures[cfg.status.index].offsetHeight;
+				config.status.pan.x -= xDelta * config.status.zoom / config.status.figures[config.status.index].offsetWidth;
+				config.status.pan.y -= yDelta * config.status.zoom / config.status.figures[config.status.index].offsetHeight;
 				// reset the distance
 				this.x[0] = x[0];
 				this.y[0] = y[0];
 			// else there was a spin gesture
 			} else if (
-				(Math.abs(xDelta) > this.treshold && cfg.spin === 'rotation') ||
+				(Math.abs(xDelta) > this.treshold && config.spin === 'rotation') ||
 				Math.abs(xDelta) > this.flick
 			) {
 				// increase the spin
-				cfg.status.index += (xDelta > 0) ? 1 : -1;
+				config.status.index += (xDelta > 0) ? 1 : -1;
 				// if in spin mode
-				if (cfg.spin === 'rotation') {
+				if (config.spin === 'rotation') {
 					// loop the value if needed
-					if (cfg.status.index >= cfg.status.figures.length) {
-						cfg.status.index = 1;
+					if (config.status.index >= config.status.figures.length) {
+						config.status.index = 1;
 					}
 					// loop the value if needed
-					if (cfg.status.index <= 0) {
-						cfg.status.index = cfg.status.figures.length - 1;
+					if (config.status.index <= 0) {
+						config.status.index = config.status.figures.length - 1;
 					}
 				}
 				// reset the distance
 				this.x[0] = x[0];
 				this.y[0] = y[0];
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			}
 			// order a redraw
-			root.update();
+			parent.parent.update();
 		}
 		// cancel the click
 		target.blur();
 		event.preventDefault();
 	};
 	this.end = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// clear the positions
 		this.x = null;
 		this.y = null;
 		// order a redraw
-		root.update();
+		parent.parent.update();
 	};
 	this.mirror = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// retrieve the touch position
-		var pos = useful.positions.touch(event, cfg.status.cover);
+		var pos = useful.positions.touch(event, config.status.cover);
 		// measure the exact location of the interaction
-		cfg.status.pos.x = pos.x;
-		cfg.status.pos.y = pos.y;
+		config.status.pos.x = pos.x;
+		config.status.pos.y = pos.y;
 		// order a redraw
-		root.update();
+		parent.parent.update();
 		// cancel the scrolling
 		event.preventDefault();
 	};

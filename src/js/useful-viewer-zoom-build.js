@@ -14,32 +14,33 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Zoom_Build = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.slider = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the slider to the menu
-		cfg.status.menus.zoomIndicator = (navigator.userAgent.match(/WebKit/) || true) ? document.createElement('div') : document.createElement('meter');
-		cfg.status.menus.zoomIndicator.className = 'meter';
-		cfg.status.menus.zoomIndicator.setAttribute('min', 1);
-		cfg.status.menus.zoomIndicator.setAttribute('max', cfg.heights[cfg.status.index] / cfg.status.canvas.offsetHeight);
-		cfg.status.menus.zoomIndicator.setAttribute('value', cfg.status.zoom);
-		cfg.status.menus.zoomSlider = document.createElement('div');
-		cfg.status.menus.zoomSliderIcon = document.createElement('span');
-		cfg.status.menus.zoomSliderIcon.innerHTML = cfg.status.zoom;
-		cfg.status.menus.zoomSlider.appendChild(cfg.status.menus.zoomSliderIcon);
-		cfg.status.menus.zoomIndicator.appendChild(cfg.status.menus.zoomSlider);
-		element.appendChild(cfg.status.menus.zoomIndicator);
+		config.status.menus.zoomIndicator = (navigator.userAgent.match(/WebKit/) || true) ? document.createElement('div') : document.createElement('meter');
+		config.status.menus.zoomIndicator.className = 'meter';
+		config.status.menus.zoomIndicator.setAttribute('min', 1);
+		config.status.menus.zoomIndicator.setAttribute('max', config.heights[config.status.index] / config.status.canvas.offsetHeight);
+		config.status.menus.zoomIndicator.setAttribute('value', config.status.zoom);
+		config.status.menus.zoomSlider = document.createElement('div');
+		config.status.menus.zoomSliderIcon = document.createElement('span');
+		config.status.menus.zoomSliderIcon.innerHTML = config.status.zoom;
+		config.status.menus.zoomSlider.appendChild(config.status.menus.zoomSliderIcon);
+		config.status.menus.zoomIndicator.appendChild(config.status.menus.zoomSlider);
+		element.appendChild(config.status.menus.zoomIndicator);
 	};
 	this.cover = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add a touch cover to the menu
-		cfg.status.menus.zoomCover = document.createElement('div');
-		cfg.status.menus.zoomCover.className = 'cover';
-		element.appendChild(cfg.status.menus.zoomCover);
+		config.status.menus.zoomCover = document.createElement('div');
+		config.status.menus.zoomCover.className = 'cover';
+		element.appendChild(config.status.menus.zoomCover);
 		// add the event handler
-		var simz = cfg.status.menus.zoomCover;
+		var simz = config.status.menus.zoomCover;
 		simz.addEventListener('mousewheel', function (event) {
 			parent.mouse.wheel(event);
 		}, false);
@@ -70,66 +71,66 @@ useful.Viewer.prototype.Zoom_Build = function (parent) {
 		}, false);
 	};
 	this.increaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the increase button
-		cfg.status.menus.zoomIn = document.createElement('button');
-		cfg.status.menus.zoomIn.className = 'increase';
-		cfg.status.menus.zoomInIcon = document.createElement('span');
-		cfg.status.menus.zoomInIcon.innerHTML = 'Zoom in';
-		cfg.status.menus.zoomIn.appendChild(cfg.status.menus.zoomInIcon);
-		element.appendChild(cfg.status.menus.zoomIn);
+		config.status.menus.zoomIn = document.createElement('button');
+		config.status.menus.zoomIn.className = 'increase';
+		config.status.menus.zoomInIcon = document.createElement('span');
+		config.status.menus.zoomInIcon.innerHTML = 'Zoom in';
+		config.status.menus.zoomIn.appendChild(config.status.menus.zoomInIcon);
+		element.appendChild(config.status.menus.zoomIn);
 		// add the event handlers
-		cfg.status.menus.zoomIn.addEventListener('mousedown', function (event) {
+		config.status.menus.zoomIn.addEventListener('mousedown', function (event) {
 			// increase the zoom
 			parent.increase();
 			// cancel streaming
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// repeat
-			cfg.status.menus.zoomInRepeat = setInterval(function () { parent.increase(); }, 300);
+			config.status.menus.zoomInRepeat = setInterval(function () { parent.increase(); }, 300);
 			// cancel this event
 			event.preventDefault();
 		}, false);
-		cfg.status.menus.zoomIn.addEventListener('mouseup', function () {
+		config.status.menus.zoomIn.addEventListener('mouseup', function () {
 			// stop repeating
-			clearInterval(cfg.status.menus.zoomInRepeat);
+			clearInterval(config.status.menus.zoomInRepeat);
 			// allow streaming
-			cfg.status.stream = true;
+			config.status.stream = true;
 			// redraw
-			root.update();
+			parent.parent.update();
 		}, false);
-		cfg.status.menus.zoomIn.addEventListener('click', function (event) {
+		config.status.menus.zoomIn.addEventListener('click', function (event) {
 			// cancel this event
 			event.preventDefault();
 		}, false);
 	};
 	this.decreaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the decrease button
-		cfg.status.menus.zoomOut = document.createElement('button');
-		cfg.status.menus.zoomOut.className = 'decrease';
-		cfg.status.menus.zoomOutIcon = document.createElement('span');
-		cfg.status.menus.zoomOutIcon.innerHTML = 'Zoom out';
-		cfg.status.menus.zoomOut.appendChild(cfg.status.menus.zoomOutIcon);
-		element.appendChild(cfg.status.menus.zoomOut);
-		cfg.status.menus.zoomOut.addEventListener('mousedown', function (event) {
+		config.status.menus.zoomOut = document.createElement('button');
+		config.status.menus.zoomOut.className = 'decrease';
+		config.status.menus.zoomOutIcon = document.createElement('span');
+		config.status.menus.zoomOutIcon.innerHTML = 'Zoom out';
+		config.status.menus.zoomOut.appendChild(config.status.menus.zoomOutIcon);
+		element.appendChild(config.status.menus.zoomOut);
+		config.status.menus.zoomOut.addEventListener('mousedown', function (event) {
 			// increase the zoom
 			parent.decrease();
 			// cancel streaming
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// repeat
-			cfg.status.menus.zoomOutRepeat = setInterval(function () { parent.decrease(); }, 300);
+			config.status.menus.zoomOutRepeat = setInterval(function () { parent.decrease(); }, 300);
 			// cancel this event
 			event.preventDefault();
 		}, false);
-		cfg.status.menus.zoomOut.addEventListener('mouseup', function () {
+		config.status.menus.zoomOut.addEventListener('mouseup', function () {
 			// stop repeating
-			clearInterval(cfg.status.menus.zoomOutRepeat);
+			clearInterval(config.status.menus.zoomOutRepeat);
 			// allow streaming
-			cfg.status.stream = true;
+			config.status.stream = true;
 			// redraw
-			root.update();
+			parent.parent.update();
 		}, false);
-		cfg.status.menus.zoomOut.addEventListener('click', function (event) {
+		config.status.menus.zoomOut.addEventListener('click', function (event) {
 			// cancel this event
 			event.preventDefault();
 		}, false);

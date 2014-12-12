@@ -14,71 +14,72 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Thumbnails_Menu = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// build the menu options
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the thumbnail controls
-		cfg.status.pageMenu = document.createElement('menu');
-		cfg.status.pageMenu.className = 'scroller';
-		cfg.status.nextPage = document.createElement('button');
-		cfg.status.nextPage.className = 'next';
-		cfg.status.nextPageIcon = document.createElement('span');
-		cfg.status.nextPageIcon.innerHTML = '&gt';
-		cfg.status.prevPage = document.createElement('button');
-		cfg.status.prevPage.className = 'previous';
-		cfg.status.prevPageIcon = document.createElement('span');
-		cfg.status.prevPageIcon.innerHTML = '&lt';
-		cfg.status.nextPage.appendChild(cfg.status.nextPageIcon);
-		cfg.status.pageMenu.appendChild(cfg.status.nextPage);
-		cfg.status.prevPage.appendChild(cfg.status.prevPageIcon);
-		cfg.status.pageMenu.appendChild(cfg.status.prevPage);
-		cfg.status.slideNav.appendChild(cfg.status.pageMenu);
+		config.status.pageMenu = document.createElement('menu');
+		config.status.pageMenu.className = 'scroller';
+		config.status.nextPage = document.createElement('button');
+		config.status.nextPage.className = 'next';
+		config.status.nextPageIcon = document.createElement('span');
+		config.status.nextPageIcon.innerHTML = '&gt';
+		config.status.prevPage = document.createElement('button');
+		config.status.prevPage.className = 'previous';
+		config.status.prevPageIcon = document.createElement('span');
+		config.status.prevPageIcon.innerHTML = '&lt';
+		config.status.nextPage.appendChild(config.status.nextPageIcon);
+		config.status.pageMenu.appendChild(config.status.nextPage);
+		config.status.prevPage.appendChild(config.status.prevPageIcon);
+		config.status.pageMenu.appendChild(config.status.prevPage);
+		config.status.slideNav.appendChild(config.status.pageMenu);
 		// apply clicks to the thumbnail controls
 		var _this = this;
-		cfg.status.nextPage.addEventListener('click', function (event) {
-			_this.next(event, cfg.status.nextSlide);
+		config.status.nextPage.addEventListener('click', function (event) {
+			_this.next(event, config.status.nextSlide);
 		}, false);
-		cfg.status.prevPage.addEventListener('click', function (event) {
-			_this.prev(event, cfg.status.prevSlide);
+		config.status.prevPage.addEventListener('click', function (event) {
+			_this.prev(event, config.status.prevSlide);
 		}, false);
 	};
 	// show or hide the previous and next buttons
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// calculate the current position
-		cfg.scrollPosition = (cfg.status.slideUl.style.marginLeft) ? parseInt(cfg.status.slideUl.style.marginLeft, 10) : 0;
-		cfg.scrollDistance = cfg.status.slideDiv.offsetWidth;
+		config.scrollPosition = (config.status.slideUl.style.marginLeft) ? parseInt(config.status.slideUl.style.marginLeft, 10) : 0;
+		config.scrollDistance = config.status.slideDiv.offsetWidth;
 		// calculate the minimum position
-		cfg.scrollMin = 0;
+		config.scrollMin = 0;
 		// calculate the maximum position
-		var lastThumbnail = cfg.status.thumbnails[cfg.status.thumbnails.length - 1];
-		cfg.scrollStep = lastThumbnail.offsetWidth;
-		cfg.scrollMax = -1 * (lastThumbnail.offsetLeft + lastThumbnail.offsetWidth) + cfg.scrollDistance;
+		var lastThumbnail = config.status.thumbnails[config.status.thumbnails.length - 1];
+		config.scrollStep = lastThumbnail.offsetWidth;
+		config.scrollMax = -1 * (lastThumbnail.offsetLeft + lastThumbnail.offsetWidth) + config.scrollDistance;
 		// show or hide the prev button
-		cfg.status.prevPage.className = cfg.status.prevPage.className.replace(/ disabled/gi, '');
-		cfg.status.prevPage.className += (cfg.scrollPosition >= cfg.scrollMin) ? ' disabled' : '';
+		config.status.prevPage.className = config.status.prevPage.className.replace(/ disabled/gi, '');
+		config.status.prevPage.className += (config.scrollPosition >= config.scrollMin) ? ' disabled' : '';
 		// show or hide the next button
-		cfg.status.nextPage.className = cfg.status.nextPage.className.replace(/ disabled/gi, '');
-		cfg.status.nextPage.className += (cfg.scrollPosition <= cfg.scrollMax && cfg.scrollMax < 0) ? ' disabled' : '';
+		config.status.nextPage.className = config.status.nextPage.className.replace(/ disabled/gi, '');
+		config.status.nextPage.className += (config.scrollPosition <= config.scrollMax && config.scrollMax < 0) ? ' disabled' : '';
 	};
 	// show the next page of thumbnails
 	this.next = function (event, node) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		var target = event.target || event.srcElement;
 		// if the button is not disabled
 		if (!target.className.match(/disabled/)) {
 			// scroll one page's width of thumbnails
-			var newPosition = cfg.scrollPosition - cfg.scrollDistance + cfg.scrollStep;
+			var newPosition = config.scrollPosition - config.scrollDistance + config.scrollStep;
 			// limit the scroll distance
-			if (newPosition < cfg.scrollMax) {
-				newPosition = cfg.scrollMax;
+			if (newPosition < config.scrollMax) {
+				newPosition = config.scrollMax;
 			}
 			// transition to the new position
-			useful.transitions.byRules(cfg.status.slideUl, {'marginLeft' : newPosition + 'px'});
+			useful.transitions.byRules(config.status.slideUl, {'marginLeft' : newPosition + 'px'});
 			// redraw the menu buttons
 			this.update();
 		}
@@ -88,20 +89,20 @@ useful.Viewer.prototype.Thumbnails_Menu = function (parent) {
 	};
 	// show the previous page of thumbnails
 	this.prev = function (event, node) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		var target = event.target || event.srcElement;
 		// if the button is not disabled
 		if (!target.className.match(/disabled/)) {
 			// scroll one page's width of thumbnails
-			var newPosition = cfg.scrollPosition + cfg.scrollDistance - cfg.scrollStep;
+			var newPosition = config.scrollPosition + config.scrollDistance - config.scrollStep;
 			// limit the scroll distance
 			if (newPosition > 0) {
 				newPosition = 0;
 			}
 			// transition to the new position
-			useful.transitions.byRules(cfg.status.slideUl, {'marginLeft' : newPosition + 'px'});
+			useful.transitions.byRules(config.status.slideUl, {'marginLeft' : newPosition + 'px'});
 			// redraw the menu buttons
 			this.update();
 		}

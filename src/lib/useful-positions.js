@@ -1,9 +1,9 @@
 /*
-	Source:
-	van Creij, Maurice (2014). "useful.positions.js: A library of useful functions to ease working with screen positions.", version 20141127, http://www.woollymittens.nl/.
+Source:
+van Creij, Maurice (2014). "useful.positions.js: A library of useful functions to ease working with screen positions.", version 20141127, http://www.woollymittens.nl/.
 
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+License:
+This work is licensed under a Creative Commons Attribution 3.0 Unported License.
 */
 
 // public object
@@ -45,15 +45,15 @@ var useful = useful || {};
 				position.y = parent.scrollTop;
 			} else {
 				position.x = (window.pageXOffset) ?
-					window.pageXOffset :
-					(document.documentElement) ?
-						document.documentElement.scrollLeft :
-						document.body.scrollLeft;
+				window.pageXOffset :
+				(document.documentElement) ?
+				document.documentElement.scrollLeft :
+				document.body.scrollLeft;
 				position.y = (window.pageYOffset) ?
-					window.pageYOffset :
-					(document.documentElement) ?
-						document.documentElement.scrollTop :
-						document.body.scrollTop;
+				window.pageYOffset :
+				(document.documentElement) ?
+				document.documentElement.scrollTop :
+				document.body.scrollTop;
 			}
 			// return the object
 			return position;
@@ -83,8 +83,16 @@ var useful = useful || {};
 			// define a position object
 			var position = {x : 0, y : 0};
 			// find the current position on the document
-			position.x = event.pageX || event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-			position.y = event.pageY || event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+			if (event.touches && event.touches[0]) {
+				position.x = event.touches[0].pageX;
+				position.y = event.touches[0].pageY;
+			} else if (event.pageX !== undefined) {
+				position.x = event.pageX;
+				position.y = event.pageY;
+			} else {
+				position.x = event.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft);
+				position.y = event.clientY + (document.documentElement.scrollTop || document.body.scrollTop);
+			}
 			// if a parent was given
 			if (parent) {
 				// retrieve the position of the parent

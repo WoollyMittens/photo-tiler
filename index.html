@@ -152,7 +152,7 @@
 		</section>
 		<section class="example example-right">
 			<article>
-				<p>This example shows a lens instead of zooming in on the whole image.</p>
+				<p>This example shows a lens instead of zooming in on the whole image. On devices with a touch interface this example will revert to a more intuitive "pinch to zoom" interface.</p>
 			</article>
 			<aside>
 
@@ -176,6 +176,7 @@
 				<script>
 				//<!--
 					// create a new instance of the script
+					var hasTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
 					var viewerb = new useful.Viewer().init({
 						'element' : document.getElementById('viewerb'),
 						'urlprefix' : '',
@@ -192,10 +193,10 @@
 						'colorHover' : '#ff9800',
 						'colorDisabled' : '#7f7f7f',
 						'lens' : '0.5',
-						'toolbars' : 'toolbar', 	// buttons | toolbar | sliders | none
-						'zoom' : 'lens', 			// static | lens
-						'spin' : 'slideshow', 		// rotation | slideshow | catalogue
-						'pan' : 'drag', 			// drag | hover
+						'toolbars' : 'toolbar', 					// buttons | toolbar | sliders | none
+						'zoom' : (hasTouch) ? 'static' : 'lens',	// static | lens
+						'spin' : 'slideshow', 						// rotation | slideshow | catalogue
+						'pan' : 'drag', 							// drag | hover
 						'magnification' : '1.1',
 						'max' : '4',
 						'grid' : '256px',

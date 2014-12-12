@@ -279,11 +279,11 @@ var useful = useful || {};
 })();
 
 /*
-	Source:
-	van Creij, Maurice (2014). "useful.positions.js: A library of useful functions to ease working with screen positions.", version 20141127, http://www.woollymittens.nl/.
+Source:
+van Creij, Maurice (2014). "useful.positions.js: A library of useful functions to ease working with screen positions.", version 20141127, http://www.woollymittens.nl/.
 
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+License:
+This work is licensed under a Creative Commons Attribution 3.0 Unported License.
 */
 
 // public object
@@ -325,15 +325,15 @@ var useful = useful || {};
 				position.y = parent.scrollTop;
 			} else {
 				position.x = (window.pageXOffset) ?
-					window.pageXOffset :
-					(document.documentElement) ?
-						document.documentElement.scrollLeft :
-						document.body.scrollLeft;
+				window.pageXOffset :
+				(document.documentElement) ?
+				document.documentElement.scrollLeft :
+				document.body.scrollLeft;
 				position.y = (window.pageYOffset) ?
-					window.pageYOffset :
-					(document.documentElement) ?
-						document.documentElement.scrollTop :
-						document.body.scrollTop;
+				window.pageYOffset :
+				(document.documentElement) ?
+				document.documentElement.scrollTop :
+				document.body.scrollTop;
 			}
 			// return the object
 			return position;
@@ -363,8 +363,16 @@ var useful = useful || {};
 			// define a position object
 			var position = {x : 0, y : 0};
 			// find the current position on the document
-			position.x = event.pageX || event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-			position.y = event.pageY || event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+			if (event.touches && event.touches[0]) {
+				position.x = event.touches[0].pageX;
+				position.y = event.touches[0].pageY;
+			} else if (event.pageX !== undefined) {
+				position.x = event.pageX;
+				position.y = event.pageY;
+			} else {
+				position.x = event.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft);
+				position.y = event.clientY + (document.documentElement.scrollTop || document.body.scrollTop);
+			}
 			// if a parent was given
 			if (parent) {
 				// retrieve the position of the parent
@@ -574,8 +582,9 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Automatic = function (parent) {
 // properties
 "use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.setup = function () {};
 };
@@ -601,8 +610,9 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Figures_Mouse = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	this.x = null;
 	this.y = null;
 	this.sensitivity = null;
@@ -611,45 +621,45 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 	this.delay = null;
 	// mouse wheel controls
 	this.wheel = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the reading from the mouse wheel
 		var distance = (window.event) ? window.event.wheelDelta / 120 : -event.detail / 3;
 		// do not loop around
 		if (distance < 0) {
 			// increase the zoom factor
-			cfg.status.zoom = cfg.status.zoom * cfg.magnification;
+			config.status.zoom = config.status.zoom * config.magnification;
 		} else if (distance > 0) {
 			// decrease the zoom factor
-			cfg.status.zoom = cfg.status.zoom / cfg.magnification;
+			config.status.zoom = config.status.zoom / config.magnification;
 		}
 		// temporarily disable streaming for a while to avoid flooding
-		cfg.status.stream = false;
+		config.status.stream = false;
 		clearTimeout(this.delay);
 		this.delay = setTimeout(function () {
-			cfg.status.stream = true;
-			root.update();
+			config.status.stream = true;
+			parent.parent.update();
 		}, 500);
 		// call for a redraw
-		root.update();
+		parent.parent.update();
 		// cancel the scrolling
 		event.preventDefault();
 	};
 	// mouse gesture controls
 	this.start = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// store the touch positions
 		this.x = event.pageX || event.x;
 		this.y = event.pageY || event.y;
 		// calculate the sensitivity
-		this.treshold = cfg.status.cover.offsetWidth / 10;
-		this.flick = cfg.status.cover.offsetWidth * 0.6;
+		this.treshold = config.status.cover.offsetWidth / 10;
+		this.flick = config.status.cover.offsetWidth * 0.6;
 		// cancel the click
 		event.preventDefault();
 	};
 	this.move = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// if there is a touch in progress
@@ -660,51 +670,51 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 			var xDelta = this.x - x;
 			var yDelta = this.y - y;
 			// if the image was zoomed in
-			if (cfg.status.zoom > 1) {
+			if (config.status.zoom > 1) {
 				// calculate the drag distance into %
-				cfg.status.pan.x -= xDelta * cfg.status.zoom / cfg.status.figures[cfg.status.index].offsetWidth;
-				cfg.status.pan.y -= yDelta * cfg.status.zoom / cfg.status.figures[cfg.status.index].offsetHeight;
+				config.status.pan.x -= xDelta * config.status.zoom / config.status.figures[config.status.index].offsetWidth;
+				config.status.pan.y -= yDelta * config.status.zoom / config.status.figures[config.status.index].offsetHeight;
 				// reset the distance
 				this.x = x;
 				this.y = y;
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			// else there was a spin gesture
 			} else if (
-				(Math.abs(xDelta) > this.treshold && cfg.spin === 'rotation') ||
+				(Math.abs(xDelta) > this.treshold && config.spin === 'rotation') ||
 				Math.abs(xDelta) > this.flick
 			) {
 				// increase the spin
-				cfg.status.index += (xDelta > 0) ? 1 : -1;
+				config.status.index += (xDelta > 0) ? 1 : -1;
 				// if in spin mode
-				if (cfg.spin === 'rotation') {
+				if (config.spin === 'rotation') {
 					// loop the value if needed
-					if (cfg.status.index >= cfg.status.figures.length) {
-						cfg.status.index = 1;
+					if (config.status.index >= config.status.figures.length) {
+						config.status.index = 1;
 					}
 					// loop the value if needed
-					if (cfg.status.index <= 0) {
-						cfg.status.index = cfg.status.figures.length - 1;
+					if (config.status.index <= 0) {
+						config.status.index = config.status.figures.length - 1;
 					}
 				}
 				// reset the distance
 				this.x = x;
 				this.y = y;
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			}
 		}
 		// cancel the click
 		event.preventDefault();
 	};
 	this.end = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// if there was a motion
 		if (this.x !== null) {
 			// order a redraw
-			root.update();
+			parent.parent.update();
 		}
 		// clear the positions
 		this.x = null;
@@ -713,14 +723,14 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 		event.preventDefault();
 	};
 	this.mirror = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// retrieve the mouse position
-		var pos = useful.positions.cursor(event, cfg.status.cover);
+		var pos = useful.positions.cursor(event, config.status.cover);
 		// measure the exact location of the interaction
-		cfg.status.pos.x = pos.x;
-		cfg.status.pos.y = pos.y;
+		config.status.pos.x = pos.x;
+		config.status.pos.y = pos.y;
 		// order a redraw
-		root.update();
+		parent.parent.update();
 		// cancel the scrolling
 		event.preventDefault();
 	};
@@ -747,45 +757,46 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Figures_Redraw = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.validate = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// reset the stored limits
-		cfg.status.atMinZoom = false;
-		cfg.status.atMaxZoom = false;
-		cfg.status.atMinLeaf = false;
-		cfg.status.atMaxLeaf = false;
+		config.status.atMinZoom = false;
+		config.status.atMaxZoom = false;
+		config.status.atMinLeaf = false;
+		config.status.atMaxLeaf = false;
 		// check the zoom level
-		var minZoom = (cfg.zoom !== 'static') ? (1 / cfg.lens) : 1;
-		if (cfg.status.zoom <= minZoom) {
-			cfg.status.zoom = minZoom;
-			cfg.status.atMinZoom = true;
+		var minZoom = (config.zoom !== 'static') ? (1 / config.lens) : 1;
+		if (config.status.zoom <= minZoom) {
+			config.status.zoom = minZoom;
+			config.status.atMinZoom = true;
 		}
-		if (cfg.status.index <= 1) {
-			cfg.status.index = 1;
-			cfg.status.atMinLeaf = true;
+		if (config.status.index <= 1) {
+			config.status.index = 1;
+			config.status.atMinLeaf = true;
 		}
-		if (cfg.status.index >= cfg.status.figures.length) {
-			cfg.status.index = cfg.status.figures.length - 1;
-			cfg.status.atMaxLeaf = true;
+		if (config.status.index >= config.status.figures.length) {
+			config.status.index = config.status.figures.length - 1;
+			config.status.atMaxLeaf = true;
 		}
 	};
 	this.calculate = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// calculate dimensions for a given zoom level
-		this.canvasWidth = cfg.status.canvas.offsetWidth;
-		this.canvasHeight = cfg.status.canvas.offsetHeight;
-		this.canvasLeft = cfg.status.pos.x - this.canvasWidth / 2;
-		this.canvasTop = cfg.status.pos.y - this.canvasHeight / 2;
-		this.maxWidth = cfg.widths[cfg.status.index] * (cfg.rights[cfg.status.index] - cfg.lefts[cfg.status.index]);
-		this.maxHeight = cfg.heights[cfg.status.index] * (cfg.bottoms[cfg.status.index] - cfg.tops[cfg.status.index]);
+		this.canvasWidth = config.status.canvas.offsetWidth;
+		this.canvasHeight = config.status.canvas.offsetHeight;
+		this.canvasLeft = config.status.pos.x - this.canvasWidth / 2;
+		this.canvasTop = config.status.pos.y - this.canvasHeight / 2;
+		this.maxWidth = config.widths[config.status.index] * (config.rights[config.status.index] - config.lefts[config.status.index]);
+		this.maxHeight = config.heights[config.status.index] * (config.bottoms[config.status.index] - config.tops[config.status.index]);
 		this.figureAspect = this.maxWidth / this.maxHeight;
-		this.figureWidth = this.canvasHeight * this.figureAspect * cfg.status.zoom;
-		this.figureHeight = this.canvasHeight * cfg.status.zoom;
-		this.figureLeft = (cfg.status.pan.x - 0.5) * this.canvasWidth;
-		this.figureTop = (cfg.status.pan.y - 0.5) * this.canvasHeight;
+		this.figureWidth = this.canvasHeight * this.figureAspect * config.status.zoom;
+		this.figureHeight = this.canvasHeight * config.status.zoom;
+		this.figureLeft = (config.status.pan.x - 0.5) * this.canvasWidth;
+		this.figureTop = (config.status.pan.y - 0.5) * this.canvasHeight;
 		this.overscanLeft = (this.figureWidth - this.canvasWidth) / 2;
 		this.overscanTop = (this.figureHeight - this.canvasHeight) / 2;
 		this.offsetLeft = this.overscanLeft - this.figureLeft;
@@ -796,141 +807,141 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 		this.maxPanTop = this.overscanTop / this.canvasHeight + 0.5;
 		this.maxZoom = this.maxHeight / this.canvasHeight;
 		// extra dimensions for non static zooms
-		if (cfg.zoom !== 'static') {
-			this.backgroundWidth = cfg.status.background.offsetWidth;
-			this.backgroundHeight = cfg.status.background.offsetHeight;
+		if (config.zoom !== 'static') {
+			this.backgroundWidth = config.status.background.offsetWidth;
+			this.backgroundHeight = config.status.background.offsetHeight;
 			this.backgroundLeft = (this.backgroundHeight * this.figureAspect - this.backgroundWidth) / 2;
 			this.backgroundTop = 0;
 		}
 	};
 	this.normalise = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// normalise the figure position
 		if (this.figureWidth >= this.maxWidth || this.figureHeight >= this.maxHeight) {
 			this.figureWidth = this.maxWidth;
 			this.figureHeight = this.maxHeight;
-			cfg.status.zoom = this.maxZoom;
-			cfg.status.atMaxZoom = true;
+			config.status.zoom = this.maxZoom;
+			config.status.atMaxZoom = true;
 		}
 		if (this.figureLeft > this.overscanLeft) {
 			this.figureLeft = this.overscanLeft;
-			cfg.status.pan.x = this.maxPanLeft;
+			config.status.pan.x = this.maxPanLeft;
 		}
 		if (this.figureLeft < -this.overscanLeft) {
 			this.figureLeft = -this.overscanLeft;
-			cfg.status.pan.x = this.minPanLeft;
+			config.status.pan.x = this.minPanLeft;
 		}
 		if (this.figureTop > this.overscanTop) {
 			this.figureTop = this.overscanTop;
-			cfg.status.pan.y = this.maxPanTop;
+			config.status.pan.y = this.maxPanTop;
 		}
 		if (this.figureTop < -this.overscanTop) {
 			this.figureTop = -this.overscanTop;
-			cfg.status.pan.y = this.minPanTop;
+			config.status.pan.y = this.minPanTop;
 		}
 		if (this.figureHeight < this.canvasHeight) {
 			this.figureWidth = this.canvasHeight / this.maxHeight * this.maxWidth;
 			this.figureHeight = this.canvasHeight;
-			cfg.status.zoom = 1;
-			cfg.status.pan.y = 0.5;
+			config.status.zoom = 1;
+			config.status.pan.y = 0.5;
 		}
 		if (this.figureWidth < this.canvasWidth) {
 			this.figureLeft = 0;
-			cfg.status.pan.x = 0.5;
+			config.status.pan.x = 0.5;
 		}
 	};
 	this.canvas = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// figure out the relevant movement
-		switch (cfg.zoom) {
+		switch (config.zoom) {
 		case 'lens' :
 			var fraction, extra, range, offset;
 			// set the horizontal shift
-			fraction = (1 - (cfg.status.pos.x + this.backgroundLeft) / (this.backgroundHeight * this.figureAspect));
+			fraction = (1 - (config.status.pos.x + this.backgroundLeft) / (this.backgroundHeight * this.figureAspect));
 			extra = this.canvasWidth / this.figureWidth;
 			range = this.maxPanLeft - this.minPanLeft + extra * 2;
 			offset = this.minPanLeft - extra;
-			cfg.status.pan.x = fraction * range + offset;
+			config.status.pan.x = fraction * range + offset;
 			// set the vertical shift
-			fraction = (1 - (cfg.status.pos.y + this.backgroundTop) / this.backgroundHeight);
+			fraction = (1 - (config.status.pos.y + this.backgroundTop) / this.backgroundHeight);
 			extra = this.canvasHeight / this.figureHeight;
 			range = this.maxPanTop - this.minPanTop + extra * 2;
 			offset = this.minPanTop - extra;
-			cfg.status.pan.y = fraction * range + offset;
+			config.status.pan.y = fraction * range + offset;
 			// set the positions
-			cfg.status.canvas.style.left = parseInt(this.canvasLeft, 10) + 'px';
-			cfg.status.canvas.style.top = parseInt(this.canvasTop, 10) + 'px';
+			config.status.canvas.style.left = parseInt(this.canvasLeft, 10) + 'px';
+			config.status.canvas.style.top = parseInt(this.canvasTop, 10) + 'px';
 			break;
 		case 'top' :
-			cfg.status.canvas.style.left = '0px';
-			cfg.status.canvas.style.top = '-' + cfg.status.canvas.offsetHeight + 'px';
+			config.status.canvas.style.left = '0px';
+			config.status.canvas.style.top = '-' + config.status.canvas.offsetHeight + 'px';
 			break;
 		case 'right' :
-			cfg.status.canvas.style.left = cfg.status.canvas.offsetWidth + 'px';
-			cfg.status.canvas.style.top = '0px';
+			config.status.canvas.style.left = config.status.canvas.offsetWidth + 'px';
+			config.status.canvas.style.top = '0px';
 			break;
 		case 'bottom' :
-			cfg.status.canvas.style.left = '0px';
-			cfg.status.canvas.style.top = cfg.status.canvas.offsetHeight + 'px';
+			config.status.canvas.style.left = '0px';
+			config.status.canvas.style.top = config.status.canvas.offsetHeight + 'px';
 			break;
 		case 'left' :
-			cfg.status.canvas.style.left = '-' + cfg.status.canvas.offsetHeight + 'px';
-			cfg.status.canvas.style.top = '0px';
+			config.status.canvas.style.left = '-' + config.status.canvas.offsetHeight + 'px';
+			config.status.canvas.style.top = '0px';
 			break;
 		}
 		// show the appropriate cursor
-		if (cfg.zoom === 'lens') {
-			cfg.status.cover.style.cursor = 'crosshair';
-		} else if (cfg.status.zoom > 1 || cfg.spin === 'rotation') {
-			cfg.status.cover.style.cursor = 'move';
+		if (config.zoom === 'lens') {
+			config.status.cover.style.cursor = 'crosshair';
+		} else if (config.status.zoom > 1 || config.spin === 'rotation') {
+			config.status.cover.style.cursor = 'move';
 		} else {
-			cfg.status.cover.style.cursor = 'auto';
+			config.status.cover.style.cursor = 'auto';
 		}
 	};
 	this.figures = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// use CSS3 transforms if allowed
-		if (root.cfg.transforms) {
+		if (this.config.transforms) {
 			// calculate the transformation properties
-			var x = (cfg.status.pan.x * 100 - 50) / this.figureAspect,
-				y = cfg.status.pan.y * 100 - 50,
-				z =	cfg.status.zoom;
+			var x = (config.status.pan.x * 100 - 50) / this.figureAspect,
+				y = config.status.pan.y * 100 - 50,
+				z =	config.status.zoom;
 			// formulate the css rule
 			var transformation = 'translate(' + x + '%, ' + y + '%) scale(' + z + ', ' + z + ')';
 			// set the transformation styles
-			cfg.status.figures[cfg.status.index].style.msTransform = transformation;
-			cfg.status.figures[cfg.status.index].style.webkitTransform = transformation;
-			cfg.status.figures[cfg.status.index].style.transform = transformation;
+			config.status.figures[config.status.index].style.msTransform = transformation;
+			config.status.figures[config.status.index].style.webkitTransform = transformation;
+			config.status.figures[config.status.index].style.transform = transformation;
 		// else use CSS2
 		} else {
 			// set the zoomed figure dimensions
-			cfg.status.figures[cfg.status.index].style.left = (cfg.status.pan.x * 100) + '%';
-			cfg.status.figures[cfg.status.index].style.top = (cfg.status.pan.y * 100) + '%';
-			cfg.status.figures[cfg.status.index].style.marginLeft = parseInt(this.figureWidth / -2, 10) + 'px';
-			cfg.status.figures[cfg.status.index].style.marginTop = parseInt(this.figureHeight / -2, 10) + 'px';
-			cfg.status.figures[cfg.status.index].style.width = parseInt(this.figureWidth, 10) + 'px';
-			cfg.status.figures[cfg.status.index].style.height = parseInt(this.figureHeight, 10) + 'px';
+			config.status.figures[config.status.index].style.left = (config.status.pan.x * 100) + '%';
+			config.status.figures[config.status.index].style.top = (config.status.pan.y * 100) + '%';
+			config.status.figures[config.status.index].style.marginLeft = parseInt(this.figureWidth / -2, 10) + 'px';
+			config.status.figures[config.status.index].style.marginTop = parseInt(this.figureHeight / -2, 10) + 'px';
+			config.status.figures[config.status.index].style.width = parseInt(this.figureWidth, 10) + 'px';
+			config.status.figures[config.status.index].style.height = parseInt(this.figureHeight, 10) + 'px';
 		}
 	};
 	this.create = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// if streaming new tiles is allowed
 		if (
 			// allow/disallow streaming switch
-			cfg.status.stream &&
+			config.status.stream &&
 			// don't stream at the initial zoom in the rotation (the initial images will be of high enough resolution)
-			cfg.status.zoom > 1
+			config.status.zoom > 1
 		) {
 			// divide the dimension into tiles
-			var horizontalTiles = Math.ceil(this.figureWidth / cfg.grid);
-			var verticalTiles = Math.ceil(this.figureHeight / cfg.grid);
+			var horizontalTiles = Math.ceil(this.figureWidth / config.grid);
+			var verticalTiles = Math.ceil(this.figureHeight / config.grid);
 			var tileName, tileWidth, tileHeight, tileTop, tileRight, tileBottom, tileLeft,
-				tileId = cfg.figures[cfg.status.index],
-				tileZoom = cfg.status.zoom.toString().replace('.', 'D'),
-				cropLeft = cfg.lefts[cfg.status.index],
-				cropTop = cfg.tops[cfg.status.index],
-				cropWidth = cfg.rights[cfg.status.index] - cropLeft,
-				cropHeight = cfg.bottoms[cfg.status.index] - cropTop;
+				tileId = config.figures[config.status.index],
+				tileZoom = config.status.zoom.toString().replace('.', 'D'),
+				cropLeft = config.lefts[config.status.index],
+				cropTop = config.tops[config.status.index],
+				cropWidth = config.rights[config.status.index] - cropLeft,
+				cropHeight = config.bottoms[config.status.index] - cropTop;
 			// for all columns
 			for (var x = 0; x < horizontalTiles; x += 1) {
 				// for all rows
@@ -939,30 +950,30 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 					tileName = 'fig_' + tileId + '_zoom_' + tileZoom + '_x_' + x + '_y_' + y;
 					// if the tile is within the bounds of the canvas
 					if (
-						(x + 1) * cfg.grid >= this.offsetLeft &&
-						(x) * cfg.grid <= this.offsetLeft + this.canvasWidth &&
-						(y + 1) * cfg.grid >= this.offsetTop &&
-						(y) * cfg.grid <= this.offsetTop + this.canvasHeight
+						(x + 1) * config.grid >= this.offsetLeft &&
+						(x) * config.grid <= this.offsetLeft + this.canvasWidth &&
+						(y + 1) * config.grid >= this.offsetTop &&
+						(y) * config.grid <= this.offsetTop + this.canvasHeight
 					) {
 						// if this tile doesn't exist (naming convention: tiles['fig_1_zoom_1_x_1_y_1'] = {})
-						if (!cfg.status.tiles[tileName]) {
+						if (!config.status.tiles[tileName]) {
 							// count the new tile
-							cfg.status.count += 1;
+							config.status.count += 1;
 							// create a tile at this zoom level
-							cfg.status.tiles[tileName] = {
+							config.status.tiles[tileName] = {
 								'object' : document.createElement('img'),
-								'figure' : cfg.status.index,
-								'zoom' : cfg.status.zoom,
+								'figure' : config.status.index,
+								'zoom' : config.status.zoom,
 								'x' : x,
 								'y' : y,
-								'index' : cfg.status.count
+								'index' : config.status.count
 							};
 							// reveal it onload
-							cfg.status.tiles[tileName].object.className = 'tile_hidden';
-							this.onTileLoad(cfg.status.tiles[tileName].object);
+							config.status.tiles[tileName].object.className = 'tile_hidden';
+							this.onTileLoad(config.status.tiles[tileName].object);
 							// calculate the positions
-							tileWidth = cfg.grid;
-							tileHeight = cfg.grid;
+							tileWidth = config.grid;
+							tileHeight = config.grid;
 							tileTop = (y * tileHeight / this.figureHeight);
 							tileRight = ((x + 1) * tileWidth / this.figureWidth);
 							tileBottom = ((y + 1) * tileHeight / this.figureHeight);
@@ -977,24 +988,24 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 								tileBottom = 1;
 							}
 							// costruct the tile url
-							cfg.status.tiles[tileName].object.className = 'tile_hidden';
-							cfg.status.tiles[tileName].object.src = cfg.imageslice
-								.replace(cfg.regSrc, cfg.figures[cfg.status.index])
-								.replace(cfg.regWidth, tileWidth)
-								.replace(cfg.regHeight, tileHeight)
-								.replace(cfg.regLeft, tileLeft * cropWidth + cropLeft)
-								.replace(cfg.regTop, tileTop * cropHeight + cropTop)
-								.replace(cfg.regRight, tileRight * cropWidth + cropLeft)
-								.replace(cfg.regBottom, tileBottom * cropHeight + cropTop);
+							config.status.tiles[tileName].object.className = 'tile_hidden';
+							config.status.tiles[tileName].object.src = config.imageslice
+								.replace(config.regSrc, config.figures[config.status.index])
+								.replace(config.regWidth, tileWidth)
+								.replace(config.regHeight, tileHeight)
+								.replace(config.regLeft, tileLeft * cropWidth + cropLeft)
+								.replace(config.regTop, tileTop * cropHeight + cropTop)
+								.replace(config.regRight, tileRight * cropWidth + cropLeft)
+								.replace(config.regBottom, tileBottom * cropHeight + cropTop);
 							// position it on the grid
-							cfg.status.tiles[tileName].object.style.position = 'absolute';
-							cfg.status.tiles[tileName].object.style.left = (tileLeft * 100) + '%';
-							cfg.status.tiles[tileName].object.style.top = (tileTop * 100) + '%';
-							cfg.status.tiles[tileName].object.style.width = (tileWidth / this.figureWidth * 100) + '%';
-							cfg.status.tiles[tileName].object.style.height = (tileHeight / this.figureHeight * 100) + '%';
-							cfg.status.tiles[tileName].object.style.zIndex = parseInt(cfg.status.zoom * 100, 10);
+							config.status.tiles[tileName].object.style.position = 'absolute';
+							config.status.tiles[tileName].object.style.left = (tileLeft * 100) + '%';
+							config.status.tiles[tileName].object.style.top = (tileTop * 100) + '%';
+							config.status.tiles[tileName].object.style.width = (tileWidth / this.figureWidth * 100) + '%';
+							config.status.tiles[tileName].object.style.height = (tileHeight / this.figureHeight * 100) + '%';
+							config.status.tiles[tileName].object.style.zIndex = parseInt(config.status.zoom * 100, 10);
 							// add it to the figure
-							cfg.status.figures[cfg.status.index].appendChild(cfg.status.tiles[tileName].object);
+							config.status.figures[config.status.index].appendChild(config.status.tiles[tileName].object);
 						}
 					}
 				}
@@ -1002,26 +1013,26 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 		}
 	};
 	this.display = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// for all tiles
 		var tile = '', checkedTile;
-		for (tile in cfg.status.tiles) {
+		for (tile in config.status.tiles) {
 			// validate
-			if (cfg.status.tiles.hasOwnProperty(tile)) {
+			if (config.status.tiles.hasOwnProperty(tile)) {
 				// get the target tile
-				checkedTile = cfg.status.tiles[tile];
+				checkedTile = config.status.tiles[tile];
 				// if this is a surplus tile
-				if (cfg.status.tiles[tile].index < cfg.status.count - cfg.cache) {
+				if (config.status.tiles[tile].index < config.status.count - config.cache) {
 					// remove it
-					cfg.status.tiles[tile].object.parentNode.removeChild(cfg.status.tiles[tile].object);
-					delete cfg.status.tiles[tile];
+					config.status.tiles[tile].object.parentNode.removeChild(config.status.tiles[tile].object);
+					delete config.status.tiles[tile];
 				// if the tile is within the bounds of the canvas
 				} else if (
-					(checkedTile.x + 1) * cfg.grid >= this.offsetLeft &&
-					(checkedTile.x) * cfg.grid <= this.offsetLeft + this.canvasWidth &&
-					(checkedTile.y + 1) * cfg.grid >= this.offsetTop &&
-					(checkedTile.y) * cfg.grid <= this.offsetTop + this.canvasHeight &&
-					checkedTile.zoom <= cfg.status.zoom
+					(checkedTile.x + 1) * config.grid >= this.offsetLeft &&
+					(checkedTile.x) * config.grid <= this.offsetLeft + this.canvasWidth &&
+					(checkedTile.y + 1) * config.grid >= this.offsetTop &&
+					(checkedTile.y) * config.grid <= this.offsetTop + this.canvasHeight &&
+					checkedTile.zoom <= config.status.zoom
 				) {
 					// display the tile
 					checkedTile.object.style.display = 'block';
@@ -1034,33 +1045,33 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 		}
 	};
 	this.spin = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// decide on the transition effect
-		switch (cfg.spin) {
+		switch (config.spin) {
 		// in case of a catalogue
 		case 'catalogue' :
 			// for all figures
 			var clipWidth;
-			for (var a = 1, b = cfg.status.figures.length; a < b; a += 1) {
+			for (var a = 1, b = config.status.figures.length; a < b; a += 1) {
 				// clear any transition that may be in effect on this figure
-				clearTimeout(cfg.status.transitions[a]);
+				clearTimeout(config.status.transitions[a]);
 				// measure the slide width
-				clipWidth = cfg.status.figures[a].offsetWidth;
+				clipWidth = config.status.figures[a].offsetWidth;
 				// if this is an active slide
-				if (a === cfg.status.index) {
+				if (a === config.status.index) {
 					// if there is a zoom factor, disable the clipping
-					if (cfg.status.zoom > 1) {
-						cfg.status.figures[a].style.clip = 'rect(auto 10000px auto 0px)';
+					if (config.status.zoom > 1) {
+						config.status.figures[a].style.clip = 'rect(auto 10000px auto 0px)';
 					}
 					// else if the figure wasn't revealed yet
-					else if (cfg.status.figures[a].className !== 'figure_leafin') {
+					else if (config.status.figures[a].className !== 'figure_leafin') {
 						// force the clip's start situation
-						cfg.status.figures[a].style.clip = 'rect(auto ' + clipWidth + 'px auto ' + clipWidth + 'px)';
+						config.status.figures[a].style.clip = 'rect(auto ' + clipWidth + 'px auto ' + clipWidth + 'px)';
 						// apply the figure class
-						cfg.status.figures[a].className = 'figure_leafin';
+						config.status.figures[a].className = 'figure_leafin';
 						// apply the figure style
 						useful.transitions.byRules(
-							cfg.status.figures[a],
+							config.status.figures[a],
 							{'clip' : 'rect(auto ' + clipWidth + 'px auto 0px)', 'transform' : 'translate(0%,0%) rotate(0deg)'},
 							null,
 							600
@@ -1068,54 +1079,54 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 					}
 				}
 				// else if this is a passive slide, but not unrevealed yet
-				else if (cfg.status.figures[a].className !== 'figure_leafout') {
+				else if (config.status.figures[a].className !== 'figure_leafout') {
 					// delay its return
 					this.onFigureUnreveal(a, clipWidth);
 					// apply the figure class
-					cfg.status.figures[a].className = 'figure_leafout';
+					config.status.figures[a].className = 'figure_leafout';
 				}
 			}
 			break;
 		// in case of a slideshow
 		case 'slideshow' :
 			// for all figures
-			for (a = 1, b = cfg.status.figures.length; a < b; a += 1) {
+			for (a = 1, b = config.status.figures.length; a < b; a += 1) {
 				// apply the figure class
-				cfg.status.figures[a].className = (a === cfg.status.index) ? 'figure_fadein' : 'figure_fadeout';
-				if (cfg.zoom !== 'static') {
-					cfg.status.backgrounds[a].className = (a === cfg.status.index) ? 'figure_fadein' : 'figure_fadeout';
+				config.status.figures[a].className = (a === config.status.index) ? 'figure_fadein' : 'figure_fadeout';
+				if (config.zoom !== 'static') {
+					config.status.backgrounds[a].className = (a === config.status.index) ? 'figure_fadein' : 'figure_fadeout';
 				}
 			}
 			break;
 		// for a generic transition
 		default :
 			// for all figures
-			for (a = 1, b = cfg.status.figures.length; a < b; a += 1) {
+			for (a = 1, b = config.status.figures.length; a < b; a += 1) {
 				// apply the figure class
-				cfg.status.figures[a].className = (a === cfg.status.index) ? 'figure_active' : 'figure_passive';
-				if (cfg.zoom !== 'static') {
-					cfg.status.backgrounds[a].className = (a === cfg.status.index) ? 'figure_active' : 'figure_passive';
+				config.status.figures[a].className = (a === config.status.index) ? 'figure_active' : 'figure_passive';
+				if (config.zoom !== 'static') {
+					config.status.backgrounds[a].className = (a === config.status.index) ? 'figure_active' : 'figure_passive';
 				}
 			}
 		}
 	};
 	// handlers for the events
 	this.onTileLoad = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		element.addEventListener('load', function () {
 			element.className = 'tile_visible';
 		}, false);
 	};
 	this.onFigureUnreveal = function (a, clipWidth) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		setTimeout(function () {
 			// apply the figure style
-			cfg.status.figures[a].style.clip = 'rect(auto ' + clipWidth + 'px auto ' + clipWidth + 'px)';
-			cfg.status.figures[a].style.webkitTransform = 'translate(25%,25%) rotate(45deg)';
-			cfg.status.figures[a].style.MozTransform = 'translate(25%,25%) rotate(45deg)';
-			cfg.status.figures[a].style.msTransform = 'translate(25%,25%) rotate(45deg)';
-			cfg.status.figures[a].style.oTransform = 'translate(25%,25%) rotate(45deg)';
-			cfg.status.figures[a].style.transform = 'translate(25%,25%) rotate(45deg)';
+			config.status.figures[a].style.clip = 'rect(auto ' + clipWidth + 'px auto ' + clipWidth + 'px)';
+			config.status.figures[a].style.webkitTransform = 'translate(25%,25%) rotate(45deg)';
+			config.status.figures[a].style.MozTransform = 'translate(25%,25%) rotate(45deg)';
+			config.status.figures[a].style.msTransform = 'translate(25%,25%) rotate(45deg)';
+			config.status.figures[a].style.oTransform = 'translate(25%,25%) rotate(45deg)';
+			config.status.figures[a].style.transform = 'translate(25%,25%) rotate(45deg)';
 		}, 750);
 	};
 };
@@ -1141,8 +1152,9 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Figures_Touch = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	this.x = null;
 	this.y = null;
 	this.sensitivity = null;
@@ -1151,7 +1163,7 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 	this.delay = null;
 	// methods
 	this.start = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// store the touch positions
 		this.x = [];
 		this.y = [];
@@ -1160,12 +1172,12 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 			this.y.push(event.touches[a].pageY);
 		}
 		// adjust the sensitivity
-		this.sensitivity = (cfg.magnification - 1) / 2 + 1;
-		this.treshold = cfg.status.cover.offsetWidth / 10;
-		this.flick = cfg.status.cover.offsetWidth * 0.6;
+		this.sensitivity = (config.magnification - 1) / 2 + 1;
+		this.treshold = config.status.cover.offsetWidth / 10;
+		this.flick = config.status.cover.offsetWidth * 0.6;
 	};
 	this.move = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		var target = event.target || event.srcElement;
@@ -1188,11 +1200,11 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 					Math.abs(this.x[0] - this.x[1]) + Math.abs(this.y[0] - this.y[1])
 				) {
 					// zoom out
-					cfg.status.zoom = cfg.status.zoom / this.sensitivity;
+					config.status.zoom = config.status.zoom / this.sensitivity;
 				// else
 				} else {
 					// zoom in
-					cfg.status.zoom = cfg.status.zoom * this.sensitivity;
+					config.status.zoom = config.status.zoom * this.sensitivity;
 				}
 				// reset the distance
 				this.x[0] = x[0];
@@ -1200,68 +1212,68 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 				this.x[1] = x[1];
 				this.y[1] = y[1];
 				// temporarily disable streaming for a while to avoid flooding
-				cfg.status.stream = false;
+				config.status.stream = false;
 				clearTimeout(this.delay);
 				this.delay = setTimeout(function () {
-					cfg.status.stream = true;
-					root.update();
+					config.status.stream = true;
+					parent.parent.update();
 				}, 500);
 			// else if there was a drag motion
-			} else if (cfg.status.zoom > 1 || cfg.spin === 'slideshow') {
+			} else if (config.status.zoom > 1 || config.spin === 'slideshow') {
 				// calculate the drag distance into %
-				cfg.status.pan.x -= xDelta * cfg.status.zoom / cfg.status.figures[cfg.status.index].offsetWidth;
-				cfg.status.pan.y -= yDelta * cfg.status.zoom / cfg.status.figures[cfg.status.index].offsetHeight;
+				config.status.pan.x -= xDelta * config.status.zoom / config.status.figures[config.status.index].offsetWidth;
+				config.status.pan.y -= yDelta * config.status.zoom / config.status.figures[config.status.index].offsetHeight;
 				// reset the distance
 				this.x[0] = x[0];
 				this.y[0] = y[0];
 			// else there was a spin gesture
 			} else if (
-				(Math.abs(xDelta) > this.treshold && cfg.spin === 'rotation') ||
+				(Math.abs(xDelta) > this.treshold && config.spin === 'rotation') ||
 				Math.abs(xDelta) > this.flick
 			) {
 				// increase the spin
-				cfg.status.index += (xDelta > 0) ? 1 : -1;
+				config.status.index += (xDelta > 0) ? 1 : -1;
 				// if in spin mode
-				if (cfg.spin === 'rotation') {
+				if (config.spin === 'rotation') {
 					// loop the value if needed
-					if (cfg.status.index >= cfg.status.figures.length) {
-						cfg.status.index = 1;
+					if (config.status.index >= config.status.figures.length) {
+						config.status.index = 1;
 					}
 					// loop the value if needed
-					if (cfg.status.index <= 0) {
-						cfg.status.index = cfg.status.figures.length - 1;
+					if (config.status.index <= 0) {
+						config.status.index = config.status.figures.length - 1;
 					}
 				}
 				// reset the distance
 				this.x[0] = x[0];
 				this.y[0] = y[0];
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			}
 			// order a redraw
-			root.update();
+			parent.parent.update();
 		}
 		// cancel the click
 		target.blur();
 		event.preventDefault();
 	};
 	this.end = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// clear the positions
 		this.x = null;
 		this.y = null;
 		// order a redraw
-		root.update();
+		parent.parent.update();
 	};
 	this.mirror = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// retrieve the touch position
-		var pos = useful.positions.touch(event, cfg.status.cover);
+		var pos = useful.positions.touch(event, config.status.cover);
 		// measure the exact location of the interaction
-		cfg.status.pos.x = pos.x;
-		cfg.status.pos.y = pos.y;
+		config.status.pos.x = pos.x;
+		config.status.pos.y = pos.y;
 		// order a redraw
-		root.update();
+		parent.parent.update();
 		// cancel the scrolling
 		event.preventDefault();
 	};
@@ -1288,27 +1300,28 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Figures = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// builds the figure
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// enable the streaming of images
-		cfg.status.stream = true;
+		config.status.stream = true;
 		// set up a counter for the amount of images streamed
-		cfg.status.count = 0;
+		config.status.count = 0;
 		// create a storage place for the transition timeouts
-		cfg.status.transitions = [];
+		config.status.transitions = [];
 		// create a wrapper for overflow management
-		cfg.status.wrapper = document.createElement('div');
-		cfg.status.wrapper.className = 'wrapper';
+		config.status.wrapper = document.createElement('div');
+		config.status.wrapper.className = 'wrapper';
 		// force the height of the wrapper if desired
-		cfg.status.wrapper.style.height = (cfg.divide * 100) + '%';
+		config.status.wrapper.style.height = (config.divide * 100) + '%';
 		// create a canvas layer to contain the images
-		cfg.status.canvas = document.createElement('div');
-		cfg.status.canvas.className = 'canvas';
+		config.status.canvas = document.createElement('div');
+		config.status.canvas.className = 'canvas';
 		// add the canvas to the parent
-		cfg.status.wrapper.appendChild(cfg.status.canvas);
+		config.status.wrapper.appendChild(config.status.canvas);
 		// add the figures to the construct
 		this.addFigures();
 		// add the cover layer to the construct
@@ -1316,110 +1329,110 @@ useful.Viewer.prototype.Figures = function (parent) {
 		// add the lens to the construct
 		this.addLens();
 		// add the wrapper to the parent
-		cfg.element.appendChild(cfg.status.wrapper);
+		config.element.appendChild(config.status.wrapper);
 		// add a place to contain the tiles
-		cfg.status.tiles = {};
+		config.status.tiles = {};
 	};
 	// add the figures to the construct
 	this.addFigures = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
-		// for all figures in the root.cfg
-		cfg.status.figures = [0];
+		var context = this.context, parent = this.parent, config = this.config;
+		// for all figures in the this.config
+		config.status.figures = [0];
 		var newImage, newWidth, newHeight, croppedWidth, croppedHeight;
-		for (var a = 1, b = cfg.figures.length; a < b; a += 1) {
+		for (var a = 1, b = config.figures.length; a < b; a += 1) {
 			// calculate the cropped dimensions
-			croppedWidth = cfg.widths[a] * (cfg.rights[a] - cfg.lefts[a]);
-			croppedHeight = cfg.heights[a] * (cfg.bottoms[a] - cfg.tops[a]);
+			croppedWidth = config.widths[a] * (config.rights[a] - config.lefts[a]);
+			croppedHeight = config.heights[a] * (config.bottoms[a] - config.tops[a]);
 			// calculate the starting dimensions
-			newHeight = cfg.element.offsetHeight * cfg.divide;
+			newHeight = config.element.offsetHeight * config.divide;
 			newWidth = newHeight / croppedHeight * croppedWidth;
 			// create a new slide
-			cfg.status.figures[a] = document.createElement('figure');
-			cfg.status.figures[a].className = (a === 1) ? 'figure_active' : 'figure_passive';
-			cfg.status.figures[a].style.width = parseInt(newWidth, 10) + 'px';
-			cfg.status.figures[a].style.height = parseInt(newHeight, 10) + 'px';
-			cfg.status.figures[a].style.left = (cfg.status.pan.x * 100) + '%';
-			cfg.status.figures[a].style.top = (cfg.status.pan.y * 100) + '%';
-			cfg.status.figures[a].style.marginLeft = parseInt(newWidth / -2, 10) + 'px';
-			cfg.status.figures[a].style.marginTop = parseInt(newHeight / -2, 10) + 'px';
+			config.status.figures[a] = document.createElement('figure');
+			config.status.figures[a].className = (a === 1) ? 'figure_active' : 'figure_passive';
+			config.status.figures[a].style.width = parseInt(newWidth, 10) + 'px';
+			config.status.figures[a].style.height = parseInt(newHeight, 10) + 'px';
+			config.status.figures[a].style.left = (config.status.pan.x * 100) + '%';
+			config.status.figures[a].style.top = (config.status.pan.y * 100) + '%';
+			config.status.figures[a].style.marginLeft = parseInt(newWidth / -2, 10) + 'px';
+			config.status.figures[a].style.marginTop = parseInt(newHeight / -2, 10) + 'px';
 			// add the default image to the slide
 			newImage = document.createElement('img');
 			// load starting images
-			newImage.src = cfg.imageslice
-				.replace(cfg.regSrc, cfg.figures[a])
-				.replace(cfg.regWidth, parseInt(newWidth, 10))
-				.replace(cfg.regHeight, parseInt(newHeight, 10))
-				.replace(cfg.regLeft, cfg.lefts[a])
-				.replace(cfg.regTop, cfg.tops[a])
-				.replace(cfg.regRight, cfg.rights[a])
-				.replace(cfg.regBottom, cfg.bottoms[a]);
+			newImage.src = config.imageslice
+				.replace(config.regSrc, config.figures[a])
+				.replace(config.regWidth, parseInt(newWidth, 10))
+				.replace(config.regHeight, parseInt(newHeight, 10))
+				.replace(config.regLeft, config.lefts[a])
+				.replace(config.regTop, config.tops[a])
+				.replace(config.regRight, config.rights[a])
+				.replace(config.regBottom, config.bottoms[a]);
 			// set the image properties
 			newImage.style.width = '100%';
 			newImage.style.height = '100%';
 			newImage.className = 'zoom_0';
-			if (cfg.descriptions) {
-				newImage.setAttribute('alt', cfg.descriptions[a]);
+			if (config.descriptions) {
+				newImage.setAttribute('alt', config.descriptions[a]);
 			} else {
 				newImage.setAttribute('alt', '');
 			}
-			if (cfg.titles) {
-				newImage.setAttribute('title', cfg.titles[a]);
+			if (config.titles) {
+				newImage.setAttribute('title', config.titles[a]);
 			} else {
 				newImage.setAttribute('title', '');
 			}
-			cfg.status.figures[a].appendChild(newImage);
+			config.status.figures[a].appendChild(newImage);
 			// insert the new nodes
-			cfg.status.canvas.appendChild(cfg.status.figures[a]);
+			config.status.canvas.appendChild(config.status.figures[a]);
 		}
 	};
 	// add the lens to the construct
 	this.addLens = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// clone the initial figure into a background layer on non-static zooms
-		if (cfg.zoom !== 'static') {
+		if (config.zoom !== 'static') {
 			// create a background layer to contain all the low res backgrounds
-			cfg.status.background = cfg.status.canvas.cloneNode(true);
-			cfg.status.background.className = 'background';
+			config.status.background = config.status.canvas.cloneNode(true);
+			config.status.background.className = 'background';
 			// insert the background into the parent
-			cfg.status.wrapper.insertBefore(cfg.status.background, cfg.status.canvas);
+			config.status.wrapper.insertBefore(config.status.background, config.status.canvas);
 			// apply a lens style to the canvas
-			cfg.status.canvas.className += ' canvas_lens canvas_hidden';
+			config.status.canvas.className += ' canvas_lens canvas_hidden';
 			// set a starting zoom factor
-			cfg.status.zoom = cfg.max;
+			config.status.zoom = config.max;
 			// set the lens dimensions
-			if (cfg.zoom === 'lens') {
-				var lensSize = cfg.element.offsetWidth * cfg.lens;
-				cfg.status.canvas.style.width = lensSize + 'px';
-				cfg.status.canvas.style.height = lensSize + 'px';
+			if (config.zoom === 'lens') {
+				var lensSize = config.element.offsetWidth * config.lens;
+				config.status.canvas.style.width = lensSize + 'px';
+				config.status.canvas.style.height = lensSize + 'px';
 				if (navigator.userAgent.match(/firefox|webkit/gi)) {
-					cfg.status.canvas.style.borderRadius = '50%';	//(lensSize / 2) + 'px';
+					config.status.canvas.style.borderRadius = '50%';	//(lensSize / 2) + 'px';
 				}
 			}
 			// store the backgrounds
-			var backgroundFigures = cfg.status.background.getElementsByTagName('figure');
-			cfg.status.backgrounds = [];
+			var backgroundFigures = config.status.background.getElementsByTagName('figure');
+			config.status.backgrounds = [];
 			for (var a = 0, b = backgroundFigures.length; a < b; a += 1) {
-				cfg.status.backgrounds[a + 1] = backgroundFigures[a];
-				cfg.status.backgrounds[a + 1].style.display = 'block';
-				cfg.status.backgrounds[a + 1].style.position = 'absolute';
+				config.status.backgrounds[a + 1] = backgroundFigures[a];
+				config.status.backgrounds[a + 1].style.display = 'block';
+				config.status.backgrounds[a + 1].style.position = 'absolute';
 			}
 		}
 	};
 	// add the cover to the construct
 	this.addCover = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add a top layer for uninterrupted touch events
-		cfg.status.cover = document.createElement('div');
-		cfg.status.cover.className = 'cover';
-		cfg.status.wrapper.appendChild(cfg.status.cover);
+		config.status.cover = document.createElement('div');
+		config.status.cover.className = 'cover';
+		config.status.wrapper.appendChild(config.status.cover);
 		// add the mouse events for the cover layer
-		this.onCoverScroll(cfg.status.cover);
-		this.onCoverMouse(cfg.status.cover);
-		this.onCoverTouch(cfg.status.cover);
+		this.onCoverScroll(config.status.cover);
+		this.onCoverMouse(config.status.cover);
+		this.onCoverTouch(config.status.cover);
 	};
 	// set the mouse wheel events
 	this.onCoverScroll = function (cover) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		var _this = this;
 		cover.addEventListener('mousewheel', function (event) {
 			_this.mouse.wheel(event);
@@ -1430,10 +1443,10 @@ useful.Viewer.prototype.Figures = function (parent) {
 	};
 	// add the mouse events
 	this.onCoverMouse = function (cover) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// set the right interactions for the zoom mode
 		var _this = this;
-		if (cfg.zoom !== 'static') {
+		if (config.zoom !== 'static') {
 			cover.addEventListener('mousemove', function (event) {
 				_this.mouse.mirror(event);
 			}, false);
@@ -1454,10 +1467,10 @@ useful.Viewer.prototype.Figures = function (parent) {
 	};
 	// add the touch events
 	this.onCoverTouch = function (cover) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		var _this = this;
 		// set the right interactions for the zoom mode
-		if (cfg.zoom !== 'static') {
+		if (config.zoom !== 'static') {
 			cover.addEventListener('move', function (event) {
 				_this.touch.mirror(event);
 			}, false);
@@ -1475,7 +1488,7 @@ useful.Viewer.prototype.Figures = function (parent) {
 	};
 	// redraws the figure
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// validate the input
 		this.redraw.validate();
 		// calculate the values
@@ -1494,11 +1507,11 @@ useful.Viewer.prototype.Figures = function (parent) {
 		this.redraw.spin();
 	};
 	// redrawing functionality
-	this.redraw = new this.parent.Figures_Redraw(this);
+	this.redraw = new this.context.Figures_Redraw(this);
 	// mouse controls
-	this.mouse = new this.parent.Figures_Mouse(this);
+	this.mouse = new this.context.Figures_Mouse(this);
 	// touch screen controls
-	this.touch = new this.parent.Figures_Touch(this);
+	this.touch = new this.context.Figures_Touch(this);
 };
 
 // return as a require.js module
@@ -1522,68 +1535,69 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Leaf_Build = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.indicator = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the page indicator
-		cfg.status.menus.leafPage = document.createElement('form');
-		cfg.status.menus.leafPageInput = document.createElement('input');
-		cfg.status.menus.leafPageInput.setAttribute('type', 'text');
-		cfg.status.menus.leafPageCount = document.createElement('span');
-		cfg.status.menus.leafPageCount.className = 'count';
-		cfg.status.menus.leafPageSubmit = document.createElement('button');
-		cfg.status.menus.leafPageSubmit.setAttribute('type', 'submit');
-		cfg.status.menus.leafPageSubmit.style.position = 'absolute';
-		cfg.status.menus.leafPageSubmit.style.left = '-999em';
-		cfg.status.menus.leafPage.appendChild(cfg.status.menus.leafPageInput);
-		cfg.status.menus.leafPage.appendChild(cfg.status.menus.leafPageCount);
-		element.appendChild(cfg.status.menus.leafPage);
-		cfg.status.menus.leafPageInput.addEventListener('change', function (event) {
+		config.status.menus.leafPage = document.createElement('form');
+		config.status.menus.leafPageInput = document.createElement('input');
+		config.status.menus.leafPageInput.setAttribute('type', 'text');
+		config.status.menus.leafPageCount = document.createElement('span');
+		config.status.menus.leafPageCount.className = 'count';
+		config.status.menus.leafPageSubmit = document.createElement('button');
+		config.status.menus.leafPageSubmit.setAttribute('type', 'submit');
+		config.status.menus.leafPageSubmit.style.position = 'absolute';
+		config.status.menus.leafPageSubmit.style.left = '-999em';
+		config.status.menus.leafPage.appendChild(config.status.menus.leafPageInput);
+		config.status.menus.leafPage.appendChild(config.status.menus.leafPageCount);
+		element.appendChild(config.status.menus.leafPage);
+		config.status.menus.leafPageInput.addEventListener('change', function (event) {
 			parent.typed(event);
 		}, false);
-		cfg.status.menus.leafPage.addEventListener('submit', function (event) {
+		config.status.menus.leafPage.addEventListener('submit', function (event) {
 			parent.typed(event);
 			event.preventDefault();
 		}, false);
 	};
 	this.resetter = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the reset button
-		cfg.status.menus.leafReset = document.createElement('button');
-		cfg.status.menus.leafReset.className = 'reset';
-		cfg.status.menus.leafResetIcon = document.createElement('span');
-		cfg.status.menus.leafResetIcon.innerHTML = 'Reset view';
-		cfg.status.menus.leafReset.appendChild(cfg.status.menus.leafResetIcon);
-		element.appendChild(cfg.status.menus.leafReset);
-		cfg.status.menus.leafReset.addEventListener('click', function (event) {
+		config.status.menus.leafReset = document.createElement('button');
+		config.status.menus.leafReset.className = 'reset';
+		config.status.menus.leafResetIcon = document.createElement('span');
+		config.status.menus.leafResetIcon.innerHTML = 'Reset view';
+		config.status.menus.leafReset.appendChild(config.status.menus.leafResetIcon);
+		element.appendChild(config.status.menus.leafReset);
+		config.status.menus.leafReset.addEventListener('click', function (event) {
 			parent.reset(event);
 		}, false);
 	};
 	this.increaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the next button
-		cfg.status.menus.leafIn = document.createElement('button');
-		cfg.status.menus.leafIn.className = 'increase';
-		cfg.status.menus.leafInIcon = document.createElement('span');
-		cfg.status.menus.leafInIcon.innerHTML = 'Leaf forward';
-		cfg.status.menus.leafIn.appendChild(cfg.status.menus.leafInIcon);
-		element.appendChild(cfg.status.menus.leafIn);
-		cfg.status.menus.leafIn.addEventListener('click', function (event) {
+		config.status.menus.leafIn = document.createElement('button');
+		config.status.menus.leafIn.className = 'increase';
+		config.status.menus.leafInIcon = document.createElement('span');
+		config.status.menus.leafInIcon.innerHTML = 'Leaf forward';
+		config.status.menus.leafIn.appendChild(config.status.menus.leafInIcon);
+		element.appendChild(config.status.menus.leafIn);
+		config.status.menus.leafIn.addEventListener('click', function (event) {
 			parent.increase(event);
 		}, false);
 	};
 	this.decreaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the previous button
-		cfg.status.menus.leafOut = document.createElement('button');
-		cfg.status.menus.leafOut.className = 'decrease';
-		cfg.status.menus.leafOutIcon = document.createElement('span');
-		cfg.status.menus.leafOutIcon.innerHTML = 'Leaf back';
-		cfg.status.menus.leafOut.appendChild(cfg.status.menus.leafOutIcon);
-		element.appendChild(cfg.status.menus.leafOut);
-		cfg.status.menus.leafOut.addEventListener('click', function (event) {
+		config.status.menus.leafOut = document.createElement('button');
+		config.status.menus.leafOut.className = 'decrease';
+		config.status.menus.leafOutIcon = document.createElement('span');
+		config.status.menus.leafOutIcon.innerHTML = 'Leaf back';
+		config.status.menus.leafOut.appendChild(config.status.menus.leafOutIcon);
+		element.appendChild(config.status.menus.leafOut);
+		config.status.menus.leafOut.addEventListener('click', function (event) {
 			parent.decrease(event);
 		}, false);
 	};
@@ -1610,87 +1624,88 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Leaf = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// build the leafing toolbar
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
-		cfg.status.menus = cfg.status.menus || {};
-		cfg.status.menus.leafMenu = document.createElement('menu');
-		cfg.status.menus.leafMenu.className = 'slider leaf';
-		cfg.status.menus.leafMenu.style.bottom = ((1 - cfg.divide) * 100) + '%';
+		config.status.menus = config.status.menus || {};
+		config.status.menus.leafMenu = document.createElement('menu');
+		config.status.menus.leafMenu.className = 'slider leaf';
+		config.status.menus.leafMenu.style.bottom = ((1 - config.divide) * 100) + '%';
 		// create the page indicator
-		this.build.indicator(cfg.status.menus.leafMenu);
+		this.build.indicator(config.status.menus.leafMenu);
 		// create the reset button
-		this.build.resetter(cfg.status.menus.leafMenu);
+		this.build.resetter(config.status.menus.leafMenu);
 		// create the next button
-		this.build.increaser(cfg.status.menus.leafMenu);
+		this.build.increaser(config.status.menus.leafMenu);
 		// create the previous button
-		this.build.decreaser(cfg.status.menus.leafMenu);
+		this.build.decreaser(config.status.menus.leafMenu);
 		// add the menu to the interface
-		cfg.element.appendChild(cfg.status.menus.leafMenu);
+		config.element.appendChild(config.status.menus.leafMenu);
 	};
 	// updates the leafing toolbar
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// fill in the current page
-		cfg.status.menus.leafPageInput.value = cfg.status.index;
+		config.status.menus.leafPageInput.value = config.status.index;
 		// fill in the page total
-		cfg.status.menus.leafPageCount.innerHTML = 'of ' +	(cfg.status.figures.length - 1);
+		config.status.menus.leafPageCount.innerHTML = 'of ' +	(config.status.figures.length - 1);
 	};
 	this.increase = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
-		cfg.status.index += 1;
+		config.status.index += 1;
 		// look if needed
-		if (cfg.toolbars === 'buttons') {
+		if (config.toolbars === 'buttons') {
 			// loop the value if needed
-			if (cfg.status.index >= cfg.status.figures.length) {
-				cfg.status.index = 1;
+			if (config.status.index >= config.status.figures.length) {
+				config.status.index = 1;
 			}
 			// loop the value if needed
-			if (cfg.status.index <= 0) {
-				cfg.status.index = cfg.status.figures.length - 1;
+			if (config.status.index <= 0) {
+				config.status.index = config.status.figures.length - 1;
 			}
 		}
 		// redraw
-		root.update();
+		parent.update();
 		// cancel the click
 		event.preventDefault();
 	};
 	this.decrease = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
-		cfg.status.index -= 1;
+		config.status.index -= 1;
 		// redraw
-		root.update();
+		parent.update();
 		// cancel the click
 		event.preventDefault();
 	};
 	this.typed = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the typed number
-		var number = parseInt(cfg.status.menus.leafPageInput.value, 10);
+		var number = parseInt(config.status.menus.leafPageInput.value, 10);
 		// if the typed number is acceptable
 		if (!isNaN(number)) {
 			// accept the value
-			cfg.status.index = number;
+			config.status.index = number;
 		}
 		// update the interface
-		root.update();
+		parent.update();
 	};
 	this.reset = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// reset the zoom level
-		cfg.status.zoom = (cfg.zoom !== 'static') ? cfg.max : 1;
+		config.status.zoom = (config.zoom !== 'static') ? config.max : 1;
 		// redraw
-		root.update();
+		parent.update();
 		// cancel the click
 		event.preventDefault();
 	};
 	// build functionality
-	this.build = new this.parent.Leaf_Build(this);
+	this.build = new this.context.Leaf_Build(this);
 };
 
 // return as a require.js module
@@ -1711,34 +1726,295 @@ var useful = useful || {};
 useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
+useful.Viewer.prototype.Main = function (config, context) {
+	// properties
+	"use strict";
+	this.parent = this;
+	this.config = config;
+	this.context = context;
+	// methods
+	this.init = function () {
+		var _this = this;
+		// wait until the page has loaded
+		window.addEventListener('load', function () {
+			// gather the input
+			_this.gatherInput();
+			// validate the input
+			_this.validateInput();
+			// set the start parameters
+			_this.startingStatus();
+			// apply the custom styles
+			_this.styling();
+			// run the viewer
+			_this.run();
+			// destroy the init function
+			_this.init = function () {};
+		});
+		// return the object
+		return this;
+	};
+	// set the start parameters
+	this.startingStatus = function () {
+		// create the object to hold all the running variables
+		this.config.status = {};
+		// pick the initial active slide
+		this.config.status.index = 1;
+		// pick the initial zoom level
+		this.config.status.zoom = 1;
+		// pick the initial pan position
+		this.config.status.pan = {x : 0.5, y : 0.5};
+		// pick the initial canvas position
+		this.config.status.pos = {x : 0, y : 0};
+		// establish the replacement regular expressions
+		this.config.regSrc = new RegExp('{src}', 'gi');
+		this.config.regWidth = new RegExp('{width}', 'gi');
+		this.config.regHeight = new RegExp('{height}', 'gi');
+		this.config.regLeft = new RegExp('{left}', 'gi');
+		this.config.regTop = new RegExp('{top}', 'gi');
+		this.config.regRight = new RegExp('{right}', 'gi');
+		this.config.regBottom = new RegExp('{bottom}', 'gi');
+	};
+	// gather all the configuration and DOM elements
+	this.gatherInput = function () {
+		// get the assets from the html
+		this.config.thumbnails = [0];
+		this.config.figures = [0];
+		this.config.titles = [0];
+		this.config.descriptions = [0];
+		this.config.widths = [0];
+		this.config.heights = [0];
+		this.config.lefts = [0];
+		this.config.tops = [0];
+		this.config.rights = [0];
+		this.config.bottoms = [0];
+		var allLinks = this.config.element.getElementsByTagName('a');
+		var allImages = this.config.element.getElementsByTagName('img');
+		for (var a = 0, b = allLinks.length; a < b; a += 1) {
+			// create a list of thumbnail urls and full urls
+			this.config.thumbnails.push(allImages[a].getAttribute('src'));
+			this.config.figures.push(this.config.urlprefix + allLinks[a].getAttribute('href'));
+			this.config.titles.push(allImages[a].getAttribute('title'));
+			this.config.descriptions.push(allImages[a].getAttribute('alt'));
+			this.config.widths.push(parseInt(allImages[a].getAttribute('width'), 10));
+			this.config.heights.push(parseInt(allImages[a].getAttribute('height'), 10));
+			this.config.lefts.push(parseFloat(allImages[a].getAttribute('data-left') || this.config.left || 0));
+			this.config.tops.push(parseFloat(allImages[a].getAttribute('data-top') || this.config.top || 0));
+			this.config.rights.push(parseFloat(allImages[a].getAttribute('data-right') || this.config.right || 1));
+			this.config.bottoms.push(parseFloat(allImages[a].getAttribute('data-bottom') || this.config.bottom || 1));
+		}
+	};
+	// fix some numbers in the context.config
+	this.validateInput = function () {
+		this.config.grid = parseInt(this.config.grid, 10);
+		this.config.cache = parseInt(this.config.cache, 10);
+		this.config.lens = parseFloat(this.config.lens);
+		this.config.magnification = parseFloat(this.config.magnification);
+		this.config.max = parseFloat(this.config.max);
+		this.config.navigation = 'thumbnails';
+		this.config.divide = (this.config.spin === 'rotation') ? 1 : parseInt(this.config.divide, 10) / 100;
+		this.config.retry = null;
+	};
+	// implement customised styles
+	this.styling = function () {
+		// create a custom stylesheet
+		var style = document.createElement("style");
+		var isWebkit = new RegExp('webkit', 'gi');
+		if (isWebkit.test(navigator.UserAgent)) { style.appendChild(document.createTextNode("")); }
+		document.body.appendChild(style);
+		var sheet = style.sheet || style.styleSheet;
+		// add the custom styles
+		if (sheet.insertRule) {
+			sheet.insertRule(".viewer button {background-color : " + this.config.colorPassive + " !important;}", 0);
+			sheet.insertRule(".viewer button:hover {background-color : " + this.config.colorHover + " !important;}", 0);
+			sheet.insertRule(".viewer button.disabled {background-color : " + this.config.colorDisabled + " !important;}", 0);
+			sheet.insertRule(".viewer .thumbnails_active {background-color : " + this.config.colorPassive + " !important;}", 0);
+			sheet.insertRule(".viewer menu.slider {background-color : " + this.config.colorPassive + " !important;}", 0);
+			sheet.insertRule(".viewer menu.slider meter div {background-color : " + this.config.colorPassive + " !important;}", 0);
+		} else {
+			sheet.addRule(".viewer button", "background-color : " + this.config.colorPassive + " !important;", 0);
+			sheet.addRule(".viewer button:hover", "background-color : " + this.config.colorHover + " !important;", 0);
+			sheet.addRule(".viewer button.disabled", "background-color : " + this.config.colorDisabled + " !important;", 0);
+			sheet.addRule(".viewer .thumbnails_active", "background-color : " + this.config.colorPassive + " !important;", 0);
+			sheet.addRule(".viewer menu.slider", "background-color : " + this.config.colorPassive + " !important;", 0);
+			sheet.addRule(".viewer menu.slider meter div", "background-color : " + this.config.colorPassive + " !important;", 0);
+		}
+	};
+	// run the slideshow
+	this.run = function () {
+		var _this = this;
+		// hide the component
+		this.config.element.style.visibility = 'hidden';
+		setTimeout(function () {
+			// start the components
+			_this.setup();
+			// start the redraw
+			setTimeout(function () {
+				// draw the component
+				_this.update();
+				// reveal the component
+				_this.config.element.style.visibility = 'visible';
+			}, 400);
+		}, 100);
+	};
+	// build the app html
+	this.setup = function () {
+		// shortcut pointers
+		var sip = this.config.element;
+		// clear the parent node
+		sip.innerHTML = '';
+		// apply optional dimensions
+		if (this.config.width) {
+			sip.style.width = this.config.width + this.config.widthUnit;
+		}
+		if (this.config.height) {
+			sip.style.height = this.config.height + this.config.heightUnit;
+		}
+		// apply any context.config classes
+		sip.className += ' spin_' + this.config.spin;
+		// setup the sub components
+		this.automatic.setup();
+		this.figures.setup();
+		// choose what type of toolbars to setup
+		switch (this.config.toolbars) {
+		// setup the slider toolbars
+		case 'sliders' :
+			this.zoom.setup(this);
+			if (this.config.spin === 'rotation') {
+				this.spin.setup();
+			}
+			if (this.config.spin === 'catalogue') {
+				this.leaf.setup();
+			}
+			break;
+		// setup the floating buttons
+		case 'buttons' :
+			this.toolbar.setup();
+			break;
+		// setup the default toolbar
+		default :
+			this.toolbar.setup();
+		}
+		// setup the thumbnails
+		if (this.config.spin !== 'rotation') {
+			this.thumbnails.setup();
+		}
+	};
+	// update the whole app
+	this.update = function () {
+		// if the slideshow has been disabled
+		if (this.config.element.offsetHeight === 0) {
+			// stop updating and try again later
+			clearTimeout(this.config.retry);
+			var _this = this;
+			this.config.retry = setTimeout(function () {
+				_this.update();
+			}, 1000);
+		// else
+		} else {
+			// update the sub components
+			this.figures.update();
+			// choose what type of toolbars to update
+			switch (this.config.toolbars) {
+				// update the slider toolbars
+				case 'sliders' :
+					this.zoom.update();
+					if (this.config.spin === 'rotation') {
+						this.spin.update();
+					}
+					if (this.config.spin === 'catalogue') {
+						this.leaf.update();
+					}
+					break;
+				// update the floating buttons
+				case 'buttons' :
+					this.toolbar.update();
+					break;
+				// update the default toolbar
+				default :
+					this.toolbar.update();
+			}
+			// update the thumbnails
+			if (this.config.spin !== 'rotation') {
+				this.thumbnails.update();
+			}
+		}
+	};
+	// automatic idle slideshow
+	this.automatic = new this.context.Automatic(this);
+	// manages the main view
+	this.figures = new this.context.Figures(this);
+	// zoom slider
+	this.zoom = new this.context.Zoom(this);
+	// spin slider
+	this.spin = new this.context.Spin(this);
+	// manages the thumbnails
+	this.thumbnails = new this.context.Thumbnails(this);
+	// manages leafing through pages
+	this.leaf = new this.context.Leaf(this);
+	// minimal superset of controls
+	this.toolbar = new this.context.Toolbar(this);
+	// external API
+	this.focus = function (index) {
+		this.config.status.index = index;
+		this.update(this);
+	};
+	this.previous = function () {
+		this.config.status.index -= 1;
+		this.update(this);
+	};
+	this.next = function () {
+		this.config.status.index += 1;
+		this.update(this);
+	};
+};
+
+// return as a require.js module
+if (typeof module !== 'undefined') {
+	exports = module.exports = useful.Viewer.Main;
+}
+
+/*
+	Source:
+	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
+
+	License:
+	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+*/
+
+// create the constructor if needed
+var useful = useful || {};
+useful.Viewer = useful.Viewer || function () {};
+
+// extend the constructor
 useful.Viewer.prototype.Spin_Build = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.slider = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the slider to the menu
-		cfg.status.menus.spinIndicator = (navigator.userAgent.match(/WebKit/) || true) ? document.createElement('div') : document.createElement('meter');
-		cfg.status.menus.spinIndicator.className = 'meter';
-		cfg.status.menus.spinIndicator.setAttribute('min', 1);
-		cfg.status.menus.spinIndicator.setAttribute('max', cfg.figures.length);
-		cfg.status.menus.spinIndicator.setAttribute('value', cfg.status.index);
-		cfg.status.menus.spinSlider = document.createElement('div');
-		cfg.status.menus.spinSliderIcon = document.createElement('span');
-		cfg.status.menus.spinSliderIcon.innerHTML = cfg.status.index;
-		cfg.status.menus.spinSlider.appendChild(cfg.status.menus.spinSliderIcon);
-		cfg.status.menus.spinIndicator.appendChild(cfg.status.menus.spinSlider);
-		element.appendChild(cfg.status.menus.spinIndicator);
+		config.status.menus.spinIndicator = (navigator.userAgent.match(/WebKit/) || true) ? document.createElement('div') : document.createElement('meter');
+		config.status.menus.spinIndicator.className = 'meter';
+		config.status.menus.spinIndicator.setAttribute('min', 1);
+		config.status.menus.spinIndicator.setAttribute('max', config.figures.length);
+		config.status.menus.spinIndicator.setAttribute('value', config.status.index);
+		config.status.menus.spinSlider = document.createElement('div');
+		config.status.menus.spinSliderIcon = document.createElement('span');
+		config.status.menus.spinSliderIcon.innerHTML = config.status.index;
+		config.status.menus.spinSlider.appendChild(config.status.menus.spinSliderIcon);
+		config.status.menus.spinIndicator.appendChild(config.status.menus.spinSlider);
+		element.appendChild(config.status.menus.spinIndicator);
 	};
 	this.cover = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add a touch cover to the menu
-		cfg.status.menus.spinCover = document.createElement('div');
-		cfg.status.menus.spinCover.className = 'cover';
-		element.appendChild(cfg.status.menus.spinCover);
-		var sims = cfg.status.menus.spinCover;
+		config.status.menus.spinCover = document.createElement('div');
+		config.status.menus.spinCover.className = 'cover';
+		element.appendChild(config.status.menus.spinCover);
+		var sims = config.status.menus.spinCover;
 		// add the event handler
 		sims.addEventListener('mousewheel', function (event) {
 			parent.mouse.wheel(event);
@@ -1770,59 +2046,59 @@ useful.Viewer.prototype.Spin_Build = function (parent) {
 		}, false);
 	};
 	this.increaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the increase button
-		cfg.status.menus.spinIn = document.createElement('button');
-		cfg.status.menus.spinIn.className = 'increase';
-		cfg.status.menus.spinInIcon = document.createElement('span');
-		cfg.status.menus.spinInIcon.innerHTML = 'Spin left';
-		cfg.status.menus.spinIn.appendChild(cfg.status.menus.spinInIcon);
-		element.appendChild(cfg.status.menus.spinIn);
-		cfg.status.menus.spinIn.addEventListener('mousedown', function (event) {
+		config.status.menus.spinIn = document.createElement('button');
+		config.status.menus.spinIn.className = 'increase';
+		config.status.menus.spinInIcon = document.createElement('span');
+		config.status.menus.spinInIcon.innerHTML = 'Spin left';
+		config.status.menus.spinIn.appendChild(config.status.menus.spinInIcon);
+		element.appendChild(config.status.menus.spinIn);
+		config.status.menus.spinIn.addEventListener('mousedown', function (event) {
 			// increase the zoom
 			parent.increase();
 			// cancel streaming
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// repeat
-			cfg.status.menus.spinInRepeat = setInterval(function () { parent.increase(); }, 100);
+			config.status.menus.spinInRepeat = setInterval(function () { parent.increase(); }, 100);
 			// cancel this event
 			event.preventDefault();
 		}, false);
-		cfg.status.menus.spinIn.addEventListener('mouseup', function () {
+		config.status.menus.spinIn.addEventListener('mouseup', function () {
 			// stop repeating
-			clearInterval(cfg.status.menus.spinInRepeat);
+			clearInterval(config.status.menus.spinInRepeat);
 			// allow streaming
-			cfg.status.stream = true;
+			config.status.stream = true;
 			// redraw
-			root.update();
+			parent.parent.update();
 		}, false);
 	};
 	this.decreaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the decrease button
-		cfg.status.menus.spinOut = document.createElement('button');
-		cfg.status.menus.spinOut.className = 'decrease';
-		cfg.status.menus.spinOutIcon = document.createElement('span');
-		cfg.status.menus.spinOutIcon.innerHTML = 'Spin right';
-		cfg.status.menus.spinOut.appendChild(cfg.status.menus.spinOutIcon);
-		element.appendChild(cfg.status.menus.spinOut);
-		cfg.status.menus.spinOut.addEventListener('mousedown', function (event) {
+		config.status.menus.spinOut = document.createElement('button');
+		config.status.menus.spinOut.className = 'decrease';
+		config.status.menus.spinOutIcon = document.createElement('span');
+		config.status.menus.spinOutIcon.innerHTML = 'Spin right';
+		config.status.menus.spinOut.appendChild(config.status.menus.spinOutIcon);
+		element.appendChild(config.status.menus.spinOut);
+		config.status.menus.spinOut.addEventListener('mousedown', function (event) {
 			// increase the zoom
 			parent.decrease();
 			// cancel streaming
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// repeat
-			cfg.status.menus.spinOutRepeat = setInterval(function () { parent.decrease(); }, 100);
+			config.status.menus.spinOutRepeat = setInterval(function () { parent.decrease(); }, 100);
 			// cancel this event
 			event.preventDefault();
 		}, false);
-		cfg.status.menus.spinOut.addEventListener('mouseup', function () {
+		config.status.menus.spinOut.addEventListener('mouseup', function () {
 			// stop repeating
-			clearInterval(cfg.status.menus.spinOutRepeat);
+			clearInterval(config.status.menus.spinOutRepeat);
 			// allow streaming
-			cfg.status.stream = true;
+			config.status.stream = true;
 			// redraw
-			root.update();
+			parent.parent.update();
 		}, false);
 	};
 };
@@ -1848,14 +2124,15 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Spin_Mouse = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	this.x = null;
 	this.sensitivity = null;
 	this.fudge = 0.7;
 	// mouse wheel controls
 	this.wheel = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the reading from the mouse wheel
 		var distance = (window.event) ? window.event.wheelDelta / 120 : -event.detail / 3;
 		// do not loop around
@@ -1869,18 +2146,18 @@ useful.Viewer.prototype.Spin_Mouse = function (parent) {
 	};
 	// mouse gesture controls
 	this.start = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// store the touch positions
 		this.x = event.pageX || event.x;
 		// calculate the sensitivity
-		this.sensitivity = (cfg.status.menus.spinCover.offsetWidth - cfg.status.menus.spinIn.offsetWidth - cfg.status.menus.spinOut.offsetWidth) / cfg.status.figures.length * this.fudge;
+		this.sensitivity = (config.status.menus.spinCover.offsetWidth - config.status.menus.spinIn.offsetWidth - config.status.menus.spinOut.offsetWidth) / config.status.figures.length * this.fudge;
 		// cancel the click
 		event.preventDefault();
 	};
 	this.move = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// if there is a touch in progress
@@ -1891,26 +2168,26 @@ useful.Viewer.prototype.Spin_Mouse = function (parent) {
 			// if the draw was to the left
 			if (distance < -this.sensitivity) {
 				// increase the spin index
-				cfg.status.index += 1;
+				config.status.index += 1;
 				// reset the distance
 				this.x = x;
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			// else if the drag was to the right
 			} else if (distance > this.sensitivity) {
 				// decrease the spin index
-				cfg.status.index -= 1;
+				config.status.index -= 1;
 				// reset the distance
 				this.x = x;
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			}
 		}
 		// cancel the click
 		event.preventDefault();
 	};
 	this.end = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// clear the positions
@@ -1941,13 +2218,14 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Spin_Touch = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	this.x = null;
 	this.sensitivity = null;
 	// mouse gesture controls
 	this.start = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// store the touch positions
@@ -1956,12 +2234,12 @@ useful.Viewer.prototype.Spin_Touch = function (parent) {
 			this.x.push(event.touches[a].pageX);
 		}
 		// calculate the sensitivity
-		this.sensitivity = (cfg.status.menus.spinCover.offsetWidth - cfg.status.menus.spinIn.offsetWidth - cfg.status.menus.spinOut.offsetWidth) / cfg.status.figures.length;
+		this.sensitivity = (config.status.menus.spinCover.offsetWidth - config.status.menus.spinIn.offsetWidth - config.status.menus.spinOut.offsetWidth) / config.status.figures.length;
 		// cancel the click
 		event.preventDefault();
 	};
 	this.move = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// if there is a touch in progress
@@ -1975,32 +2253,32 @@ useful.Viewer.prototype.Spin_Touch = function (parent) {
 			// if the draw was to the left
 			if (distance < -this.sensitivity) {
 				// increase the spin index
-				cfg.status.index += 1;
+				config.status.index += 1;
 				// loop the value if needed
-				if (cfg.status.index >= cfg.status.figures.length) {
-					cfg.status.index = 1;
+				if (config.status.index >= config.status.figures.length) {
+					config.status.index = 1;
 				}
 				// reset the distance
 				this.x[0] = x[0];
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			// else if the drag was to the right
 			} else if (distance > this.sensitivity) {
 				// decrease the spin index
-				cfg.status.index -= 1;
+				config.status.index -= 1;
 				// loop the value if needed
-				if (cfg.status.index <= 0) {
-					cfg.status.index = cfg.status.figures.length - 1;
+				if (config.status.index <= 0) {
+					config.status.index = config.status.figures.length - 1;
 				}
 				// reset the distance
 				this.x[0] = x[0];
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			}
 		}
 	};
 	this.end = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// clear the positions
@@ -2031,63 +2309,64 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Spin = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
-		cfg.status.menus = cfg.status.menus || {};
-		cfg.status.menus.spinMenu = document.createElement('menu');
-		cfg.status.menus.spinMenu.className = 'slider spin';
-		cfg.status.menus.spinMenu.style.bottom = ((1 - cfg.divide) * 100) + '%';
+		config.status.menus = config.status.menus || {};
+		config.status.menus.spinMenu = document.createElement('menu');
+		config.status.menus.spinMenu.className = 'slider spin';
+		config.status.menus.spinMenu.style.bottom = ((1 - config.divide) * 100) + '%';
 		// add the slider to the menu
-		this.build.slider(cfg.status.menus.spinMenu);
+		this.build.slider(config.status.menus.spinMenu);
 		// add a touch cover to the menu
-		this.build.cover(cfg.status.menus.spinMenu);
+		this.build.cover(config.status.menus.spinMenu);
 		// add the increase button
-		this.build.increaser(cfg.status.menus.spinMenu);
+		this.build.increaser(config.status.menus.spinMenu);
 		// add the decrease button
-		this.build.decreaser(cfg.status.menus.spinMenu);
+		this.build.decreaser(config.status.menus.spinMenu);
 		// add the menu to the interface
-		cfg.element.appendChild(cfg.status.menus.spinMenu);
+		config.element.appendChild(config.status.menus.spinMenu);
 	};
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// reposition the slider
-		cfg.status.menus.spinSlider.style.left = ((cfg.status.index - 1) / (cfg.status.figures.length - 2) * 100) + '%';
+		config.status.menus.spinSlider.style.left = ((config.status.index - 1) / (config.status.figures.length - 2) * 100) + '%';
 		// update the value
-		cfg.status.menus.spinIndicator.setAttribute('value', cfg.status.index);
-		cfg.status.menus.spinSliderIcon.innerHTML = cfg.status.index;
+		config.status.menus.spinIndicator.setAttribute('value', config.status.index);
+		config.status.menus.spinSliderIcon.innerHTML = config.status.index;
 	};
 	this.increase = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
-		cfg.status.index -= 1;
+		config.status.index -= 1;
 		// loop the value if needed
-		if (cfg.status.index <= 0) {
-			cfg.status.index = cfg.status.figures.length - 1;
+		if (config.status.index <= 0) {
+			config.status.index = config.status.figures.length - 1;
 		}
 		// order a redraw
-		root.update();
+		parent.update();
 	};
 	this.decrease = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// increase the spin index
-		cfg.status.index += 1;
+		config.status.index += 1;
 		// loop the value if needed
-		if (cfg.status.index >= cfg.status.figures.length) {
-			cfg.status.index = 1;
+		if (config.status.index >= config.status.figures.length) {
+			config.status.index = 1;
 		}
 		// order a redraw
-		root.update();
+		parent.update();
 	};
 	// build functionality
-	this.build = new this.parent.Spin_Build(this);
+	this.build = new this.context.Spin_Build(this);
 	// mouse wheel controls
-	this.mouse = new this.parent.Spin_Mouse(this);
+	this.mouse = new this.context.Spin_Mouse(this);
 	// touch screen controls
-	this.touch = new this.parent.Spin_Touch(this);
+	this.touch = new this.context.Spin_Touch(this);
 };
 
 // return as a require.js module
@@ -2111,71 +2390,72 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Thumbnails_Menu = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// build the menu options
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the thumbnail controls
-		cfg.status.pageMenu = document.createElement('menu');
-		cfg.status.pageMenu.className = 'scroller';
-		cfg.status.nextPage = document.createElement('button');
-		cfg.status.nextPage.className = 'next';
-		cfg.status.nextPageIcon = document.createElement('span');
-		cfg.status.nextPageIcon.innerHTML = '&gt';
-		cfg.status.prevPage = document.createElement('button');
-		cfg.status.prevPage.className = 'previous';
-		cfg.status.prevPageIcon = document.createElement('span');
-		cfg.status.prevPageIcon.innerHTML = '&lt';
-		cfg.status.nextPage.appendChild(cfg.status.nextPageIcon);
-		cfg.status.pageMenu.appendChild(cfg.status.nextPage);
-		cfg.status.prevPage.appendChild(cfg.status.prevPageIcon);
-		cfg.status.pageMenu.appendChild(cfg.status.prevPage);
-		cfg.status.slideNav.appendChild(cfg.status.pageMenu);
+		config.status.pageMenu = document.createElement('menu');
+		config.status.pageMenu.className = 'scroller';
+		config.status.nextPage = document.createElement('button');
+		config.status.nextPage.className = 'next';
+		config.status.nextPageIcon = document.createElement('span');
+		config.status.nextPageIcon.innerHTML = '&gt';
+		config.status.prevPage = document.createElement('button');
+		config.status.prevPage.className = 'previous';
+		config.status.prevPageIcon = document.createElement('span');
+		config.status.prevPageIcon.innerHTML = '&lt';
+		config.status.nextPage.appendChild(config.status.nextPageIcon);
+		config.status.pageMenu.appendChild(config.status.nextPage);
+		config.status.prevPage.appendChild(config.status.prevPageIcon);
+		config.status.pageMenu.appendChild(config.status.prevPage);
+		config.status.slideNav.appendChild(config.status.pageMenu);
 		// apply clicks to the thumbnail controls
 		var _this = this;
-		cfg.status.nextPage.addEventListener('click', function (event) {
-			_this.next(event, cfg.status.nextSlide);
+		config.status.nextPage.addEventListener('click', function (event) {
+			_this.next(event, config.status.nextSlide);
 		}, false);
-		cfg.status.prevPage.addEventListener('click', function (event) {
-			_this.prev(event, cfg.status.prevSlide);
+		config.status.prevPage.addEventListener('click', function (event) {
+			_this.prev(event, config.status.prevSlide);
 		}, false);
 	};
 	// show or hide the previous and next buttons
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// calculate the current position
-		cfg.scrollPosition = (cfg.status.slideUl.style.marginLeft) ? parseInt(cfg.status.slideUl.style.marginLeft, 10) : 0;
-		cfg.scrollDistance = cfg.status.slideDiv.offsetWidth;
+		config.scrollPosition = (config.status.slideUl.style.marginLeft) ? parseInt(config.status.slideUl.style.marginLeft, 10) : 0;
+		config.scrollDistance = config.status.slideDiv.offsetWidth;
 		// calculate the minimum position
-		cfg.scrollMin = 0;
+		config.scrollMin = 0;
 		// calculate the maximum position
-		var lastThumbnail = cfg.status.thumbnails[cfg.status.thumbnails.length - 1];
-		cfg.scrollStep = lastThumbnail.offsetWidth;
-		cfg.scrollMax = -1 * (lastThumbnail.offsetLeft + lastThumbnail.offsetWidth) + cfg.scrollDistance;
+		var lastThumbnail = config.status.thumbnails[config.status.thumbnails.length - 1];
+		config.scrollStep = lastThumbnail.offsetWidth;
+		config.scrollMax = -1 * (lastThumbnail.offsetLeft + lastThumbnail.offsetWidth) + config.scrollDistance;
 		// show or hide the prev button
-		cfg.status.prevPage.className = cfg.status.prevPage.className.replace(/ disabled/gi, '');
-		cfg.status.prevPage.className += (cfg.scrollPosition >= cfg.scrollMin) ? ' disabled' : '';
+		config.status.prevPage.className = config.status.prevPage.className.replace(/ disabled/gi, '');
+		config.status.prevPage.className += (config.scrollPosition >= config.scrollMin) ? ' disabled' : '';
 		// show or hide the next button
-		cfg.status.nextPage.className = cfg.status.nextPage.className.replace(/ disabled/gi, '');
-		cfg.status.nextPage.className += (cfg.scrollPosition <= cfg.scrollMax && cfg.scrollMax < 0) ? ' disabled' : '';
+		config.status.nextPage.className = config.status.nextPage.className.replace(/ disabled/gi, '');
+		config.status.nextPage.className += (config.scrollPosition <= config.scrollMax && config.scrollMax < 0) ? ' disabled' : '';
 	};
 	// show the next page of thumbnails
 	this.next = function (event, node) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		var target = event.target || event.srcElement;
 		// if the button is not disabled
 		if (!target.className.match(/disabled/)) {
 			// scroll one page's width of thumbnails
-			var newPosition = cfg.scrollPosition - cfg.scrollDistance + cfg.scrollStep;
+			var newPosition = config.scrollPosition - config.scrollDistance + config.scrollStep;
 			// limit the scroll distance
-			if (newPosition < cfg.scrollMax) {
-				newPosition = cfg.scrollMax;
+			if (newPosition < config.scrollMax) {
+				newPosition = config.scrollMax;
 			}
 			// transition to the new position
-			useful.transitions.byRules(cfg.status.slideUl, {'marginLeft' : newPosition + 'px'});
+			useful.transitions.byRules(config.status.slideUl, {'marginLeft' : newPosition + 'px'});
 			// redraw the menu buttons
 			this.update();
 		}
@@ -2185,20 +2465,20 @@ useful.Viewer.prototype.Thumbnails_Menu = function (parent) {
 	};
 	// show the previous page of thumbnails
 	this.prev = function (event, node) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		var target = event.target || event.srcElement;
 		// if the button is not disabled
 		if (!target.className.match(/disabled/)) {
 			// scroll one page's width of thumbnails
-			var newPosition = cfg.scrollPosition + cfg.scrollDistance - cfg.scrollStep;
+			var newPosition = config.scrollPosition + config.scrollDistance - config.scrollStep;
 			// limit the scroll distance
 			if (newPosition > 0) {
 				newPosition = 0;
 			}
 			// transition to the new position
-			useful.transitions.byRules(cfg.status.slideUl, {'marginLeft' : newPosition + 'px'});
+			useful.transitions.byRules(config.status.slideUl, {'marginLeft' : newPosition + 'px'});
 			// redraw the menu buttons
 			this.update();
 		}
@@ -2229,63 +2509,64 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Thumbnails = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// build the thumbnail list
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the navigation bar
-		cfg.status.slideNav = document.createElement('nav');
-		cfg.status.slideNav.className = 'thumbnails';
-		cfg.status.slideDiv = document.createElement('div');
-		cfg.status.slideUl = document.createElement('ul');
+		config.status.slideNav = document.createElement('nav');
+		config.status.slideNav.className = 'thumbnails';
+		config.status.slideDiv = document.createElement('div');
+		config.status.slideUl = document.createElement('ul');
 		// force the height of the nav if desired
-		if (cfg.divide !== '100%') {
-			cfg.status.slideNav.style.height = (100 - cfg.divide * 100 - parseInt(cfg.margin, 10)) + '%';
+		if (config.divide !== '100%') {
+			config.status.slideNav.style.height = (100 - config.divide * 100 - parseInt(config.margin, 10)) + '%';
 		}
-		if (cfg.margin) {
-			cfg.pixelMargin = parseInt(cfg.element.offsetWidth * parseInt(cfg.margin, 10) / 100, 10);
+		if (config.margin) {
+			config.pixelMargin = parseInt(config.element.offsetWidth * parseInt(config.margin, 10) / 100, 10);
 		}
-		// for all thumbnails in the root.cfg
-		cfg.status.thumbnails = [0];
-		for (var a = 1; a < cfg.thumbnails.length; a += 1) {
+		// for all thumbnails in the this.config
+		config.status.thumbnails = [0];
+		for (var a = 1; a < config.thumbnails.length; a += 1) {
 			// create a new thumbnail
 			var newLi = document.createElement('li');
 			var newA = document.createElement('a');
-			newA.className = (a === 1) ? cfg.navigation + '_active' : cfg.navigation + '_passive';
+			newA.className = (a === 1) ? config.navigation + '_active' : config.navigation + '_passive';
 			var newImage = document.createElement('img');
 			newImage.alt = '';
-			newImage.src = cfg.thumbnails[a];
+			newImage.src = config.thumbnails[a];
 			newA.appendChild(newImage);
 			newLi.appendChild(newA);
 			// insert the new nodes
-			cfg.status.slideUl.appendChild(newLi);
+			config.status.slideUl.appendChild(newLi);
 			// store the dom pointers to the images
-			cfg.status.thumbnails[a] = newA;
+			config.status.thumbnails[a] = newA;
 		}
 		// insert the navigation bar
-		cfg.status.slideDiv.appendChild(cfg.status.slideUl);
-		cfg.status.slideNav.appendChild(cfg.status.slideDiv);
-		cfg.element.appendChild(cfg.status.slideNav);
-		// for all thumbnails in the root.cfg
-		for (a = 1; a < cfg.thumbnails.length; a += 1) {
+		config.status.slideDiv.appendChild(config.status.slideUl);
+		config.status.slideNav.appendChild(config.status.slideDiv);
+		config.element.appendChild(config.status.slideNav);
+		// for all thumbnails in the this.config
+		for (a = 1; a < config.thumbnails.length; a += 1) {
 			// assign the event handler
-			this.onThumbnailClick(cfg.status.thumbnails[a]);
+			this.onThumbnailClick(config.status.thumbnails[a]);
 		}
 		// start the menu
 		this.menu.setup();
 	};
 	// event handlers
 	this.onThumbnailClick = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		var _this = this;
 		element.addEventListener('click', function (event) {
 			_this.set(event, element);
 		}, false);
 	};
-	// redraw/recentre the thumbnails according to the root.cfg
+	// redraw/recentre the thumbnails according to the this.config
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// update the thumbnails menu
 		this.menu.update();
 		/// highlight the icons
@@ -2297,24 +2578,24 @@ useful.Viewer.prototype.Thumbnails = function (parent) {
 	};
 	// highlight active icon
 	this.hightlightIcons = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// for all thumbnails
-		for (var a = 1, b = cfg.thumbnails.length; a < b; a += 1) {
+		for (var a = 1, b = config.thumbnails.length; a < b; a += 1) {
 			// highlight the active slide
-			cfg.status.thumbnails[a].className = (cfg.status.index === a) ? cfg.navigation + '_active' : cfg.navigation + '_passive';
+			config.status.thumbnails[a].className = (config.status.index === a) ? config.navigation + '_active' : config.navigation + '_passive';
 		}
 	};
 	// centre the icons in containers
 	this.centreIcons = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		var imageObject, imageWidth, imageHeight, rowHeight;
 		// measure the available space
-		rowHeight = cfg.status.slideNav.offsetHeight;
+		rowHeight = config.status.slideNav.offsetHeight;
 		// for all thumbnails
-		for (var a = 1, b = cfg.thumbnails.length; a < b; a += 1) {
+		for (var a = 1, b = config.thumbnails.length; a < b; a += 1) {
 			// centre the image in its surroundings
-			cfg.status.thumbnails[a].style.width =  rowHeight + 'px';
-			imageObject = cfg.status.thumbnails[a].getElementsByTagName('img')[0];
+			config.status.thumbnails[a].style.width =  rowHeight + 'px';
+			imageObject = config.status.thumbnails[a].getElementsByTagName('img')[0];
 			imageWidth = imageObject.offsetWidth;
 			imageHeight = imageObject.offsetHeight;
 			if (imageWidth > imageHeight) {
@@ -2334,42 +2615,42 @@ useful.Viewer.prototype.Thumbnails = function (parent) {
 	};
 	// centre the container around the active one
 	this.centreSlider = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// scroll the slider enough to center the active slide
-		var activeThumbnail = cfg.status.thumbnails[cfg.status.index];
+		var activeThumbnail = config.status.thumbnails[config.status.index];
 		var activePosition = activeThumbnail.offsetLeft;
 		var activeWidth = activeThumbnail.offsetWidth;
-		var scrollDistance = cfg.status.slideDiv.offsetWidth;
+		var scrollDistance = config.status.slideDiv.offsetWidth;
 		var centeredPosition = -activePosition + scrollDistance / 2 - activeWidth / 2;
 		centeredPosition = (centeredPosition > 0) ? 0 : centeredPosition;
-		centeredPosition = (centeredPosition < cfg.scrollMax && cfg.scrollMax < 0) ? cfg.scrollMax : centeredPosition;
+		centeredPosition = (centeredPosition < config.scrollMax && config.scrollMax < 0) ? config.scrollMax : centeredPosition;
 		// transition to the new position
 		useful.transitions.byRules(
-			cfg.status.slideUl,
+			config.status.slideUl,
 			{'marginLeft' : centeredPosition + 'px'}
 		);
 	};
 	// activate a corresponding figure
 	this.set = function (event, node) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// count which thumbnail this is
-		for (var a = 1; a < cfg.status.thumbnails.length; a += 1) {
-			if (cfg.status.thumbnails[a] === node) {
+		for (var a = 1; a < config.status.thumbnails.length; a += 1) {
+			if (config.status.thumbnails[a] === node) {
 				// change the index to this slide
-				cfg.status.index = a;
+				config.status.index = a;
 				// reset the zoom
-				cfg.status.zoom = (cfg.zoom !== 'static') ? cfg.max : 1;
+				config.status.zoom = (config.zoom !== 'static') ? config.max : 1;
 				// redraw all
-				root.update();
+				parent.update();
 			}
 		}
 		// cancel the click
 		event.preventDefault();
 	};
 	// manages the thumbnail controls
-	this.menu = new this.parent.Thumbnails_Menu(this);
+	this.menu = new this.context.Thumbnails_Menu(this);
 };
 
 // return as a require.js module
@@ -2393,91 +2674,92 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Toolbar = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
-		cfg.status.menus = cfg.status.menus || {};
-		cfg.status.menus.toolbarNav = document.createElement('nav');
-		cfg.status.menus.toolbarNav.className = cfg.toolbars + ' ' + cfg.spin;
-		cfg.status.menus.toolbarNav.style.bottom = ((1 - cfg.divide) * 100) + '%';
+		config.status.menus = config.status.menus || {};
+		config.status.menus.toolbarNav = document.createElement('nav');
+		config.status.menus.toolbarNav.className = config.toolbars + ' ' + config.spin;
+		config.status.menus.toolbarNav.style.bottom = ((1 - config.divide) * 100) + '%';
 		// add the zoom buttons
-		cfg.status.menus.toolbarZoom = document.createElement('menu');
-		cfg.status.menus.toolbarZoom.className = 'zoom';
-		root.zoom.build.increaser(cfg.status.menus.toolbarZoom);
-		root.zoom.build.decreaser(cfg.status.menus.toolbarZoom);
-		cfg.status.menus.toolbarNav.appendChild(cfg.status.menus.toolbarZoom);
+		config.status.menus.toolbarZoom = document.createElement('menu');
+		config.status.menus.toolbarZoom.className = 'zoom';
+		parent.zoom.build.increaser(config.status.menus.toolbarZoom);
+		parent.zoom.build.decreaser(config.status.menus.toolbarZoom);
+		config.status.menus.toolbarNav.appendChild(config.status.menus.toolbarZoom);
 		// setup the right toolbar
-		switch (cfg.spin) {
+		switch (config.spin) {
 		case 'rotation' :
 			// create the menu
-			cfg.status.menus.toolbarSpin = document.createElement('menu');
-			cfg.status.menus.toolbarSpin.className = 'spin';
+			config.status.menus.toolbarSpin = document.createElement('menu');
+			config.status.menus.toolbarSpin.className = 'spin';
 			// add the spin buttons
-			root.spin.build.decreaser(cfg.status.menus.toolbarSpin);
-			root.spin.build.increaser(cfg.status.menus.toolbarSpin);
+			parent.spin.build.decreaser(config.status.menus.toolbarSpin);
+			parent.spin.build.increaser(config.status.menus.toolbarSpin);
 			// add the menu to the toolbar
-			cfg.status.menus.toolbarNav.appendChild(cfg.status.menus.toolbarSpin);
+			config.status.menus.toolbarNav.appendChild(config.status.menus.toolbarSpin);
 			break;
 		case 'slideshow' :
 			// create the menu
-			cfg.status.menus.toolbarLeaf = document.createElement('menu');
-			cfg.status.menus.toolbarLeaf.className = 'leaf';
+			config.status.menus.toolbarLeaf = document.createElement('menu');
+			config.status.menus.toolbarLeaf.className = 'leaf';
 			// add the previous button
-			root.leaf.build.decreaser(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.decreaser(config.status.menus.toolbarLeaf);
 			// add the next button
-			root.leaf.build.increaser(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.increaser(config.status.menus.toolbarLeaf);
 			// add the menu to the toolbar
-			cfg.status.menus.toolbarNav.appendChild(cfg.status.menus.toolbarLeaf);
+			config.status.menus.toolbarNav.appendChild(config.status.menus.toolbarLeaf);
 			break;
 		case 'catalogue' :
 			// create the menu
-			cfg.status.menus.toolbarLeaf = document.createElement('menu');
-			cfg.status.menus.toolbarLeaf.className = 'leaf';
+			config.status.menus.toolbarLeaf = document.createElement('menu');
+			config.status.menus.toolbarLeaf.className = 'leaf';
 			// add the reset button
-			root.leaf.build.resetter(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.resetter(config.status.menus.toolbarLeaf);
 			// add the indicator display
-			root.leaf.build.indicator(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.indicator(config.status.menus.toolbarLeaf);
 			// add the previous button
-			root.leaf.build.decreaser(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.decreaser(config.status.menus.toolbarLeaf);
 			// add the next button
-			root.leaf.build.increaser(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.increaser(config.status.menus.toolbarLeaf);
 			// add the reset button
-			//root.leaf.build.resetter(cfg.status.menus.toolbarLeaf);
+			//parent.leaf.build.resetter(config.status.menus.toolbarLeaf);
 			// add the menu to the toolbar
-			cfg.status.menus.toolbarNav.appendChild(cfg.status.menus.toolbarLeaf);
+			config.status.menus.toolbarNav.appendChild(config.status.menus.toolbarLeaf);
 			break;
 		}
 		// add the menu to the interface
-		cfg.element.appendChild(cfg.status.menus.toolbarNav);
+		config.element.appendChild(config.status.menus.toolbarNav);
 	};
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// hide/show the zoom out button
-		cfg.status.menus.zoomIn.className = cfg.status.menus.zoomIn.className.replace(/ disabled/gi, '');
-		cfg.status.menus.zoomIn.className += (cfg.status.atMaxZoom) ? ' disabled' : '';
+		config.status.menus.zoomIn.className = config.status.menus.zoomIn.className.replace(/ disabled/gi, '');
+		config.status.menus.zoomIn.className += (config.status.atMaxZoom) ? ' disabled' : '';
 		// hide/show the zoom in button
-		cfg.status.menus.zoomOut.className = cfg.status.menus.zoomOut.className.replace(/ disabled/gi, '');
-		cfg.status.menus.zoomOut.className += (cfg.status.atMinZoom) ? ' disabled' : '';
+		config.status.menus.zoomOut.className = config.status.menus.zoomOut.className.replace(/ disabled/gi, '');
+		config.status.menus.zoomOut.className += (config.status.atMinZoom) ? ' disabled' : '';
 		// update the right toolbar
-		switch (cfg.spin) {
+		switch (config.spin) {
 			case 'rotation' :
 				break;
 			case 'slideshow' :
 				// hide/show the previous button
-				cfg.status.menus.leafIn.className = cfg.status.menus.leafIn.className.replace(/ disabled/gi, '');
-				cfg.status.menus.leafIn.className += (cfg.status.atMaxLeaf) ? ' disabled' : '';
+				config.status.menus.leafIn.className = config.status.menus.leafIn.className.replace(/ disabled/gi, '');
+				config.status.menus.leafIn.className += (config.status.atMaxLeaf) ? ' disabled' : '';
 				// hide/show the next button
-				cfg.status.menus.leafOut.className = cfg.status.menus.leafOut.className.replace(/ disabled/gi, '');
-				cfg.status.menus.leafOut.className += (cfg.status.atMinLeaf) ? ' disabled' : '';
+				config.status.menus.leafOut.className = config.status.menus.leafOut.className.replace(/ disabled/gi, '');
+				config.status.menus.leafOut.className += (config.status.atMinLeaf) ? ' disabled' : '';
 				break;
 			case 'catalogue' :
 				// fill in the current page
-				cfg.status.menus.leafPageInput.value = cfg.status.index;
+				config.status.menus.leafPageInput.value = config.status.index;
 				// fill in the page total
-				cfg.status.menus.leafPageCount.innerHTML = 'of ' +	(cfg.status.figures.length - 1);
+				config.status.menus.leafPageCount.innerHTML = 'of ' +	(config.status.figures.length - 1);
 				break;
 		}
 	};
@@ -2504,32 +2786,33 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Zoom_Build = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.slider = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the slider to the menu
-		cfg.status.menus.zoomIndicator = (navigator.userAgent.match(/WebKit/) || true) ? document.createElement('div') : document.createElement('meter');
-		cfg.status.menus.zoomIndicator.className = 'meter';
-		cfg.status.menus.zoomIndicator.setAttribute('min', 1);
-		cfg.status.menus.zoomIndicator.setAttribute('max', cfg.heights[cfg.status.index] / cfg.status.canvas.offsetHeight);
-		cfg.status.menus.zoomIndicator.setAttribute('value', cfg.status.zoom);
-		cfg.status.menus.zoomSlider = document.createElement('div');
-		cfg.status.menus.zoomSliderIcon = document.createElement('span');
-		cfg.status.menus.zoomSliderIcon.innerHTML = cfg.status.zoom;
-		cfg.status.menus.zoomSlider.appendChild(cfg.status.menus.zoomSliderIcon);
-		cfg.status.menus.zoomIndicator.appendChild(cfg.status.menus.zoomSlider);
-		element.appendChild(cfg.status.menus.zoomIndicator);
+		config.status.menus.zoomIndicator = (navigator.userAgent.match(/WebKit/) || true) ? document.createElement('div') : document.createElement('meter');
+		config.status.menus.zoomIndicator.className = 'meter';
+		config.status.menus.zoomIndicator.setAttribute('min', 1);
+		config.status.menus.zoomIndicator.setAttribute('max', config.heights[config.status.index] / config.status.canvas.offsetHeight);
+		config.status.menus.zoomIndicator.setAttribute('value', config.status.zoom);
+		config.status.menus.zoomSlider = document.createElement('div');
+		config.status.menus.zoomSliderIcon = document.createElement('span');
+		config.status.menus.zoomSliderIcon.innerHTML = config.status.zoom;
+		config.status.menus.zoomSlider.appendChild(config.status.menus.zoomSliderIcon);
+		config.status.menus.zoomIndicator.appendChild(config.status.menus.zoomSlider);
+		element.appendChild(config.status.menus.zoomIndicator);
 	};
 	this.cover = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add a touch cover to the menu
-		cfg.status.menus.zoomCover = document.createElement('div');
-		cfg.status.menus.zoomCover.className = 'cover';
-		element.appendChild(cfg.status.menus.zoomCover);
+		config.status.menus.zoomCover = document.createElement('div');
+		config.status.menus.zoomCover.className = 'cover';
+		element.appendChild(config.status.menus.zoomCover);
 		// add the event handler
-		var simz = cfg.status.menus.zoomCover;
+		var simz = config.status.menus.zoomCover;
 		simz.addEventListener('mousewheel', function (event) {
 			parent.mouse.wheel(event);
 		}, false);
@@ -2560,66 +2843,66 @@ useful.Viewer.prototype.Zoom_Build = function (parent) {
 		}, false);
 	};
 	this.increaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the increase button
-		cfg.status.menus.zoomIn = document.createElement('button');
-		cfg.status.menus.zoomIn.className = 'increase';
-		cfg.status.menus.zoomInIcon = document.createElement('span');
-		cfg.status.menus.zoomInIcon.innerHTML = 'Zoom in';
-		cfg.status.menus.zoomIn.appendChild(cfg.status.menus.zoomInIcon);
-		element.appendChild(cfg.status.menus.zoomIn);
+		config.status.menus.zoomIn = document.createElement('button');
+		config.status.menus.zoomIn.className = 'increase';
+		config.status.menus.zoomInIcon = document.createElement('span');
+		config.status.menus.zoomInIcon.innerHTML = 'Zoom in';
+		config.status.menus.zoomIn.appendChild(config.status.menus.zoomInIcon);
+		element.appendChild(config.status.menus.zoomIn);
 		// add the event handlers
-		cfg.status.menus.zoomIn.addEventListener('mousedown', function (event) {
+		config.status.menus.zoomIn.addEventListener('mousedown', function (event) {
 			// increase the zoom
 			parent.increase();
 			// cancel streaming
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// repeat
-			cfg.status.menus.zoomInRepeat = setInterval(function () { parent.increase(); }, 300);
+			config.status.menus.zoomInRepeat = setInterval(function () { parent.increase(); }, 300);
 			// cancel this event
 			event.preventDefault();
 		}, false);
-		cfg.status.menus.zoomIn.addEventListener('mouseup', function () {
+		config.status.menus.zoomIn.addEventListener('mouseup', function () {
 			// stop repeating
-			clearInterval(cfg.status.menus.zoomInRepeat);
+			clearInterval(config.status.menus.zoomInRepeat);
 			// allow streaming
-			cfg.status.stream = true;
+			config.status.stream = true;
 			// redraw
-			root.update();
+			parent.parent.update();
 		}, false);
-		cfg.status.menus.zoomIn.addEventListener('click', function (event) {
+		config.status.menus.zoomIn.addEventListener('click', function (event) {
 			// cancel this event
 			event.preventDefault();
 		}, false);
 	};
 	this.decreaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// add the decrease button
-		cfg.status.menus.zoomOut = document.createElement('button');
-		cfg.status.menus.zoomOut.className = 'decrease';
-		cfg.status.menus.zoomOutIcon = document.createElement('span');
-		cfg.status.menus.zoomOutIcon.innerHTML = 'Zoom out';
-		cfg.status.menus.zoomOut.appendChild(cfg.status.menus.zoomOutIcon);
-		element.appendChild(cfg.status.menus.zoomOut);
-		cfg.status.menus.zoomOut.addEventListener('mousedown', function (event) {
+		config.status.menus.zoomOut = document.createElement('button');
+		config.status.menus.zoomOut.className = 'decrease';
+		config.status.menus.zoomOutIcon = document.createElement('span');
+		config.status.menus.zoomOutIcon.innerHTML = 'Zoom out';
+		config.status.menus.zoomOut.appendChild(config.status.menus.zoomOutIcon);
+		element.appendChild(config.status.menus.zoomOut);
+		config.status.menus.zoomOut.addEventListener('mousedown', function (event) {
 			// increase the zoom
 			parent.decrease();
 			// cancel streaming
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// repeat
-			cfg.status.menus.zoomOutRepeat = setInterval(function () { parent.decrease(); }, 300);
+			config.status.menus.zoomOutRepeat = setInterval(function () { parent.decrease(); }, 300);
 			// cancel this event
 			event.preventDefault();
 		}, false);
-		cfg.status.menus.zoomOut.addEventListener('mouseup', function () {
+		config.status.menus.zoomOut.addEventListener('mouseup', function () {
 			// stop repeating
-			clearInterval(cfg.status.menus.zoomOutRepeat);
+			clearInterval(config.status.menus.zoomOutRepeat);
 			// allow streaming
-			cfg.status.stream = true;
+			config.status.stream = true;
 			// redraw
-			root.update();
+			parent.parent.update();
 		}, false);
-		cfg.status.menus.zoomOut.addEventListener('click', function (event) {
+		config.status.menus.zoomOut.addEventListener('click', function (event) {
 			// cancel this event
 			event.preventDefault();
 		}, false);
@@ -2647,45 +2930,44 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 	// properties
 	"use strict";
-	// methods
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	this.y = null;
 	this.distance = null;
 	this.sensitivity = null;
 	this.fudge = 1.1;
-	// mouse wheel controls
+	// methods
 	this.wheel = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the reading from the mouse wheel
 		var distance = (window.event) ? window.event.wheelDelta / 120 : -event.detail / 3;
 		// do not loop around
 		if (distance < 0) {
 			// increase the zoom factor
-			cfg.status.zoom = cfg.status.zoom * cfg.magnification;
+			config.status.zoom = config.status.zoom * config.magnification;
 		} else if (distance > 0) {
 			// decrease the zoom factor
-			cfg.status.zoom = cfg.status.zoom / cfg.magnification;
+			config.status.zoom = config.status.zoom / config.magnification;
 		}
 		// call for a redraw
-		root.update();
+		parent.parent.update();
 		// cancel the scrolling
 		event.preventDefault();
 	};
-	// mouse gesture controls
 	this.start = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// store the touch positions
 		this.y = event.pageY || event.y;
-		this.distance = cfg.status.menus.zoomCover.offsetHeight - cfg.status.menus.zoomIn.offsetHeight - cfg.status.menus.zoomOut.offsetHeight;
-		this.sensitivity = cfg.heights[cfg.status.index] / cfg.status.canvas.offsetHeight - 1;
+		this.distance = config.status.menus.zoomCover.offsetHeight - config.status.menus.zoomIn.offsetHeight - config.status.menus.zoomOut.offsetHeight;
+		this.sensitivity = config.heights[config.status.index] / config.status.canvas.offsetHeight - 1;
 		// cancel the click
 		event.preventDefault();
 	};
 	this.move = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// if there is a touch in progress
@@ -2693,27 +2975,27 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 			// store the touch positions
 			var y = event.pageY || event.y;
 			// calculate the drag distance into %
-			cfg.status.zoom += (this.y - y) / this.distance * this.sensitivity * this.fudge;
+			config.status.zoom += (this.y - y) / this.distance * this.sensitivity * this.fudge;
 			// reset the distance
 			this.y = y;
 			// disable streaming new images
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// order a redraw
-			root.update();
+			parent.parent.update();
 		}
 		// cancel the click
 		event.preventDefault();
 	};
 	this.end = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// clear the positions
 		this.y = null;
 		// enable streaming new images
-		cfg.status.stream = true;
+		config.status.stream = true;
 		// order a redraw
-		root.update();
+		parent.parent.update();
 		// cancel the click
 		event.preventDefault();
 	};
@@ -2740,26 +3022,27 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Zoom_Touch = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	this.y = null;
 	this.distance = null;
 	this.sensitivity = null;
 	this.fudge = 1.1;
 	// methods
 	this.start = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// store the touch positions
 		this.y = [];
 		for (var a = 0, b = event.touches.length; a < b; a += 1) {
 			this.y.push(event.touches[a].pageY);
 		}
 		// calculate the sensitivity
-		this.distance = cfg.status.menus.zoomCover.offsetHeight - cfg.status.menus.zoomIn.offsetHeight - cfg.status.menus.zoomOut.offsetHeight;
-		this.sensitivity = cfg.heights[cfg.status.index] / cfg.status.canvas.offsetHeight - 1;
+		this.distance = config.status.menus.zoomCover.offsetHeight - config.status.menus.zoomIn.offsetHeight - config.status.menus.zoomOut.offsetHeight;
+		this.sensitivity = config.heights[config.status.index] / config.status.canvas.offsetHeight - 1;
 	};
 	this.move = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		var target = event.target || event.srcElement;
@@ -2772,26 +3055,26 @@ useful.Viewer.prototype.Zoom_Touch = function (parent) {
 				y.push(event.touches[a].pageY);
 			}
 			// calculate the drag distance into %
-			cfg.status.zoom += (this.y[0] - y[0]) / this.distance * this.sensitivity * this.fudge;
+			config.status.zoom += (this.y[0] - y[0]) / this.distance * this.sensitivity * this.fudge;
 			// reset the distance
 			this.y[0] = y[0];
 			// disable streaming new images
-			cfg.status.stream = false;
+			config.status.stream = false;
 			// order a redraw
-			root.update();
+			parent.parent.update();
 		}
 		// cancel the click
 		target.blur();
 		event.preventDefault();
 	};
 	this.end = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// clear the positions
 		this.y = null;
 		// enable streaming new images
-		cfg.status.stream = true;
+		config.status.stream = true;
 		// order a redraw
-		root.update();
+		parent.parent.update();
 	};
 };
 
@@ -2816,59 +3099,60 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Zoom = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
-		cfg.status.menus = cfg.status.menus || {};
-		cfg.status.menus.zoomMenu = document.createElement('menu');
-		cfg.status.menus.zoomMenu.className = 'slider zoom';
-		cfg.status.menus.zoomMenu.style.bottom = ((1 - cfg.divide) * 100) + '%';
+		config.status.menus = config.status.menus || {};
+		config.status.menus.zoomMenu = document.createElement('menu');
+		config.status.menus.zoomMenu.className = 'slider zoom';
+		config.status.menus.zoomMenu.style.bottom = ((1 - config.divide) * 100) + '%';
 		// add the slider to the menu
-		this.build.slider(cfg.status.menus.zoomMenu);
+		this.build.slider(config.status.menus.zoomMenu);
 		// add a touch cover to the menu
-		this.build.cover(cfg.status.menus.zoomMenu);
+		this.build.cover(config.status.menus.zoomMenu);
 		// add the increase button
-		this.build.increaser(cfg.status.menus.zoomMenu);
+		this.build.increaser(config.status.menus.zoomMenu);
 		// add the decrease button
-		this.build.decreaser(cfg.status.menus.zoomMenu);
+		this.build.decreaser(config.status.menus.zoomMenu);
 		// add the menu to the interface
-		cfg.element.appendChild(cfg.status.menus.zoomMenu);
+		config.element.appendChild(config.status.menus.zoomMenu);
 	};
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// gather the constants
 		var minZoom = 1,
-			maxZoom = cfg.heights[cfg.status.index] / cfg.status.canvas.offsetHeight,
-			curZoom = cfg.status.zoom;
+			maxZoom = config.heights[config.status.index] / config.status.canvas.offsetHeight,
+			curZoom = config.status.zoom;
 		// update the value
-		cfg.status.menus.zoomIndicator.setAttribute('value', curZoom);
-		cfg.status.menus.zoomSliderIcon.innerHTML = curZoom;
+		config.status.menus.zoomIndicator.setAttribute('value', curZoom);
+		config.status.menus.zoomSliderIcon.innerHTML = curZoom;
 		// reposition the slider
-		cfg.status.menus.zoomSlider.style.top = (100 - (curZoom - minZoom) / (maxZoom - minZoom) * 100) + '%';
+		config.status.menus.zoomSlider.style.top = (100 - (curZoom - minZoom) / (maxZoom - minZoom) * 100) + '%';
 	};
 	this.increase = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// increase the zoom factor
-		cfg.status.zoom = cfg.status.zoom * cfg.magnification;
+		config.status.zoom = config.status.zoom * config.magnification;
 		// order a redraw
 		parent.update();
 	};
 	this.decrease = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the zoom factor
-		cfg.status.zoom = cfg.status.zoom / cfg.magnification;
+		config.status.zoom = config.status.zoom / config.magnification;
 		// order a redraw
 		parent.update();
 	};
 	// build functionality
-	this.build = new this.parent.Zoom_Build(this);
+	this.build = new this.context.Zoom_Build(this);
 	// mouse controls
-	this.mouse = new this.parent.Zoom_Mouse(this);
+	this.mouse = new this.context.Zoom_Mouse(this);
 	// touch screen controls
-	this.touch = new this.parent.Zoom_Touch(this);
+	this.touch = new this.context.Zoom_Touch(this);
 };
 
 // return as a require.js module
@@ -2877,11 +3161,11 @@ if (typeof module !== 'undefined') {
 }
 
 /*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
+Source:
+van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
 
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+License:
+This work is licensed under a Creative Commons Attribution 3.0 Unported License.
 */
 
 // create the constructor if needed
@@ -2889,245 +3173,32 @@ var useful = useful || {};
 useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
-useful.Viewer.prototype.init = function (cfg) {
+useful.Viewer.prototype.init = function (config) {
 	// properties
 	"use strict";
-	this.cfg = cfg;
 	// methods
-	this.wait = function () {
-		var _this = this;
-		// wait until the page has loaded
-		window.addEventListener('load', function () {
-			// gather the input
-			_this.gatherInput();
-			// validate the input
-			_this.validateInput();
-			// set the start parameters
-			_this.startingStatus();
-			// apply the custom styles
-			_this.styling();
-			// run the viewer
-			_this.run();
-			// destroy the init function
-			_this.init = function () {};
-		});
+	this.only = function (config) {
+		// start an instance of the script
+		return new this.Main(config, this).init();
 	};
-	// set the start parameters
-	this.startingStatus = function () {
-		// create the object to hold all the running variables
-		this.cfg.status = {};
-		// pick the initial active slide
-		this.cfg.status.index = 1;
-		// pick the initial zoom level
-		this.cfg.status.zoom = 1;
-		// pick the initial pan position
-		this.cfg.status.pan = {x : 0.5, y : 0.5};
-		// pick the initial canvas position
-		this.cfg.status.pos = {x : 0, y : 0};
-		// establish the replacement regular expressions
-		this.cfg.regSrc = new RegExp('{src}', 'gi');
-		this.cfg.regWidth = new RegExp('{width}', 'gi');
-		this.cfg.regHeight = new RegExp('{height}', 'gi');
-		this.cfg.regLeft = new RegExp('{left}', 'gi');
-		this.cfg.regTop = new RegExp('{top}', 'gi');
-		this.cfg.regRight = new RegExp('{right}', 'gi');
-		this.cfg.regBottom = new RegExp('{bottom}', 'gi');
-	};
-	// gather all the configuration and DOM elements
-	this.gatherInput = function () {
-		// get the assets from the html
-		this.cfg.thumbnails = [0];
-		this.cfg.figures = [0];
-		this.cfg.titles = [0];
-		this.cfg.descriptions = [0];
-		this.cfg.widths = [0];
-		this.cfg.heights = [0];
-		this.cfg.lefts = [0];
-		this.cfg.tops = [0];
-		this.cfg.rights = [0];
-		this.cfg.bottoms = [0];
-		var allLinks = this.cfg.element.getElementsByTagName('a');
-		var allImages = this.cfg.element.getElementsByTagName('img');
-		for (var a = 0, b = allLinks.length; a < b; a += 1) {
-			// create a list of thumbnail urls and full urls
-			this.cfg.thumbnails.push(allImages[a].getAttribute('src'));
-			this.cfg.figures.push(this.cfg.urlprefix + allLinks[a].getAttribute('href'));
-			this.cfg.titles.push(allImages[a].getAttribute('title'));
-			this.cfg.descriptions.push(allImages[a].getAttribute('alt'));
-			this.cfg.widths.push(parseInt(allImages[a].getAttribute('width'), 10));
-			this.cfg.heights.push(parseInt(allImages[a].getAttribute('height'), 10));
-			this.cfg.lefts.push(parseFloat(allImages[a].getAttribute('data-left') || this.cfg.left || 0));
-			this.cfg.tops.push(parseFloat(allImages[a].getAttribute('data-top') || this.cfg.top || 0));
-			this.cfg.rights.push(parseFloat(allImages[a].getAttribute('data-right') || this.cfg.right || 1));
-			this.cfg.bottoms.push(parseFloat(allImages[a].getAttribute('data-bottom') || this.cfg.bottom || 1));
+	this.each = function (config) {
+		var _config, _context = this, instances = [];
+		// for all element
+		for (var a = 0, b = config.elements.length; a < b; a += 1) {
+			// clone the configuration
+			_config = Object.create(config);
+			// insert the current element
+			_config.element = config.elements[a];
+			// delete the list of elements from the clone
+			delete _config.elements;
+			// start a new instance of the object
+			instances[a] = new this.Main(_config, _context).init();
 		}
+		// return the instances
+		return instances;
 	};
-	// fix some numbers in the context.cfg
-	this.validateInput = function () {
-		this.cfg.grid = parseInt(this.cfg.grid, 10);
-		this.cfg.cache = parseInt(this.cfg.cache, 10);
-		this.cfg.lens = parseFloat(this.cfg.lens);
-		this.cfg.magnification = parseFloat(this.cfg.magnification);
-		this.cfg.max = parseFloat(this.cfg.max);
-		this.cfg.navigation = 'thumbnails';
-		this.cfg.divide = (this.cfg.spin === 'rotation') ? 1 : parseInt(this.cfg.divide, 10) / 100;
-		this.cfg.retry = null;
-	};
-	// implement customised styles
-	this.styling = function () {
-		// create a custom stylesheet
-		var style = document.createElement("style");
-		var isWebkit = new RegExp('webkit', 'gi');
-		if (isWebkit.test(navigator.UserAgent)) { style.appendChild(document.createTextNode("")); }
-		document.body.appendChild(style);
-		var sheet = style.sheet || style.styleSheet;
-		// add the custom styles
-		if (sheet.insertRule) {
-			sheet.insertRule(".viewer button {background-color : " + this.cfg.colorPassive + " !important;}", 0);
-			sheet.insertRule(".viewer button:hover {background-color : " + this.cfg.colorHover + " !important;}", 0);
-			sheet.insertRule(".viewer button.disabled {background-color : " + this.cfg.colorDisabled + " !important;}", 0);
-			sheet.insertRule(".viewer .thumbnails_active {background-color : " + this.cfg.colorPassive + " !important;}", 0);
-			sheet.insertRule(".viewer menu.slider {background-color : " + this.cfg.colorPassive + " !important;}", 0);
-			sheet.insertRule(".viewer menu.slider meter div {background-color : " + this.cfg.colorPassive + " !important;}", 0);
-		} else {
-			sheet.addRule(".viewer button", "background-color : " + this.cfg.colorPassive + " !important;", 0);
-			sheet.addRule(".viewer button:hover", "background-color : " + this.cfg.colorHover + " !important;", 0);
-			sheet.addRule(".viewer button.disabled", "background-color : " + this.cfg.colorDisabled + " !important;", 0);
-			sheet.addRule(".viewer .thumbnails_active", "background-color : " + this.cfg.colorPassive + " !important;", 0);
-			sheet.addRule(".viewer menu.slider", "background-color : " + this.cfg.colorPassive + " !important;", 0);
-			sheet.addRule(".viewer menu.slider meter div", "background-color : " + this.cfg.colorPassive + " !important;", 0);
-		}
-	};
-	// run the slideshow
-	this.run = function () {
-		var _this = this;
-		// hide the component
-		this.cfg.element.style.visibility = 'hidden';
-		setTimeout(function () {
-			// start the components
-			_this.setup();
-			// start the redraw
-			setTimeout(function () {
-				// draw the component
-				_this.update();
-				// reveal the component
-				_this.cfg.element.style.visibility = 'visible';
-			}, 400);
-		}, 100);
-	};
-	// build the app html
-	this.setup = function () {
-		// shortcut pointers
-		var sip = this.cfg.element;
-		// clear the parent node
-		sip.innerHTML = '';
-		// apply optional dimensions
-		if (this.cfg.width) {
-			sip.style.width = this.cfg.width + this.cfg.widthUnit;
-		}
-		if (this.cfg.height) {
-			sip.style.height = this.cfg.height + this.cfg.heightUnit;
-		}
-		// apply any context.cfg classes
-		sip.className += ' spin_' + this.cfg.spin;
-		// setup the sub components
-		this.automatic.setup();
-		this.figures.setup();
-		// choose what type of toolbars to setup
-		switch (this.cfg.toolbars) {
-		// setup the slider toolbars
-		case 'sliders' :
-			this.zoom.setup(this);
-			if (this.cfg.spin === 'rotation') {
-				this.spin.setup();
-			}
-			if (this.cfg.spin === 'catalogue') {
-				this.leaf.setup();
-			}
-			break;
-		// setup the floating buttons
-		case 'buttons' :
-			this.toolbar.setup();
-			break;
-		// setup the default toolbar
-		default :
-			this.toolbar.setup();
-		}
-		// setup the thumbnails
-		if (this.cfg.spin !== 'rotation') {
-			this.thumbnails.setup();
-		}
-	};
-	// update the whole app
-	this.update = function () {
-		// if the slideshow has been disabled
-		if (this.cfg.element.offsetHeight === 0) {
-			// stop updating and try again later
-			clearTimeout(this.cfg.retry);
-			var _this = this;
-			this.cfg.retry = setTimeout(function () {
-				_this.update();
-			}, 1000);
-		// else
-		} else {
-			// update the sub components
-			this.figures.update();
-			// choose what type of toolbars to update
-			switch (this.cfg.toolbars) {
-				// update the slider toolbars
-				case 'sliders' :
-					this.zoom.update();
-					if (this.cfg.spin === 'rotation') {
-						this.spin.update();
-					}
-					if (this.cfg.spin === 'catalogue') {
-						this.leaf.update();
-					}
-					break;
-				// update the floating buttons
-				case 'buttons' :
-					this.toolbar.update();
-					break;
-				// update the default toolbar
-				default :
-					this.toolbar.update();
-			}
-			// update the thumbnails
-			if (this.cfg.spin !== 'rotation') {
-				this.thumbnails.update();
-			}
-		}
-	};
-	// automatic idle slideshow
-	this.automatic = new this.Automatic(this);
-	// manages the main view
-	this.figures = new this.Figures(this);
-	// zoom slider
-	this.zoom = new this.Zoom(this);
-	// spin slider
-	this.spin = new this.Spin(this);
-	// manages the thumbnails
-	this.thumbnails = new this.Thumbnails(this);
-	// manages leafing through pages
-	this.leaf = new this.Leaf(this);
-	// minimal superset of controls
-	this.toolbar = new this.Toolbar(this);
-	// external API
-	this.focus = function (index) {
-		this.cfg.status.index = index;
-		this.update(this);
-	};
-	this.previous = function () {
-		this.cfg.status.index -= 1;
-		this.update(this);
-	};
-	this.next = function () {
-		this.cfg.status.index += 1;
-		this.update(this);
-	};
-	// go
-	this.wait();
-	return this;
+	// return a single or multiple instances of the script
+	return (config.elements) ? this.each(config) : this.only(config);
 };
 
 // return as a require.js module

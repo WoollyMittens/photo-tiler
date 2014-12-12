@@ -14,91 +14,92 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Toolbar = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.setup = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
-		cfg.status.menus = cfg.status.menus || {};
-		cfg.status.menus.toolbarNav = document.createElement('nav');
-		cfg.status.menus.toolbarNav.className = cfg.toolbars + ' ' + cfg.spin;
-		cfg.status.menus.toolbarNav.style.bottom = ((1 - cfg.divide) * 100) + '%';
+		config.status.menus = config.status.menus || {};
+		config.status.menus.toolbarNav = document.createElement('nav');
+		config.status.menus.toolbarNav.className = config.toolbars + ' ' + config.spin;
+		config.status.menus.toolbarNav.style.bottom = ((1 - config.divide) * 100) + '%';
 		// add the zoom buttons
-		cfg.status.menus.toolbarZoom = document.createElement('menu');
-		cfg.status.menus.toolbarZoom.className = 'zoom';
-		root.zoom.build.increaser(cfg.status.menus.toolbarZoom);
-		root.zoom.build.decreaser(cfg.status.menus.toolbarZoom);
-		cfg.status.menus.toolbarNav.appendChild(cfg.status.menus.toolbarZoom);
+		config.status.menus.toolbarZoom = document.createElement('menu');
+		config.status.menus.toolbarZoom.className = 'zoom';
+		parent.zoom.build.increaser(config.status.menus.toolbarZoom);
+		parent.zoom.build.decreaser(config.status.menus.toolbarZoom);
+		config.status.menus.toolbarNav.appendChild(config.status.menus.toolbarZoom);
 		// setup the right toolbar
-		switch (cfg.spin) {
+		switch (config.spin) {
 		case 'rotation' :
 			// create the menu
-			cfg.status.menus.toolbarSpin = document.createElement('menu');
-			cfg.status.menus.toolbarSpin.className = 'spin';
+			config.status.menus.toolbarSpin = document.createElement('menu');
+			config.status.menus.toolbarSpin.className = 'spin';
 			// add the spin buttons
-			root.spin.build.decreaser(cfg.status.menus.toolbarSpin);
-			root.spin.build.increaser(cfg.status.menus.toolbarSpin);
+			parent.spin.build.decreaser(config.status.menus.toolbarSpin);
+			parent.spin.build.increaser(config.status.menus.toolbarSpin);
 			// add the menu to the toolbar
-			cfg.status.menus.toolbarNav.appendChild(cfg.status.menus.toolbarSpin);
+			config.status.menus.toolbarNav.appendChild(config.status.menus.toolbarSpin);
 			break;
 		case 'slideshow' :
 			// create the menu
-			cfg.status.menus.toolbarLeaf = document.createElement('menu');
-			cfg.status.menus.toolbarLeaf.className = 'leaf';
+			config.status.menus.toolbarLeaf = document.createElement('menu');
+			config.status.menus.toolbarLeaf.className = 'leaf';
 			// add the previous button
-			root.leaf.build.decreaser(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.decreaser(config.status.menus.toolbarLeaf);
 			// add the next button
-			root.leaf.build.increaser(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.increaser(config.status.menus.toolbarLeaf);
 			// add the menu to the toolbar
-			cfg.status.menus.toolbarNav.appendChild(cfg.status.menus.toolbarLeaf);
+			config.status.menus.toolbarNav.appendChild(config.status.menus.toolbarLeaf);
 			break;
 		case 'catalogue' :
 			// create the menu
-			cfg.status.menus.toolbarLeaf = document.createElement('menu');
-			cfg.status.menus.toolbarLeaf.className = 'leaf';
+			config.status.menus.toolbarLeaf = document.createElement('menu');
+			config.status.menus.toolbarLeaf.className = 'leaf';
 			// add the reset button
-			root.leaf.build.resetter(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.resetter(config.status.menus.toolbarLeaf);
 			// add the indicator display
-			root.leaf.build.indicator(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.indicator(config.status.menus.toolbarLeaf);
 			// add the previous button
-			root.leaf.build.decreaser(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.decreaser(config.status.menus.toolbarLeaf);
 			// add the next button
-			root.leaf.build.increaser(cfg.status.menus.toolbarLeaf);
+			parent.leaf.build.increaser(config.status.menus.toolbarLeaf);
 			// add the reset button
-			//root.leaf.build.resetter(cfg.status.menus.toolbarLeaf);
+			//parent.leaf.build.resetter(config.status.menus.toolbarLeaf);
 			// add the menu to the toolbar
-			cfg.status.menus.toolbarNav.appendChild(cfg.status.menus.toolbarLeaf);
+			config.status.menus.toolbarNav.appendChild(config.status.menus.toolbarLeaf);
 			break;
 		}
 		// add the menu to the interface
-		cfg.element.appendChild(cfg.status.menus.toolbarNav);
+		config.element.appendChild(config.status.menus.toolbarNav);
 	};
 	this.update = function () {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// hide/show the zoom out button
-		cfg.status.menus.zoomIn.className = cfg.status.menus.zoomIn.className.replace(/ disabled/gi, '');
-		cfg.status.menus.zoomIn.className += (cfg.status.atMaxZoom) ? ' disabled' : '';
+		config.status.menus.zoomIn.className = config.status.menus.zoomIn.className.replace(/ disabled/gi, '');
+		config.status.menus.zoomIn.className += (config.status.atMaxZoom) ? ' disabled' : '';
 		// hide/show the zoom in button
-		cfg.status.menus.zoomOut.className = cfg.status.menus.zoomOut.className.replace(/ disabled/gi, '');
-		cfg.status.menus.zoomOut.className += (cfg.status.atMinZoom) ? ' disabled' : '';
+		config.status.menus.zoomOut.className = config.status.menus.zoomOut.className.replace(/ disabled/gi, '');
+		config.status.menus.zoomOut.className += (config.status.atMinZoom) ? ' disabled' : '';
 		// update the right toolbar
-		switch (cfg.spin) {
+		switch (config.spin) {
 			case 'rotation' :
 				break;
 			case 'slideshow' :
 				// hide/show the previous button
-				cfg.status.menus.leafIn.className = cfg.status.menus.leafIn.className.replace(/ disabled/gi, '');
-				cfg.status.menus.leafIn.className += (cfg.status.atMaxLeaf) ? ' disabled' : '';
+				config.status.menus.leafIn.className = config.status.menus.leafIn.className.replace(/ disabled/gi, '');
+				config.status.menus.leafIn.className += (config.status.atMaxLeaf) ? ' disabled' : '';
 				// hide/show the next button
-				cfg.status.menus.leafOut.className = cfg.status.menus.leafOut.className.replace(/ disabled/gi, '');
-				cfg.status.menus.leafOut.className += (cfg.status.atMinLeaf) ? ' disabled' : '';
+				config.status.menus.leafOut.className = config.status.menus.leafOut.className.replace(/ disabled/gi, '');
+				config.status.menus.leafOut.className += (config.status.atMinLeaf) ? ' disabled' : '';
 				break;
 			case 'catalogue' :
 				// fill in the current page
-				cfg.status.menus.leafPageInput.value = cfg.status.index;
+				config.status.menus.leafPageInput.value = config.status.index;
 				// fill in the page total
-				cfg.status.menus.leafPageCount.innerHTML = 'of ' +	(cfg.status.figures.length - 1);
+				config.status.menus.leafPageCount.innerHTML = 'of ' +	(config.status.figures.length - 1);
 				break;
 		}
 	};

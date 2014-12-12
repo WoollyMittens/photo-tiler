@@ -14,68 +14,69 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Leaf_Build = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	// methods
 	this.indicator = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the page indicator
-		cfg.status.menus.leafPage = document.createElement('form');
-		cfg.status.menus.leafPageInput = document.createElement('input');
-		cfg.status.menus.leafPageInput.setAttribute('type', 'text');
-		cfg.status.menus.leafPageCount = document.createElement('span');
-		cfg.status.menus.leafPageCount.className = 'count';
-		cfg.status.menus.leafPageSubmit = document.createElement('button');
-		cfg.status.menus.leafPageSubmit.setAttribute('type', 'submit');
-		cfg.status.menus.leafPageSubmit.style.position = 'absolute';
-		cfg.status.menus.leafPageSubmit.style.left = '-999em';
-		cfg.status.menus.leafPage.appendChild(cfg.status.menus.leafPageInput);
-		cfg.status.menus.leafPage.appendChild(cfg.status.menus.leafPageCount);
-		element.appendChild(cfg.status.menus.leafPage);
-		cfg.status.menus.leafPageInput.addEventListener('change', function (event) {
+		config.status.menus.leafPage = document.createElement('form');
+		config.status.menus.leafPageInput = document.createElement('input');
+		config.status.menus.leafPageInput.setAttribute('type', 'text');
+		config.status.menus.leafPageCount = document.createElement('span');
+		config.status.menus.leafPageCount.className = 'count';
+		config.status.menus.leafPageSubmit = document.createElement('button');
+		config.status.menus.leafPageSubmit.setAttribute('type', 'submit');
+		config.status.menus.leafPageSubmit.style.position = 'absolute';
+		config.status.menus.leafPageSubmit.style.left = '-999em';
+		config.status.menus.leafPage.appendChild(config.status.menus.leafPageInput);
+		config.status.menus.leafPage.appendChild(config.status.menus.leafPageCount);
+		element.appendChild(config.status.menus.leafPage);
+		config.status.menus.leafPageInput.addEventListener('change', function (event) {
 			parent.typed(event);
 		}, false);
-		cfg.status.menus.leafPage.addEventListener('submit', function (event) {
+		config.status.menus.leafPage.addEventListener('submit', function (event) {
 			parent.typed(event);
 			event.preventDefault();
 		}, false);
 	};
 	this.resetter = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the reset button
-		cfg.status.menus.leafReset = document.createElement('button');
-		cfg.status.menus.leafReset.className = 'reset';
-		cfg.status.menus.leafResetIcon = document.createElement('span');
-		cfg.status.menus.leafResetIcon.innerHTML = 'Reset view';
-		cfg.status.menus.leafReset.appendChild(cfg.status.menus.leafResetIcon);
-		element.appendChild(cfg.status.menus.leafReset);
-		cfg.status.menus.leafReset.addEventListener('click', function (event) {
+		config.status.menus.leafReset = document.createElement('button');
+		config.status.menus.leafReset.className = 'reset';
+		config.status.menus.leafResetIcon = document.createElement('span');
+		config.status.menus.leafResetIcon.innerHTML = 'Reset view';
+		config.status.menus.leafReset.appendChild(config.status.menus.leafResetIcon);
+		element.appendChild(config.status.menus.leafReset);
+		config.status.menus.leafReset.addEventListener('click', function (event) {
 			parent.reset(event);
 		}, false);
 	};
 	this.increaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the next button
-		cfg.status.menus.leafIn = document.createElement('button');
-		cfg.status.menus.leafIn.className = 'increase';
-		cfg.status.menus.leafInIcon = document.createElement('span');
-		cfg.status.menus.leafInIcon.innerHTML = 'Leaf forward';
-		cfg.status.menus.leafIn.appendChild(cfg.status.menus.leafInIcon);
-		element.appendChild(cfg.status.menus.leafIn);
-		cfg.status.menus.leafIn.addEventListener('click', function (event) {
+		config.status.menus.leafIn = document.createElement('button');
+		config.status.menus.leafIn.className = 'increase';
+		config.status.menus.leafInIcon = document.createElement('span');
+		config.status.menus.leafInIcon.innerHTML = 'Leaf forward';
+		config.status.menus.leafIn.appendChild(config.status.menus.leafInIcon);
+		element.appendChild(config.status.menus.leafIn);
+		config.status.menus.leafIn.addEventListener('click', function (event) {
 			parent.increase(event);
 		}, false);
 	};
 	this.decreaser = function (element) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// create the previous button
-		cfg.status.menus.leafOut = document.createElement('button');
-		cfg.status.menus.leafOut.className = 'decrease';
-		cfg.status.menus.leafOutIcon = document.createElement('span');
-		cfg.status.menus.leafOutIcon.innerHTML = 'Leaf back';
-		cfg.status.menus.leafOut.appendChild(cfg.status.menus.leafOutIcon);
-		element.appendChild(cfg.status.menus.leafOut);
-		cfg.status.menus.leafOut.addEventListener('click', function (event) {
+		config.status.menus.leafOut = document.createElement('button');
+		config.status.menus.leafOut.className = 'decrease';
+		config.status.menus.leafOutIcon = document.createElement('span');
+		config.status.menus.leafOutIcon.innerHTML = 'Leaf back';
+		config.status.menus.leafOut.appendChild(config.status.menus.leafOutIcon);
+		element.appendChild(config.status.menus.leafOut);
+		config.status.menus.leafOut.addEventListener('click', function (event) {
 			parent.decrease(event);
 		}, false);
 	};

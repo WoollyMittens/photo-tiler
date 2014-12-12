@@ -14,14 +14,15 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Spin_Mouse = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	this.x = null;
 	this.sensitivity = null;
 	this.fudge = 0.7;
 	// mouse wheel controls
 	this.wheel = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the reading from the mouse wheel
 		var distance = (window.event) ? window.event.wheelDelta / 120 : -event.detail / 3;
 		// do not loop around
@@ -35,18 +36,18 @@ useful.Viewer.prototype.Spin_Mouse = function (parent) {
 	};
 	// mouse gesture controls
 	this.start = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// store the touch positions
 		this.x = event.pageX || event.x;
 		// calculate the sensitivity
-		this.sensitivity = (cfg.status.menus.spinCover.offsetWidth - cfg.status.menus.spinIn.offsetWidth - cfg.status.menus.spinOut.offsetWidth) / cfg.status.figures.length * this.fudge;
+		this.sensitivity = (config.status.menus.spinCover.offsetWidth - config.status.menus.spinIn.offsetWidth - config.status.menus.spinOut.offsetWidth) / config.status.figures.length * this.fudge;
 		// cancel the click
 		event.preventDefault();
 	};
 	this.move = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// if there is a touch in progress
@@ -57,26 +58,26 @@ useful.Viewer.prototype.Spin_Mouse = function (parent) {
 			// if the draw was to the left
 			if (distance < -this.sensitivity) {
 				// increase the spin index
-				cfg.status.index += 1;
+				config.status.index += 1;
 				// reset the distance
 				this.x = x;
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			// else if the drag was to the right
 			} else if (distance > this.sensitivity) {
 				// decrease the spin index
-				cfg.status.index -= 1;
+				config.status.index -= 1;
 				// reset the distance
 				this.x = x;
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			}
 		}
 		// cancel the click
 		event.preventDefault();
 	};
 	this.end = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// clear the positions

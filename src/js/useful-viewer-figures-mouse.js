@@ -14,8 +14,9 @@ useful.Viewer = useful.Viewer || function () {};
 useful.Viewer.prototype.Figures_Mouse = function (parent) {
 	// properties
 	"use strict";
-	this.root = parent.parent;
 	this.parent = parent;
+	this.config = parent.config;
+	this.context = parent.context;
 	this.x = null;
 	this.y = null;
 	this.sensitivity = null;
@@ -24,45 +25,45 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 	this.delay = null;
 	// mouse wheel controls
 	this.wheel = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the reading from the mouse wheel
 		var distance = (window.event) ? window.event.wheelDelta / 120 : -event.detail / 3;
 		// do not loop around
 		if (distance < 0) {
 			// increase the zoom factor
-			cfg.status.zoom = cfg.status.zoom * cfg.magnification;
+			config.status.zoom = config.status.zoom * config.magnification;
 		} else if (distance > 0) {
 			// decrease the zoom factor
-			cfg.status.zoom = cfg.status.zoom / cfg.magnification;
+			config.status.zoom = config.status.zoom / config.magnification;
 		}
 		// temporarily disable streaming for a while to avoid flooding
-		cfg.status.stream = false;
+		config.status.stream = false;
 		clearTimeout(this.delay);
 		this.delay = setTimeout(function () {
-			cfg.status.stream = true;
-			root.update();
+			config.status.stream = true;
+			parent.parent.update();
 		}, 500);
 		// call for a redraw
-		root.update();
+		parent.parent.update();
 		// cancel the scrolling
 		event.preventDefault();
 	};
 	// mouse gesture controls
 	this.start = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// store the touch positions
 		this.x = event.pageX || event.x;
 		this.y = event.pageY || event.y;
 		// calculate the sensitivity
-		this.treshold = cfg.status.cover.offsetWidth / 10;
-		this.flick = cfg.status.cover.offsetWidth * 0.6;
+		this.treshold = config.status.cover.offsetWidth / 10;
+		this.flick = config.status.cover.offsetWidth * 0.6;
 		// cancel the click
 		event.preventDefault();
 	};
 	this.move = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// if there is a touch in progress
@@ -73,51 +74,51 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 			var xDelta = this.x - x;
 			var yDelta = this.y - y;
 			// if the image was zoomed in
-			if (cfg.status.zoom > 1) {
+			if (config.status.zoom > 1) {
 				// calculate the drag distance into %
-				cfg.status.pan.x -= xDelta * cfg.status.zoom / cfg.status.figures[cfg.status.index].offsetWidth;
-				cfg.status.pan.y -= yDelta * cfg.status.zoom / cfg.status.figures[cfg.status.index].offsetHeight;
+				config.status.pan.x -= xDelta * config.status.zoom / config.status.figures[config.status.index].offsetWidth;
+				config.status.pan.y -= yDelta * config.status.zoom / config.status.figures[config.status.index].offsetHeight;
 				// reset the distance
 				this.x = x;
 				this.y = y;
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			// else there was a spin gesture
 			} else if (
-				(Math.abs(xDelta) > this.treshold && cfg.spin === 'rotation') ||
+				(Math.abs(xDelta) > this.treshold && config.spin === 'rotation') ||
 				Math.abs(xDelta) > this.flick
 			) {
 				// increase the spin
-				cfg.status.index += (xDelta > 0) ? 1 : -1;
+				config.status.index += (xDelta > 0) ? 1 : -1;
 				// if in spin mode
-				if (cfg.spin === 'rotation') {
+				if (config.spin === 'rotation') {
 					// loop the value if needed
-					if (cfg.status.index >= cfg.status.figures.length) {
-						cfg.status.index = 1;
+					if (config.status.index >= config.status.figures.length) {
+						config.status.index = 1;
 					}
 					// loop the value if needed
-					if (cfg.status.index <= 0) {
-						cfg.status.index = cfg.status.figures.length - 1;
+					if (config.status.index <= 0) {
+						config.status.index = config.status.figures.length - 1;
 					}
 				}
 				// reset the distance
 				this.x = x;
 				this.y = y;
 				// order a redraw
-				root.update();
+				parent.parent.update();
 			}
 		}
 		// cancel the click
 		event.preventDefault();
 	};
 	this.end = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
 		event = event || window.event;
 		// if there was a motion
 		if (this.x !== null) {
 			// order a redraw
-			root.update();
+			parent.parent.update();
 		}
 		// clear the positions
 		this.x = null;
@@ -126,14 +127,14 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 		event.preventDefault();
 	};
 	this.mirror = function (event) {
-		var root = this.root, parent = this.parent, cfg = root.cfg;
+		var context = this.context, parent = this.parent, config = this.config;
 		// retrieve the mouse position
-		var pos = useful.positions.cursor(event, cfg.status.cover);
+		var pos = useful.positions.cursor(event, config.status.cover);
 		// measure the exact location of the interaction
-		cfg.status.pos.x = pos.x;
-		cfg.status.pos.y = pos.y;
+		config.status.pos.x = pos.x;
+		config.status.pos.y = pos.y;
 		// order a redraw
-		root.update();
+		parent.parent.update();
 		// cancel the scrolling
 		event.preventDefault();
 	};
