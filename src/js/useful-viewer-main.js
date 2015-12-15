@@ -11,32 +11,52 @@ var useful = useful || {};
 useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
-useful.Viewer.prototype.Main = function (config, context) {
-	// properties
+useful.Viewer.prototype.Main = function () {
+
+	// PROPERTIES
+
 	"use strict";
-	this.parent = this;
-	this.config = config;
-	this.context = context;
-	// methods
-	this.init = function () {
+	this.context = null;
+	this.config = null;
+
+	// METHODS
+
+	this.init = function (context) {
 		var _this = this;
+		// store the context
+		this.context = context;
+		this.config = context.config;
+		// automatic idle slideshow
+		this.automatic = new this.context.Automatic(this);
+		// manages the main view
+		this.figures = new this.context.Figures(this);
+		// zoom slider
+		this.zoom = new this.context.Zoom(this);
+		// spin slider
+		this.spin = new this.context.Spin(this);
+		// manages the thumbnails
+		this.thumbnails = new this.context.Thumbnails(this);
+		// manages leafing through pages
+		this.leaf = new this.context.Leaf(this);
+		// minimal superset of controls
+		this.toolbar = new this.context.Toolbar(this);
 		// wait until the page has loaded
-		window.addEventListener('load', function () {
-			// gather the input
-			_this.gatherInput();
-			// validate the input
-			_this.validateInput();
-			// set the start parameters
-			_this.startingStatus();
-			// apply the custom styles
-			_this.styling();
-			// run the viewer
-			_this.run();
-			// destroy the init function
-			_this.init = function () {};
-		});
+		window.addEventListener('load', this.onPageLoaded.bind(this));
 		// return the object
 		return this;
+	};
+	// start the script
+	this.onPageLoaded = function () {
+		// gather the input
+		this.gatherInput();
+		// validate the input
+		this.validateInput();
+		// set the start parameters
+		this.startingStatus();
+		// apply the custom styles
+		this.styling();
+		// run the viewer
+		this.run();
 	};
 	// set the start parameters
 	this.startingStatus = function () {
@@ -144,18 +164,18 @@ useful.Viewer.prototype.Main = function (config, context) {
 	// build the app html
 	this.setup = function () {
 		// shortcut pointers
-		var sip = this.config.element;
+		var element = this.config.element;
 		// clear the parent node
-		sip.innerHTML = '';
+		element.innerHTML = '';
 		// apply optional dimensions
 		if (this.config.width) {
-			sip.style.width = this.config.width + this.config.widthUnit;
+			element.style.width = this.config.width + this.config.widthUnit;
 		}
 		if (this.config.height) {
-			sip.style.height = this.config.height + this.config.heightUnit;
+			element.style.height = this.config.height + this.config.heightUnit;
 		}
 		// apply any context.config classes
-		sip.className += ' spin_' + this.config.spin;
+		element.className += ' spin_' + this.config.spin;
 		// setup the sub components
 		this.automatic.setup();
 		this.figures.setup();
@@ -224,29 +244,17 @@ useful.Viewer.prototype.Main = function (config, context) {
 			}
 		}
 	};
-	// automatic idle slideshow
-	this.automatic = new this.context.Automatic(this);
-	// manages the main view
-	this.figures = new this.context.Figures(this);
-	// zoom slider
-	this.zoom = new this.context.Zoom(this);
-	// spin slider
-	this.spin = new this.context.Spin(this);
-	// manages the thumbnails
-	this.thumbnails = new this.context.Thumbnails(this);
-	// manages leafing through pages
-	this.leaf = new this.context.Leaf(this);
-	// minimal superset of controls
-	this.toolbar = new this.context.Toolbar(this);
 	// external API
 	this.focus = function (index) {
 		this.config.status.index = index;
 		this.update(this);
 	};
+
 	this.previous = function () {
 		this.config.status.index -= 1;
 		this.update(this);
 	};
+
 	this.next = function () {
 		this.config.status.index += 1;
 		this.update(this);

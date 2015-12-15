@@ -3,10 +3,10 @@
 */
 div.viewer {
 	menu.slider {
-		@include transition-property(all);
-		@include transition-duration(0.3s);
-		@include transition-timing-function(ease);
-		@include opacity(0);
+		transition-property: all;
+		transition-duration: 0.3s;
+		transition-timing-function: ease;
+		opacity: 0;
 		background-color : $color-passive;
 		display : block;
 		margin : 0;

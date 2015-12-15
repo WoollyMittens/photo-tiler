@@ -12,12 +12,16 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Toolbar = function (parent) {
-	// properties
+
+	// PROPERTIES
+
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
-	// methods
+
+	// METHODS
+	
 	this.setup = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
@@ -75,6 +79,7 @@ useful.Viewer.prototype.Toolbar = function (parent) {
 		// add the menu to the interface
 		config.element.appendChild(config.status.menus.toolbarNav);
 	};
+
 	this.update = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// hide/show the zoom out button

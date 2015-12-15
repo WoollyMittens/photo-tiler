@@ -9,7 +9,7 @@ div.viewer {
 	visibility : hidden;
 	width : 100%;
 	* {
-		@include box-sizing(border-box);
+		box-sizing: border-box;
 		-ms-interpolation-mode: bicubic;
 	}
 	div.wrapper {
@@ -40,16 +40,16 @@ div.viewer {
 				top : 0;
 				z-index : 5;
 				img {
-					@include transition-property(all);
-					@include transition-duration(0.3s);
-					@include transition-timing-function(ease);
+					transition-property: all;
+					transition-duration: 0.3s;
+					transition-timing-function: ease;
 					vertical-align : top;
 				}
 				img.tile_hidden {
-					@include opacity(0);
+					opacity: 0;
 				}
 				img.tile_visible {
-					@include opacity(1);
+					opacity: 1;
 				}
 			}
 			.figure_passive {
@@ -59,29 +59,29 @@ div.viewer {
 				visibility : visible;
 			}
 			.figure_fadeout {
-				@include opacity(0);
-				@include transition-property(opacity);
-				@include transition-duration(0.3s);
-				@include transition-timing-function(ease);
+				opacity: 0;
+				transition-property: opacity;
+				transition-duration: 0.3s;
+				transition-timing-function: ease;
 				z-index : 4;
 			}
 			.figure_fadein {
-				@include opacity(1);
-				@include transition-property(opacity);
-				@include transition-duration(0.3s);
-				@include transition-timing-function(ease);
+				opacity: 1;
+				transition-property: opacity;
+				transition-duration: 0.3s;
+				transition-timing-function: ease;
 				z-index : 5;
 			}
 			.figure_leafout {
-				@include transition-property(clip, opacity, transform);
-				@include transition-duration(0.6s, 0.6s, 0.6s);
-				@include transition-timing-function(ease, ease, ease);
+				transition-property: clip, opacity, transform;
+				transition-duration: 0.6s, 0.6s, 0.6s;
+				transition-timing-function: ease, ease, ease;
 				z-index : 4;
 			}
 			.figure_leafin {
-				@include transition-property(clip, opacity, transform);
-				@include transition-duration(0.6s, 0.6s, 0.6s);
-				@include transition-timing-function(ease, ease, ease);
+				transition-property: clip, opacity, transform;
+				transition-duration: 0.6s, 0.6s, 0.6s;
+				transition-timing-function: ease, ease, ease;
 				z-index : 5;
 			}
 		}
@@ -95,21 +95,21 @@ div.viewer {
 			border : 5px solid rgba(0, 0, 0, 0.25);
 		}
 		div.canvas.canvas_hidden {
-			@include opacity(0);
-			@include transition-property(opacity);
-			@include transition-duration(0.3s);
-			@include transition-timing-function(ease);
+			opacity: 0;
+			transition-property: opacity;
+			transition-duration: 0.3s;
+			transition-timing-function: ease;
 		}
 		&:hover div.canvas.canvas_hidden,
 		div.canvas.canvas_visible {
-			@include opacity(1);
-			@include transition-property(opacity);
-			@include transition-duration(0.3s);
-			@include transition-timing-function(ease);
+			opacity: 1;
+			transition-property: opacity;
+			transition-duration: 0.3s;
+			transition-timing-function: ease;
 		}
 	}
 	div.cover {
-		@include opacity(0.01);
+		opacity: 0.01;
 		background : #000;
 		display : block;
 		height : 100%;
@@ -125,24 +125,24 @@ div.viewer {
 */
 div.viewer:hover {
 	div.canvas.canvas_hidden {
-		@include opacity(1);
-		@include transition-property(opacity);
-		@include transition-duration(0.3s);
-		@include transition-timing-function(ease);
+		opacity: 1;
+		transition-property: opacity;
+		transition-duration: 0.3s;
+		transition-timing-function: ease;
 	}
 	nav.toolbar {
-		@include opacity(1);
+		opacity: 1;
 		visibility : visible;
 	}
 	menu.slider {
-		@include opacity(1);
+		opacity: 1;
 		filter : none;
 		visibility : visible;
 	}
 	nav.buttons {
 		menu {
 			button {
-				@include opacity(1);
+				opacity: 1;
 			}
 		}
 	}

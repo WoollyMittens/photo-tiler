@@ -3,9 +3,9 @@
 */
 div.viewer {
 	nav.toolbar {
-		@include transition-property(all);
-		@include transition-duration(0.3s);
-		@include transition-timing-function(ease);
+		transition-property: all;
+		transition-duration: 0.3s;
+		transition-timing-function: ease;
 		background-color : $color-passive;
 		border : solid 1px #fff;
 		bottom : 0%;

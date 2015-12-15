@@ -10,33 +10,49 @@ This work is licensed under a Creative Commons Attribution 3.0 Unported License.
 var useful = useful || {};
 useful.Viewer = useful.Viewer || function () {};
 
-// extend the constructor
+// extend the prototype with the init function
 useful.Viewer.prototype.init = function (config) {
-	// properties
+	// turn on strict mode
 	"use strict";
-	// methods
-	this.only = function (config) {
-		// start an instance of the script
-		return new this.Main(config, this).init();
+	// default config
+	this.config = {
+		'urlprefix' : '',
+		'imageslice' : 'php/imageslice.php?src=../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
+		'transforms' : true,
+		'width' : '100',
+		'widthUnit' : '%',
+		'height' : '512',
+		'heightUnit' : 'px',
+		'divide' : '80%',
+		'margin' : '0%',
+		'colorPassive' : '#ff6a00',
+		'colorActive' : '#d45800',
+		'colorHover' : '#ff9800',
+		'colorDisabled' : '#7f7f7f',
+		'lens' : '0.5',
+		'toolbars' : 'buttons', 	// buttons | toolbar | sliders | none
+		'zoom' : 'static', 			// static | lens
+		'spin' : 'slideshow', 		// rotation | slideshow | catalogue
+		'pan' : 'drag', 			// drag | hover
+		'magnification' : '1.1',
+		'max' : '4',
+		'grid' : '256px',
+		'cache' : '32',
+		'left' : 0,
+		'top' : 0,
+		'right' : 1,
+		'bottom' : 1
 	};
-	this.each = function (config) {
-		var _config, _context = this, instances = [];
-		// for all element
-		for (var a = 0, b = config.elements.length; a < b; a += 1) {
-			// clone the configuration
-			_config = Object.create(config);
-			// insert the current element
-			_config.element = config.elements[a];
-			// delete the list of elements from the clone
-			delete _config.elements;
-			// start a new instance of the object
-			instances[a] = new this.Main(_config, _context).init();
-		}
-		// return the instances
-		return instances;
-	};
-	// return a single or multiple instances of the script
-	return (config.elements) ? this.each(config) : this.only(config);
+	// store the config
+	for (var name in config) { this.config[name] = config[name]; }
+	// bind the components
+	this.main = new this.Main().init(this);
+	// expose the public functions
+	this.focus = this.main.focus.bind(this.main);
+	this.previous = this.main.previous.bind(this.main);
+	this.next = this.main.next.bind(this.main);
+	// return the object
+	return this;
 };
 
 // return as a require.js module

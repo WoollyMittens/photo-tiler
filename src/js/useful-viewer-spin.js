@@ -12,12 +12,16 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Spin = function (parent) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
-	// methods
+
+	// METHODS
+	
 	this.setup = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
@@ -36,6 +40,7 @@ useful.Viewer.prototype.Spin = function (parent) {
 		// add the menu to the interface
 		config.element.appendChild(config.status.menus.spinMenu);
 	};
+	
 	this.update = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// reposition the slider
@@ -44,6 +49,7 @@ useful.Viewer.prototype.Spin = function (parent) {
 		config.status.menus.spinIndicator.setAttribute('value', config.status.index);
 		config.status.menus.spinSliderIcon.innerHTML = config.status.index;
 	};
+	
 	this.increase = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
@@ -55,6 +61,7 @@ useful.Viewer.prototype.Spin = function (parent) {
 		// order a redraw
 		parent.update();
 	};
+	
 	this.decrease = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// increase the spin index

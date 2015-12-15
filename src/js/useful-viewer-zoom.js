@@ -12,12 +12,16 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Zoom = function (parent) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
-	// methods
+
+	// METHODS
+	
 	this.setup = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
@@ -36,6 +40,7 @@ useful.Viewer.prototype.Zoom = function (parent) {
 		// add the menu to the interface
 		config.element.appendChild(config.status.menus.zoomMenu);
 	};
+	
 	this.update = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// gather the constants
@@ -48,6 +53,7 @@ useful.Viewer.prototype.Zoom = function (parent) {
 		// reposition the slider
 		config.status.menus.zoomSlider.style.top = (100 - (curZoom - minZoom) / (maxZoom - minZoom) * 100) + '%';
 	};
+	
 	this.increase = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// increase the zoom factor
@@ -55,6 +61,7 @@ useful.Viewer.prototype.Zoom = function (parent) {
 		// order a redraw
 		parent.update();
 	};
+	
 	this.decrease = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the zoom factor

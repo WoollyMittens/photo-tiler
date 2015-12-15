@@ -5,9 +5,9 @@ div.viewer {
 	nav.buttons {
 		menu {
 			button {
-				@include transition-property(all);
-				@include transition-duration(0.3s);
-				@include transition-timing-function(ease);
+				transition-property: all;
+				transition-duration: 0.3s;
+				transition-timing-function: ease;
 				@include iconParent(48);
 				background-color : $color-passive;
 				border : none;

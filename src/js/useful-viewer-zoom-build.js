@@ -12,12 +12,16 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Zoom_Build = function (parent) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
-	// methods
+
+	// METHODS
+	
 	this.slider = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the slider to the menu
@@ -33,6 +37,7 @@ useful.Viewer.prototype.Zoom_Build = function (parent) {
 		config.status.menus.zoomIndicator.appendChild(config.status.menus.zoomSlider);
 		element.appendChild(config.status.menus.zoomIndicator);
 	};
+	
 	this.cover = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add a touch cover to the menu
@@ -70,6 +75,7 @@ useful.Viewer.prototype.Zoom_Build = function (parent) {
 			parent.touch.end(event);
 		}, false);
 	};
+	
 	this.increaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the increase button
@@ -103,6 +109,7 @@ useful.Viewer.prototype.Zoom_Build = function (parent) {
 			event.preventDefault();
 		}, false);
 	};
+	
 	this.decreaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the decrease button

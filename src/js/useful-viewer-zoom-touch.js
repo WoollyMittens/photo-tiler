@@ -12,7 +12,9 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Zoom_Touch = function (parent) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
@@ -21,7 +23,9 @@ useful.Viewer.prototype.Zoom_Touch = function (parent) {
 	this.distance = null;
 	this.sensitivity = null;
 	this.fudge = 1.1;
-	// methods
+
+	// METHODS
+	
 	this.start = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// store the touch positions
@@ -33,6 +37,7 @@ useful.Viewer.prototype.Zoom_Touch = function (parent) {
 		this.distance = config.status.menus.zoomCover.offsetHeight - config.status.menus.zoomIn.offsetHeight - config.status.menus.zoomOut.offsetHeight;
 		this.sensitivity = config.heights[config.status.index] / config.status.canvas.offsetHeight - 1;
 	};
+	
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -59,6 +64,7 @@ useful.Viewer.prototype.Zoom_Touch = function (parent) {
 		target.blur();
 		event.preventDefault();
 	};
+	
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// clear the positions

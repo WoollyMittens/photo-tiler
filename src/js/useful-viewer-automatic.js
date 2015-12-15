@@ -17,7 +17,9 @@ useful.Viewer.prototype.Automatic = function (parent) {
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
-	// methods
+
+	// METHODS
+	
 	this.setup = function () {};
 };
 

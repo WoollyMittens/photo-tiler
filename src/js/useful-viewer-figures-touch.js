@@ -12,7 +12,9 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Figures_Touch = function (parent) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
@@ -23,7 +25,9 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 	this.treshold = null;
 	this.flick = null;
 	this.delay = null;
-	// methods
+
+	// METHODS
+	
 	this.start = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// store the touch positions
@@ -38,6 +42,7 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 		this.treshold = config.status.cover.offsetWidth / 10;
 		this.flick = config.status.cover.offsetWidth * 0.6;
 	};
+	
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -119,6 +124,7 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 		target.blur();
 		event.preventDefault();
 	};
+	
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// clear the positions
@@ -127,6 +133,7 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 		// order a redraw
 		parent.parent.update();
 	};
+	
 	this.mirror = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// retrieve the touch position

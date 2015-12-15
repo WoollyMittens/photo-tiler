@@ -12,12 +12,16 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Figures_Redraw = function (parent) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
-	// methods
+
+	// METHODS
+	
 	this.validate = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// reset the stored limits
@@ -40,6 +44,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			config.status.atMaxLeaf = true;
 		}
 	};
+	
 	this.calculate = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// calculate dimensions for a given zoom level
@@ -71,6 +76,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			this.backgroundTop = 0;
 		}
 	};
+	
 	this.normalise = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// normalise the figure position
@@ -107,6 +113,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			config.status.pan.x = 0.5;
 		}
 	};
+	
 	this.canvas = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// figure out the relevant movement
@@ -155,6 +162,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			config.status.cover.style.cursor = 'auto';
 		}
 	};
+	
 	this.figures = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// use CSS3 transforms if allowed
@@ -180,6 +188,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			config.status.figures[config.status.index].style.height = parseInt(this.figureHeight, 10) + 'px';
 		}
 	};
+	
 	this.create = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// if streaming new tiles is allowed
@@ -269,6 +278,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			}
 		}
 	};
+	
 	this.display = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// for all tiles
@@ -301,6 +311,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			}
 		}
 	};
+	
 	this.spin = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// decide on the transition effect
@@ -374,6 +385,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			element.className = 'tile_visible';
 		}, false);
 	};
+	
 	this.onFigureUnreveal = function (a, clipWidth) {
 		var context = this.context, parent = this.parent, config = this.config;
 		setTimeout(function () {

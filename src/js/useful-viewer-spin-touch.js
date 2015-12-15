@@ -12,7 +12,9 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Spin_Touch = function (parent) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
@@ -34,6 +36,7 @@ useful.Viewer.prototype.Spin_Touch = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
+	
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -73,6 +76,7 @@ useful.Viewer.prototype.Spin_Touch = function (parent) {
 			}
 		}
 	};
+	
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties

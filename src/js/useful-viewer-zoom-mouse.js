@@ -12,7 +12,9 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Zoom_Mouse = function (parent) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
@@ -21,7 +23,9 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 	this.distance = null;
 	this.sensitivity = null;
 	this.fudge = 1.1;
-	// methods
+
+	// METHODS
+	
 	this.wheel = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the reading from the mouse wheel
@@ -39,6 +43,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 		// cancel the scrolling
 		event.preventDefault();
 	};
+	
 	this.start = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -50,6 +55,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
+	
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -70,6 +76,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
+	
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties

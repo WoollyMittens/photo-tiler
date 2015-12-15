@@ -12,7 +12,9 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Leaf = function (parent) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
@@ -44,6 +46,7 @@ useful.Viewer.prototype.Leaf = function (parent) {
 		// fill in the page total
 		config.status.menus.leafPageCount.innerHTML = 'of ' +	(config.status.figures.length - 1);
 	};
+	
 	this.increase = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
@@ -64,6 +67,7 @@ useful.Viewer.prototype.Leaf = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
+	
 	this.decrease = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
@@ -73,6 +77,7 @@ useful.Viewer.prototype.Leaf = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
+	
 	this.typed = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the typed number
@@ -85,6 +90,7 @@ useful.Viewer.prototype.Leaf = function (parent) {
 		// update the interface
 		parent.update();
 	};
+	
 	this.reset = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// reset the zoom level

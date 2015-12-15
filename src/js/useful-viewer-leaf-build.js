@@ -12,12 +12,16 @@ useful.Viewer = useful.Viewer || function () {};
 
 // extend the constructor
 useful.Viewer.prototype.Leaf_Build = function (parent) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
-	// methods
+
+	// METHODS
+	
 	this.indicator = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the page indicator
@@ -41,6 +45,7 @@ useful.Viewer.prototype.Leaf_Build = function (parent) {
 			event.preventDefault();
 		}, false);
 	};
+	
 	this.resetter = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the reset button
@@ -54,6 +59,7 @@ useful.Viewer.prototype.Leaf_Build = function (parent) {
 			parent.reset(event);
 		}, false);
 	};
+	
 	this.increaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the next button
@@ -67,6 +73,7 @@ useful.Viewer.prototype.Leaf_Build = function (parent) {
 			parent.increase(event);
 		}, false);
 	};
+	
 	this.decreaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the previous button
