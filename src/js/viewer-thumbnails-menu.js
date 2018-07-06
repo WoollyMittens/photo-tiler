@@ -1,24 +1,14 @@
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Thumbnails_Menu = function (parent) {
+// extend the class
+Viewer.prototype.Thumbnails_Menu = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
+
+	// METHODS
+
 	// build the menu options
 	this.setup = function () {
 		var context = this.context, parent = this.parent, config = this.config;
@@ -66,6 +56,9 @@ useful.Viewer.prototype.Thumbnails_Menu = function (parent) {
 		config.status.nextPage.className = config.status.nextPage.className.replace(/ disabled/gi, '');
 		config.status.nextPage.className += (config.scrollPosition <= config.scrollMax && config.scrollMax < 0) ? ' disabled' : '';
 	};
+
+	// EVENTS
+
 	// show the next page of thumbnails
 	this.next = function (event, node) {
 		var context = this.context, parent = this.parent, config = this.config;
@@ -113,8 +106,3 @@ useful.Viewer.prototype.Thumbnails_Menu = function (parent) {
 		event.preventDefault();
 	};
 };
-
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Thumbnails_Menu;
-}

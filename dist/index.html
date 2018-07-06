@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>useful-viewer.js: Tile Based Image Viewer</title>
+		<title>viewer.js: Tile Based Image Viewer</title>
 		<style>
 			html { font-family:Sans-Serif; font-size:75%; height:100%; }
 			body { _height:100%; line-height:180%; margin:0; min-height:100%; padding:1%; }
@@ -11,13 +11,6 @@
 			.example-left > article, .example-left > aside { width:48%; padding:1%; float:left; }
 			.example-right > article, .example-right > aside { width:48%; padding:1%; float:right; }
 		</style>
-		<!--[if lte IE 9]>
-			<meta http-equiv="imagetoolbar" content="no"/>
-			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
-			<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.js"></script>
-		<![endif]-->
 	</head>
 	<body>
 		<section class="example example-right">
@@ -30,7 +23,7 @@
 			<aside>
 
 				<!-- Cut below this -->
-				<style>@import url("./css/useful-viewer.css");</style>
+				<style>@import url("./css/viewer.css");</style>
 				<div id="viewera" class="viewer">
 					<ul>
 						<li><a href="./img/photo_0a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_0.jpg" width="4608" height="3456"/></a></li>
@@ -45,11 +38,11 @@
 						<li><a href="./img/photo_9a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_9.jpg" width="2560" height="1920"/></a></li>
 					</ul>
 				</div>
-				<script src="./js/useful-viewer.js"></script>
+				<script src="./js/viewer.js"></script>
 				<script>
 				//<!--
 					// create a new instance of the script
-					var viewera = new useful.Viewer().init({
+					var viewera = new Viewer({
 						'element' : document.getElementById('viewera'),
 						'width' : '100',
 						'widthUnit' : '%',
@@ -75,7 +68,7 @@
 			<aside>
 
 				<!-- Cut below this -->
-				<style>@import url("./css/useful-viewer.css");</style>
+				<style>@import url("./css/viewer.css");</style>
 				<div id="viewerc" class="viewer">
 					<ul>
 						<li><a href="./img/panorama_0a.jpg"><img alt="" src="./img/panorama_0.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
@@ -95,11 +88,11 @@
 						<li><a href="./img/panorama_14a.jpg"><img alt="" src="./img/panorama_14.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
 					</ul>
 				</div>
-				<script src="./js/useful-viewer.js"></script>
+				<script src="./js/viewer.js"></script>
 				<script>
 				//<!--
 					// create a new instance of the script
-					var viewerc = new useful.Viewer().init({
+					var viewerc = new Viewer({
 						'element' : document.getElementById('viewerc'),
 						'width' : '100',
 						'widthUnit' : '%',
@@ -125,7 +118,7 @@
 			<aside>
 
 				<!-- Cut below this -->
-				<style>@import url("./css/useful-viewer.css");</style>
+				<style>@import url("./css/viewer.css");</style>
 				<div id="viewerb" class="viewer">
 					<ul>
 						<li><a href="./img/photo_9a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_9.jpg" width="2560" height="1920"/></a></li>
@@ -140,12 +133,12 @@
 						<li><a href="./img/photo_0a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_0.jpg" width="4608" height="3456"/></a></li>
 					</ul>
 				</div>
-				<script src="./js/useful-viewer.js"></script>
+				<script src="./js/viewer.js"></script>
 				<script>
 				//<!--
 					// create a new instance of the script
 					var hasTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
-					var viewerb = new useful.Viewer().init({
+					var viewerb = new Viewer({
 						'element' : document.getElementById('viewerb'),
 						'width' : '100',
 						'widthUnit' : '%',

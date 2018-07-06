@@ -1,21 +1,8 @@
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Zoom_Mouse = function (parent) {
+// extend the class
+Viewer.prototype.Zoom_Mouse = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
@@ -25,7 +12,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 	this.fudge = 1.1;
 
 	// METHODS
-	
+
 	this.wheel = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the reading from the mouse wheel
@@ -43,7 +30,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 		// cancel the scrolling
 		event.preventDefault();
 	};
-	
+
 	this.start = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -55,7 +42,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -76,7 +63,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -91,8 +78,3 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 		event.preventDefault();
 	};
 };
-
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Zoom_Mouse;
-}

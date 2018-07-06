@@ -25,8 +25,9 @@ div.viewer {
 				width : 40px;
 				z-index : 20;
 				span {
-					background : Transparent url(../img/viewer.png) no-repeat 0 0;
 					@include iconCenter(32);
+					background : Transparent url(../img/viewer.png) no-repeat 0 0;
+					background-size: auto;
 				}
 			}
 			button:hover {

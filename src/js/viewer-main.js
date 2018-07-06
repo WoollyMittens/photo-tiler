@@ -1,28 +1,14 @@
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Main = function () {
+// extend the class
+Viewer.prototype.Main = function (context) {
 
 	// PROPERTIES
 
-	"use strict";
 	this.context = null;
 	this.config = null;
 
 	// METHODS
 
 	this.init = function (context) {
-		var _this = this;
 		// store the context
 		this.context = context;
 		this.config = context.config;
@@ -244,7 +230,7 @@ useful.Viewer.prototype.Main = function () {
 			}
 		}
 	};
-	// external API
+	// public functions
 	this.focus = function (index) {
 		this.config.status.index = index;
 		this.update(this);
@@ -259,9 +245,8 @@ useful.Viewer.prototype.Main = function () {
 		this.config.status.index += 1;
 		this.update(this);
 	};
-};
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Main;
-}
+	// EVENTS
+
+	this.init(context);
+};

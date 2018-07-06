@@ -1,19 +1,13 @@
 /*
 Source:
-van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
+van Creij, Maurice (2018). "viewer.js: A simple tile based image viewer", http://www.woollymittens.nl/.
 
 License:
 This work is licensed under a Creative Commons Attribution 3.0 Unported License.
 */
 
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the prototype with the init function
-useful.Viewer.prototype.init = function (config) {
-	// turn on strict mode
-	"use strict";
+// establish the class
+var Viewer = function (config) {
 	// default config
 	this.config = {
 		'urlprefix' : '',
@@ -44,9 +38,9 @@ useful.Viewer.prototype.init = function (config) {
 		'bottom' : 1
 	};
 	// store the config
-	for (var name in config) { this.config[name] = config[name]; }
+	for (var key in config) { this.config[key] = config[key]; }
 	// bind the components
-	this.main = new this.Main().init(this);
+	this.main = new this.Main(this);
 	// expose the public functions
 	this.focus = this.main.focus.bind(this.main);
 	this.previous = this.main.previous.bind(this.main);
@@ -57,5 +51,5 @@ useful.Viewer.prototype.init = function (config) {
 
 // return as a require.js module
 if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer;
+	exports = module.exports = Viewer;
 }

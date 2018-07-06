@@ -1,27 +1,14 @@
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Spin_Build = function (parent) {
+// extend the class
+Viewer.prototype.Spin_Build = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
 
 	// METHODS
-	
+
 	this.slider = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the slider to the menu
@@ -37,7 +24,7 @@ useful.Viewer.prototype.Spin_Build = function (parent) {
 		config.status.menus.spinIndicator.appendChild(config.status.menus.spinSlider);
 		element.appendChild(config.status.menus.spinIndicator);
 	};
-	
+
 	this.cover = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add a touch cover to the menu
@@ -75,7 +62,7 @@ useful.Viewer.prototype.Spin_Build = function (parent) {
 			parent.touch.end(event);
 		}, false);
 	};
-	
+
 	this.increaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the increase button
@@ -104,7 +91,7 @@ useful.Viewer.prototype.Spin_Build = function (parent) {
 			parent.parent.update();
 		}, false);
 	};
-	
+
 	this.decreaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the decrease button
@@ -134,8 +121,3 @@ useful.Viewer.prototype.Spin_Build = function (parent) {
 		}, false);
 	};
 };
-
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Spin_Build;
-}

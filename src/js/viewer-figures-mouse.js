@@ -1,21 +1,8 @@
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Figures_Mouse = function (parent) {
+// extend the class
+Viewer.prototype.Figures_Mouse = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
@@ -64,7 +51,7 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -114,7 +101,7 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -130,7 +117,7 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.mirror = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// retrieve the mouse position
@@ -144,8 +131,3 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 		event.preventDefault();
 	};
 };
-
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Figures_Mouse;
-}

@@ -1,4 +1,4 @@
-# useful.viewer.js: Tile Based Image Viewer
+# viewer.js: Tile Based Image Viewer
 
 This tile-based image viewer loads only the parts of the image that are visible. Not unlike how Google Maps loads map tiles. This demo comes with a web service to divide large images into tiles using PHP, but the concept is easily replicated in other languages.
 
@@ -18,18 +18,10 @@ This include can be added to the header or placed inline before the script is in
 <script src="./js/useful-viewer.js"></script>
 ```
 
-To enable the use of HTML5 tags in Internet Explorer 8 and lower, include *html5.js*.
-
-```html
-<!--[if lte IE 9]>
-	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-```
-
 ## How to start the script
 
 ```javascript
-var viewer = new useful.Viewer().init({
+var viewer = new Viewer({
 	'element' : document.getElementById('viewer'),
 	'urlprefix' : '',
 	'imageslice' : 'php/imageslice.php?src=../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',

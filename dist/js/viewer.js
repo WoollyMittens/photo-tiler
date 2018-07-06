@@ -1,428 +1,118 @@
 /*
-	Source:
-	van Creij, Maurice (2014). "useful.polyfills.js: A library of useful polyfills to ease working with HTML5 in legacy environments.", version 20141127, http://www.woollymittens.nl/.
+Source:
+van Creij, Maurice (2014). "useful.positions.js: A library of useful functions to ease working with screen positions.", version 20141127, http://www.woollymittens.nl/.
 
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+License:
+This work is licensed under a Creative Commons Attribution 3.0 Unported License.
 */
 
 // public object
 var useful = useful || {};
 
-(function() {
+(function(){
 
-  // Invoke strict mode
-  "use strict";
+	// Invoke strict mode
+	"use strict";
 
-  // Create a private object for this library
-  useful.polyfills = {
+	// Create a private object for this library
+	useful.positions = {
 
-    // enabled the use of HTML5 elements in Internet Explorer
-    html5: function() {
-      var a, b, elementsList = ['section', 'nav', 'article', 'aside', 'hgroup', 'header', 'footer', 'dialog', 'mark', 'dfn', 'time', 'progress', 'meter', 'ruby', 'rt', 'rp', 'ins', 'del', 'figure', 'figcaption', 'video', 'audio', 'source', 'canvas', 'datalist', 'keygen', 'output', 'details', 'datagrid', 'command', 'bb', 'menu', 'legend'];
-      if (navigator.userAgent.match(/msie/gi)) {
-        for (a = 0, b = elementsList.length; a < b; a += 1) {
-          document.createElement(elementsList[a]);
-        }
-      }
-    },
+		// find the dimensions of the window
+		window : function (parent) {
+			// define a position object
+			var dimensions = {x : 0, y : 0};
+			// if an alternative was given to use as a window
+			if (parent && parent !== window && parent !== document) {
+				// find the current dimensions of surrogate window
+				dimensions.x = parent.offsetWidth;
+				dimensions.y = parent.offsetHeight;
+			} else {
+				// find the current dimensions of the window
+				dimensions.x = window.innerWidth || document.body.clientWidth;
+				dimensions.y = window.innerHeight || document.body.clientHeight;
+			}
+			// return the object
+			return dimensions;
+		},
 
-    // allow array.indexOf in older browsers
-    arrayIndexOf: function() {
-      if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function(obj, start) {
-          for (var i = (start || 0), j = this.length; i < j; i += 1) {
-            if (this[i] === obj) {
-              return i;
-            }
-          }
-          return -1;
-        };
-      }
-    },
+		// find the scroll position of an element
+		document : function (parent) {
+			// define a position object
+			var position = {x : 0, y : 0};
+			// find the current position in the document
+			if (parent && parent !== window && parent !== document) {
+				position.x = parent.scrollLeft;
+				position.y = parent.scrollTop;
+			} else {
+				position.x = (window.pageXOffset) ?
+				window.pageXOffset :
+				(document.documentElement) ?
+				document.documentElement.scrollLeft :
+				document.body.scrollLeft;
+				position.y = (window.pageYOffset) ?
+				window.pageYOffset :
+				(document.documentElement) ?
+				document.documentElement.scrollTop :
+				document.body.scrollTop;
+			}
+			// return the object
+			return position;
+		},
 
-    // allow array.isArray in older browsers
-    arrayIsArray: function() {
-      if (!Array.isArray) {
-        Array.isArray = function(arg) {
-          return Object.prototype.toString.call(arg) === '[object Array]';
-        };
-      }
-    },
+		// finds the position of the element, relative to the document
+		object : function (node) {
+			// define a position object
+			var position = {x : 0, y : 0};
+			// if offsetparent exists
+			if (node.offsetParent) {
+				// add every parent's offset
+				while (node.offsetParent) {
+					position.x += node.offsetLeft;
+					position.y += node.offsetTop;
+					node = node.offsetParent;
+				}
+			}
+			// return the object
+			return position;
+		},
 
-    // allow array.map in older browsers (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
-    arrayMap: function() {
+		// find the position of the mouse cursor relative to an element
+		cursor : function (event, parent) {
+			// get the event properties
+			event = event || window.event;
+			// define a position object
+			var position = {x : 0, y : 0};
+			// find the current position on the document
+			if (event.touches && event.touches[0]) {
+				position.x = event.touches[0].pageX;
+				position.y = event.touches[0].pageY;
+			} else if (event.pageX !== undefined) {
+				position.x = event.pageX;
+				position.y = event.pageY;
+			} else {
+				position.x = event.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft);
+				position.y = event.clientY + (document.documentElement.scrollTop || document.body.scrollTop);
+			}
+			// if a parent was given
+			if (parent) {
+				// retrieve the position of the parent
+				var offsets = this.object(parent);
+				// adjust the coordinates to fit the parent
+				position.x -= offsets.x;
+				position.y -= offsets.y;
+			}
+			// return the object
+			return position;
+		}
 
-      // Production steps of ECMA-262, Edition 5, 15.4.4.19
-      // Reference: http://es5.github.io/#x15.4.4.19
-      if (!Array.prototype.map) {
+	};
 
-        Array.prototype.map = function(callback, thisArg) {
-
-          var T, A, k;
-
-          if (this == null) {
-            throw new TypeError(' this is null or not defined');
-          }
-
-          // 1. Let O be the result of calling ToObject passing the |this|
-          //    value as the argument.
-          var O = Object(this);
-
-          // 2. Let lenValue be the result of calling the Get internal
-          //    method of O with the argument "length".
-          // 3. Let len be ToUint32(lenValue).
-          var len = O.length >>> 0;
-
-          // 4. If IsCallable(callback) is false, throw a TypeError exception.
-          // See: http://es5.github.com/#x9.11
-          if (typeof callback !== 'function') {
-            throw new TypeError(callback + ' is not a function');
-          }
-
-          // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
-          if (arguments.length > 1) {
-            T = thisArg;
-          }
-
-          // 6. Let A be a new array created as if by the expression new Array(len)
-          //    where Array is the standard built-in constructor with that name and
-          //    len is the value of len.
-          A = new Array(len);
-
-          // 7. Let k be 0
-          k = 0;
-
-          // 8. Repeat, while k < len
-          while (k < len) {
-
-            var kValue, mappedValue;
-
-            // a. Let Pk be ToString(k).
-            //   This is implicit for LHS operands of the in operator
-            // b. Let kPresent be the result of calling the HasProperty internal
-            //    method of O with argument Pk.
-            //   This step can be combined with c
-            // c. If kPresent is true, then
-            if (k in O) {
-
-              // i. Let kValue be the result of calling the Get internal
-              //    method of O with argument Pk.
-              kValue = O[k];
-
-              // ii. Let mappedValue be the result of calling the Call internal
-              //     method of callback with T as the this value and argument
-              //     list containing kValue, k, and O.
-              mappedValue = callback.call(T, kValue, k, O);
-
-              // iii. Call the DefineOwnProperty internal method of A with arguments
-              // Pk, Property Descriptor
-              // { Value: mappedValue,
-              //   Writable: true,
-              //   Enumerable: true,
-              //   Configurable: true },
-              // and false.
-
-              // In browsers that support Object.defineProperty, use the following:
-              // Object.defineProperty(A, k, {
-              //   value: mappedValue,
-              //   writable: true,
-              //   enumerable: true,
-              //   configurable: true
-              // });
-
-              // For best browser support, use the following:
-              A[k] = mappedValue;
-            }
-            // d. Increase k by 1.
-            k++;
-          }
-
-          // 9. return A
-          return A;
-        };
-      }
-
-    },
-
-    // allow document.querySelectorAll (https://gist.github.com/connrs/2724353)
-    querySelectorAll: function() {
-      if (!document.querySelectorAll) {
-        document.querySelectorAll = function(a) {
-          var b = document,
-            c = b.documentElement.firstChild,
-            d = b.createElement("STYLE");
-          return c.appendChild(d), b.__qsaels = [], d.styleSheet.cssText = a + "{x:expression(document.__qsaels.push(this))}", window.scrollBy(0, 0), b.__qsaels;
-        };
-      }
-    },
-
-    // allow addEventListener (https://gist.github.com/jonathantneal/3748027)
-    addEventListener: function() {
-      !window.addEventListener && (function(WindowPrototype, DocumentPrototype, ElementPrototype, addEventListener, removeEventListener, dispatchEvent, registry) {
-        WindowPrototype[addEventListener] = DocumentPrototype[addEventListener] = ElementPrototype[addEventListener] = function(type, listener) {
-          var target = this;
-          registry.unshift([target, type, listener, function(event) {
-            event.currentTarget = target;
-            event.preventDefault = function() {
-              event.returnValue = false;
-            };
-            event.stopPropagation = function() {
-              event.cancelBubble = true;
-            };
-            event.target = event.srcElement || target;
-            listener.call(target, event);
-          }]);
-          this.attachEvent("on" + type, registry[0][3]);
-        };
-        WindowPrototype[removeEventListener] = DocumentPrototype[removeEventListener] = ElementPrototype[removeEventListener] = function(type, listener) {
-          for (var index = 0, register; register = registry[index]; ++index) {
-            if (register[0] == this && register[1] == type && register[2] == listener) {
-              return this.detachEvent("on" + type, registry.splice(index, 1)[0][3]);
-            }
-          }
-        };
-        WindowPrototype[dispatchEvent] = DocumentPrototype[dispatchEvent] = ElementPrototype[dispatchEvent] = function(eventObject) {
-          return this.fireEvent("on" + eventObject.type, eventObject);
-        };
-      })(Window.prototype, HTMLDocument.prototype, Element.prototype, "addEventListener", "removeEventListener", "dispatchEvent", []);
-    },
-
-    // allow console.log
-    consoleLog: function() {
-      var overrideTest = new RegExp('console-log', 'i');
-      if (!window.console || overrideTest.test(document.querySelectorAll('html')[0].className)) {
-        window.console = {};
-        window.console.log = function() {
-          // if the reporting panel doesn't exist
-          var a, b, messages = '',
-            reportPanel = document.getElementById('reportPanel');
-          if (!reportPanel) {
-            // create the panel
-            reportPanel = document.createElement('DIV');
-            reportPanel.id = 'reportPanel';
-            reportPanel.style.background = '#fff none';
-            reportPanel.style.border = 'solid 1px #000';
-            reportPanel.style.color = '#000';
-            reportPanel.style.fontSize = '12px';
-            reportPanel.style.padding = '10px';
-            reportPanel.style.position = (navigator.userAgent.indexOf('MSIE 6') > -1) ? 'absolute' : 'fixed';
-            reportPanel.style.right = '10px';
-            reportPanel.style.bottom = '10px';
-            reportPanel.style.width = '180px';
-            reportPanel.style.height = '320px';
-            reportPanel.style.overflow = 'auto';
-            reportPanel.style.zIndex = '100000';
-            reportPanel.innerHTML = '&nbsp;';
-            // store a copy of this node in the move buffer
-            document.body.appendChild(reportPanel);
-          }
-          // truncate the queue
-          var reportString = (reportPanel.innerHTML.length < 1000) ? reportPanel.innerHTML : reportPanel.innerHTML.substring(0, 800);
-          // process the arguments
-          for (a = 0, b = arguments.length; a < b; a += 1) {
-            messages += arguments[a] + '<br/>';
-          }
-          // add a break after the message
-          messages += '<hr/>';
-          // output the queue to the panel
-          reportPanel.innerHTML = messages + reportString;
-        };
-      }
-    },
-
-    // allows Object.create (https://gist.github.com/rxgx/1597825)
-    objectCreate: function() {
-      if (typeof Object.create !== "function") {
-        Object.create = function(original) {
-          function Clone() {}
-          Clone.prototype = original;
-          return new Clone();
-        };
-      }
-    },
-
-    // allows String.trim (https://gist.github.com/eliperelman/1035982)
-    stringTrim: function() {
-      if (!String.prototype.trim) {
-        String.prototype.trim = function() {
-          return this.replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '');
-        };
-      }
-      if (!String.prototype.ltrim) {
-        String.prototype.ltrim = function() {
-          return this.replace(/^\s+/, '');
-        };
-      }
-      if (!String.prototype.rtrim) {
-        String.prototype.rtrim = function() {
-          return this.replace(/\s+$/, '');
-        };
-      }
-      if (!String.prototype.fulltrim) {
-        String.prototype.fulltrim = function() {
-          return this.replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '').replace(/\s+/g, ' ');
-        };
-      }
-    },
-
-    // allows localStorage support
-    localStorage: function() {
-      if (!window.localStorage) {
-        if (/MSIE 8|MSIE 7|MSIE 6/i.test(navigator.userAgent)) {
-          window.localStorage = {
-            getItem: function(sKey) {
-              if (!sKey || !this.hasOwnProperty(sKey)) {
-                return null;
-              }
-              return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
-            },
-            key: function(nKeyId) {
-              return unescape(document.cookie.replace(/\s*\=(?:.(?!;))*$/, "").split(/\s*\=(?:[^;](?!;))*[^;]?;\s*/)[nKeyId]);
-            },
-            setItem: function(sKey, sValue) {
-              if (!sKey) {
-                return;
-              }
-              document.cookie = escape(sKey) + "=" + escape(sValue) + "; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/";
-              this.length = document.cookie.match(/\=/g).length;
-            },
-            length: 0,
-            removeItem: function(sKey) {
-              if (!sKey || !this.hasOwnProperty(sKey)) {
-                return;
-              }
-              document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-              this.length--;
-            },
-            hasOwnProperty: function(sKey) {
-              return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
-            }
-          };
-          window.localStorage.length = (document.cookie.match(/\=/g) || window.localStorage).length;
-        } else {
-          Object.defineProperty(window, "localStorage", new(function() {
-            var aKeys = [],
-              oStorage = {};
-            Object.defineProperty(oStorage, "getItem", {
-              value: function(sKey) {
-                return sKey ? this[sKey] : null;
-              },
-              writable: false,
-              configurable: false,
-              enumerable: false
-            });
-            Object.defineProperty(oStorage, "key", {
-              value: function(nKeyId) {
-                return aKeys[nKeyId];
-              },
-              writable: false,
-              configurable: false,
-              enumerable: false
-            });
-            Object.defineProperty(oStorage, "setItem", {
-              value: function(sKey, sValue) {
-                if (!sKey) {
-                  return;
-                }
-                document.cookie = escape(sKey) + "=" + escape(sValue) + "; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/";
-              },
-              writable: false,
-              configurable: false,
-              enumerable: false
-            });
-            Object.defineProperty(oStorage, "length", {
-              get: function() {
-                return aKeys.length;
-              },
-              configurable: false,
-              enumerable: false
-            });
-            Object.defineProperty(oStorage, "removeItem", {
-              value: function(sKey) {
-                if (!sKey) {
-                  return;
-                }
-                document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-              },
-              writable: false,
-              configurable: false,
-              enumerable: false
-            });
-            this.get = function() {
-              var iThisIndx;
-              for (var sKey in oStorage) {
-                iThisIndx = aKeys.indexOf(sKey);
-                if (iThisIndx === -1) {
-                  oStorage.setItem(sKey, oStorage[sKey]);
-                } else {
-                  aKeys.splice(iThisIndx, 1);
-                }
-                delete oStorage[sKey];
-              }
-              for (aKeys; aKeys.length > 0; aKeys.splice(0, 1)) {
-                oStorage.removeItem(aKeys[0]);
-              }
-              for (var aCouple, iKey, nIdx = 0, aCouples = document.cookie.split(/\s*;\s*/); nIdx < aCouples.length; nIdx++) {
-                aCouple = aCouples[nIdx].split(/\s*=\s*/);
-                if (aCouple.length > 1) {
-                  oStorage[iKey = unescape(aCouple[0])] = unescape(aCouple[1]);
-                  aKeys.push(iKey);
-                }
-              }
-              return oStorage;
-            };
-            this.configurable = false;
-            this.enumerable = true;
-          })());
-        }
-      }
-    },
-
-    // allows bind support
-    functionBind: function() {
-      // Credit to Douglas Crockford for this bind method
-      if (!Function.prototype.bind) {
-        Function.prototype.bind = function(oThis) {
-          if (typeof this !== "function") {
-            // closest thing possible to the ECMAScript 5 internal IsCallable function
-            throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-          }
-          var aArgs = Array.prototype.slice.call(arguments, 1),
-            fToBind = this,
-            fNOP = function() {},
-            fBound = function() {
-              return fToBind.apply(this instanceof fNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
-            };
-          fNOP.prototype = this.prototype;
-          fBound.prototype = new fNOP();
-          return fBound;
-        };
-      }
-    }
-
-  };
-
-  // startup
-  useful.polyfills.html5();
-  useful.polyfills.arrayIndexOf();
-  useful.polyfills.arrayIsArray();
-  useful.polyfills.arrayMap();
-  useful.polyfills.querySelectorAll();
-  useful.polyfills.addEventListener();
-  useful.polyfills.consoleLog();
-  useful.polyfills.objectCreate();
-  useful.polyfills.stringTrim();
-  useful.polyfills.localStorage();
-  useful.polyfills.functionBind();
-
-  // return as a require.js module
-  if (typeof module !== 'undefined') {
-    exports = module.exports = useful.polyfills;
-  }
+	// return as a require.js module
+	if (typeof module !== 'undefined') {
+		exports = module.exports = useful.positions;
+	}
 
 })();
-
 
 /*
 	Source:
@@ -597,53 +287,80 @@ var useful = useful || {};
 })();
 
 /*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
+Source:
+van Creij, Maurice (2018). "viewer.js: A simple tile based image viewer", http://www.woollymittens.nl/.
 
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+License:
+This work is licensed under a Creative Commons Attribution 3.0 Unported License.
 */
 
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
+// establish the class
+var Viewer = function (config) {
+	// default config
+	this.config = {
+		'urlprefix' : '',
+		'imageslice' : 'php/imageslice.php?src=../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
+		'transforms' : true,
+		'width' : '100',
+		'widthUnit' : '%',
+		'height' : '512',
+		'heightUnit' : 'px',
+		'divide' : '80%',
+		'margin' : '0%',
+		'colorPassive' : '#ff6a00',
+		'colorActive' : '#d45800',
+		'colorHover' : '#ff9800',
+		'colorDisabled' : '#7f7f7f',
+		'lens' : '0.5',
+		'toolbars' : 'buttons', 	// buttons | toolbar | sliders | none
+		'zoom' : 'static', 			// static | lens
+		'spin' : 'slideshow', 		// rotation | slideshow | catalogue
+		'pan' : 'drag', 			// drag | hover
+		'magnification' : '1.1',
+		'max' : '4',
+		'grid' : '256px',
+		'cache' : '32',
+		'left' : 0,
+		'top' : 0,
+		'right' : 1,
+		'bottom' : 1
+	};
+	// store the config
+	for (var key in config) { this.config[key] = config[key]; }
+	// bind the components
+	this.main = new this.Main(this);
+	// expose the public functions
+	this.focus = this.main.focus.bind(this.main);
+	this.previous = this.main.previous.bind(this.main);
+	this.next = this.main.next.bind(this.main);
+	// return the object
+	return this;
+};
 
-// extend the constructor
-useful.Viewer.prototype.Automatic = function (parent) {
-// properties
-"use strict";
+// return as a require.js module
+if (typeof module !== 'undefined') {
+	exports = module.exports = Viewer;
+}
+
+// extend the class
+Viewer.prototype.Automatic = function(parent) {
+
+	// PROPERTIES
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
 
 	// METHODS
-	
-	this.setup = function () {};
+
+	this.setup = function() {};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Automatic;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Figures_Mouse = function (parent) {
+// extend the class
+Viewer.prototype.Figures_Mouse = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
@@ -692,7 +409,7 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -742,7 +459,7 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -758,7 +475,7 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.mirror = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// retrieve the mouse position
@@ -773,35 +490,17 @@ useful.Viewer.prototype.Figures_Mouse = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Figures_Mouse;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Figures_Redraw = function (parent) {
+// extend the class
+Viewer.prototype.Figures_Redraw = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
 
 	// METHODS
-	
+
 	this.validate = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// reset the stored limits
@@ -824,7 +523,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			config.status.atMaxLeaf = true;
 		}
 	};
-	
+
 	this.calculate = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// calculate dimensions for a given zoom level
@@ -856,7 +555,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			this.backgroundTop = 0;
 		}
 	};
-	
+
 	this.normalise = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// normalise the figure position
@@ -893,7 +592,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			config.status.pan.x = 0.5;
 		}
 	};
-	
+
 	this.canvas = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// figure out the relevant movement
@@ -942,7 +641,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			config.status.cover.style.cursor = 'auto';
 		}
 	};
-	
+
 	this.figures = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// use CSS3 transforms if allowed
@@ -968,7 +667,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			config.status.figures[config.status.index].style.height = parseInt(this.figureHeight, 10) + 'px';
 		}
 	};
-	
+
 	this.create = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// if streaming new tiles is allowed
@@ -1058,7 +757,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			}
 		}
 	};
-	
+
 	this.display = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// for all tiles
@@ -1091,7 +790,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			}
 		}
 	};
-	
+
 	this.spin = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// decide on the transition effect
@@ -1165,7 +864,7 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 			element.className = 'tile_visible';
 		}, false);
 	};
-	
+
 	this.onFigureUnreveal = function (a, clipWidth) {
 		var context = this.context, parent = this.parent, config = this.config;
 		setTimeout(function () {
@@ -1180,29 +879,11 @@ useful.Viewer.prototype.Figures_Redraw = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Figures_Redraw;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Figures_Touch = function (parent) {
+// extend the class
+Viewer.prototype.Figures_Touch = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
@@ -1214,7 +895,7 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 	this.delay = null;
 
 	// METHODS
-	
+
 	this.start = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// store the touch positions
@@ -1229,7 +910,7 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 		this.treshold = config.status.cover.offsetWidth / 10;
 		this.flick = config.status.cover.offsetWidth * 0.6;
 	};
-	
+
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -1311,7 +992,7 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 		target.blur();
 		event.preventDefault();
 	};
-	
+
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// clear the positions
@@ -1320,7 +1001,7 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 		// order a redraw
 		parent.parent.update();
 	};
-	
+
 	this.mirror = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// retrieve the touch position
@@ -1335,29 +1016,11 @@ useful.Viewer.prototype.Figures_Touch = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Figures_Touch;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Figures = function (parent) {
+// extend the class
+Viewer.prototype.Figures = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
@@ -1572,35 +1235,17 @@ useful.Viewer.prototype.Figures = function (parent) {
 	this.touch = new this.context.Figures_Touch(this);
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Figures;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Leaf_Build = function (parent) {
+// extend the class
+Viewer.prototype.Leaf_Build = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
 
 	// METHODS
-	
+
 	this.indicator = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the page indicator
@@ -1624,7 +1269,7 @@ useful.Viewer.prototype.Leaf_Build = function (parent) {
 			event.preventDefault();
 		}, false);
 	};
-	
+
 	this.resetter = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the reset button
@@ -1638,7 +1283,7 @@ useful.Viewer.prototype.Leaf_Build = function (parent) {
 			parent.reset(event);
 		}, false);
 	};
-	
+
 	this.increaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the next button
@@ -1652,7 +1297,7 @@ useful.Viewer.prototype.Leaf_Build = function (parent) {
 			parent.increase(event);
 		}, false);
 	};
-	
+
 	this.decreaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the previous button
@@ -1668,29 +1313,11 @@ useful.Viewer.prototype.Leaf_Build = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Leaf_Build;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Leaf = function (parent) {
+// extend the class
+Viewer.prototype.Leaf = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
@@ -1721,7 +1348,7 @@ useful.Viewer.prototype.Leaf = function (parent) {
 		// fill in the page total
 		config.status.menus.leafPageCount.innerHTML = 'of ' +	(config.status.figures.length - 1);
 	};
-	
+
 	this.increase = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
@@ -1742,7 +1369,7 @@ useful.Viewer.prototype.Leaf = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.decrease = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
@@ -1752,7 +1379,7 @@ useful.Viewer.prototype.Leaf = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.typed = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the typed number
@@ -1765,7 +1392,7 @@ useful.Viewer.prototype.Leaf = function (parent) {
 		// update the interface
 		parent.update();
 	};
-	
+
 	this.reset = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// reset the zoom level
@@ -1779,36 +1406,17 @@ useful.Viewer.prototype.Leaf = function (parent) {
 	this.build = new this.context.Leaf_Build(this);
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Leaf;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Main = function () {
+// extend the class
+Viewer.prototype.Main = function (context) {
 
 	// PROPERTIES
 
-	"use strict";
 	this.context = null;
 	this.config = null;
 
 	// METHODS
 
 	this.init = function (context) {
-		var _this = this;
 		// store the context
 		this.context = context;
 		this.config = context.config;
@@ -2030,7 +1638,7 @@ useful.Viewer.prototype.Main = function () {
 			}
 		}
 	};
-	// external API
+	// public functions
 	this.focus = function (index) {
 		this.config.status.index = index;
 		this.update(this);
@@ -2045,37 +1653,23 @@ useful.Viewer.prototype.Main = function () {
 		this.config.status.index += 1;
 		this.update(this);
 	};
+
+	// EVENTS
+
+	this.init(context);
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Main;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Spin_Build = function (parent) {
+// extend the class
+Viewer.prototype.Spin_Build = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
 
 	// METHODS
-	
+
 	this.slider = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the slider to the menu
@@ -2091,7 +1685,7 @@ useful.Viewer.prototype.Spin_Build = function (parent) {
 		config.status.menus.spinIndicator.appendChild(config.status.menus.spinSlider);
 		element.appendChild(config.status.menus.spinIndicator);
 	};
-	
+
 	this.cover = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add a touch cover to the menu
@@ -2129,7 +1723,7 @@ useful.Viewer.prototype.Spin_Build = function (parent) {
 			parent.touch.end(event);
 		}, false);
 	};
-	
+
 	this.increaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the increase button
@@ -2158,7 +1752,7 @@ useful.Viewer.prototype.Spin_Build = function (parent) {
 			parent.parent.update();
 		}, false);
 	};
-	
+
 	this.decreaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the decrease button
@@ -2189,29 +1783,11 @@ useful.Viewer.prototype.Spin_Build = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Spin_Build;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Spin_Mouse = function (parent) {
+// extend the class
+Viewer.prototype.Spin_Mouse = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
@@ -2244,7 +1820,7 @@ useful.Viewer.prototype.Spin_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -2275,7 +1851,7 @@ useful.Viewer.prototype.Spin_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -2287,29 +1863,11 @@ useful.Viewer.prototype.Spin_Mouse = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Spin_Mouse;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Spin_Touch = function (parent) {
+// extend the class
+Viewer.prototype.Spin_Touch = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
@@ -2330,7 +1888,7 @@ useful.Viewer.prototype.Spin_Touch = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -2370,7 +1928,7 @@ useful.Viewer.prototype.Spin_Touch = function (parent) {
 			}
 		}
 	};
-	
+
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -2382,35 +1940,17 @@ useful.Viewer.prototype.Spin_Touch = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Spin_Touch;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Spin = function (parent) {
+// extend the class
+Viewer.prototype.Spin = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
 
 	// METHODS
-	
+
 	this.setup = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
@@ -2429,7 +1969,7 @@ useful.Viewer.prototype.Spin = function (parent) {
 		// add the menu to the interface
 		config.element.appendChild(config.status.menus.spinMenu);
 	};
-	
+
 	this.update = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// reposition the slider
@@ -2438,7 +1978,7 @@ useful.Viewer.prototype.Spin = function (parent) {
 		config.status.menus.spinIndicator.setAttribute('value', config.status.index);
 		config.status.menus.spinSliderIcon.innerHTML = config.status.index;
 	};
-	
+
 	this.increase = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the spin index
@@ -2450,7 +1990,7 @@ useful.Viewer.prototype.Spin = function (parent) {
 		// order a redraw
 		parent.update();
 	};
-	
+
 	this.decrease = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// increase the spin index
@@ -2470,32 +2010,17 @@ useful.Viewer.prototype.Spin = function (parent) {
 	this.touch = new this.context.Spin_Touch(this);
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Spin;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Thumbnails_Menu = function (parent) {
+// extend the class
+Viewer.prototype.Thumbnails_Menu = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
+
+	// METHODS
+
 	// build the menu options
 	this.setup = function () {
 		var context = this.context, parent = this.parent, config = this.config;
@@ -2543,6 +2068,9 @@ useful.Viewer.prototype.Thumbnails_Menu = function (parent) {
 		config.status.nextPage.className = config.status.nextPage.className.replace(/ disabled/gi, '');
 		config.status.nextPage.className += (config.scrollPosition <= config.scrollMax && config.scrollMax < 0) ? ' disabled' : '';
 	};
+
+	// EVENTS
+
 	// show the next page of thumbnails
 	this.next = function (event, node) {
 		var context = this.context, parent = this.parent, config = this.config;
@@ -2591,32 +2119,17 @@ useful.Viewer.prototype.Thumbnails_Menu = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Thumbnails_Menu;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Thumbnails = function (parent) {
+// extend the class
+Viewer.prototype.Thumbnails = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
+
+	// METHODS
+
 	// build the thumbnail list
 	this.setup = function () {
 		var context = this.context, parent = this.parent, config = this.config;
@@ -2758,35 +2271,17 @@ useful.Viewer.prototype.Thumbnails = function (parent) {
 	this.menu = new this.context.Thumbnails_Menu(this);
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Thumbnails;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Toolbar = function (parent) {
+// extend the class
+Viewer.prototype.Toolbar = function (parent) {
 
 	// PROPERTIES
 
-	"use strict";
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
 
 	// METHODS
-	
+
 	this.setup = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
@@ -2875,35 +2370,17 @@ useful.Viewer.prototype.Toolbar = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Toolbar;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Zoom_Build = function (parent) {
+// extend the class
+Viewer.prototype.Zoom_Build = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
 
 	// METHODS
-	
+
 	this.slider = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the slider to the menu
@@ -2919,7 +2396,7 @@ useful.Viewer.prototype.Zoom_Build = function (parent) {
 		config.status.menus.zoomIndicator.appendChild(config.status.menus.zoomSlider);
 		element.appendChild(config.status.menus.zoomIndicator);
 	};
-	
+
 	this.cover = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add a touch cover to the menu
@@ -2957,7 +2434,7 @@ useful.Viewer.prototype.Zoom_Build = function (parent) {
 			parent.touch.end(event);
 		}, false);
 	};
-	
+
 	this.increaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the increase button
@@ -2991,7 +2468,7 @@ useful.Viewer.prototype.Zoom_Build = function (parent) {
 			event.preventDefault();
 		}, false);
 	};
-	
+
 	this.decreaser = function (element) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// add the decrease button
@@ -3026,29 +2503,11 @@ useful.Viewer.prototype.Zoom_Build = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Zoom_Build;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Zoom_Mouse = function (parent) {
+// extend the class
+Viewer.prototype.Zoom_Mouse = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
@@ -3058,7 +2517,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 	this.fudge = 1.1;
 
 	// METHODS
-	
+
 	this.wheel = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the reading from the mouse wheel
@@ -3076,7 +2535,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 		// cancel the scrolling
 		event.preventDefault();
 	};
-	
+
 	this.start = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -3088,7 +2547,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -3109,7 +2568,7 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 		// cancel the click
 		event.preventDefault();
 	};
-	
+
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -3125,29 +2584,11 @@ useful.Viewer.prototype.Zoom_Mouse = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Zoom_Mouse;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Zoom_Touch = function (parent) {
+// extend the class
+Viewer.prototype.Zoom_Touch = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
@@ -3157,7 +2598,7 @@ useful.Viewer.prototype.Zoom_Touch = function (parent) {
 	this.fudge = 1.1;
 
 	// METHODS
-	
+
 	this.start = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// store the touch positions
@@ -3169,7 +2610,7 @@ useful.Viewer.prototype.Zoom_Touch = function (parent) {
 		this.distance = config.status.menus.zoomCover.offsetHeight - config.status.menus.zoomIn.offsetHeight - config.status.menus.zoomOut.offsetHeight;
 		this.sensitivity = config.heights[config.status.index] / config.status.canvas.offsetHeight - 1;
 	};
-	
+
 	this.move = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// get the event properties
@@ -3196,7 +2637,7 @@ useful.Viewer.prototype.Zoom_Touch = function (parent) {
 		target.blur();
 		event.preventDefault();
 	};
-	
+
 	this.end = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// clear the positions
@@ -3208,35 +2649,17 @@ useful.Viewer.prototype.Zoom_Touch = function (parent) {
 	};
 };
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Zoom_Touch;
-}
-
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the constructor
-useful.Viewer.prototype.Zoom = function (parent) {
+// extend the class
+Viewer.prototype.Zoom = function (parent) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.parent = parent;
 	this.config = parent.config;
 	this.context = parent.context;
 
 	// METHODS
-	
+
 	this.setup = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// create the menu
@@ -3255,7 +2678,7 @@ useful.Viewer.prototype.Zoom = function (parent) {
 		// add the menu to the interface
 		config.element.appendChild(config.status.menus.zoomMenu);
 	};
-	
+
 	this.update = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// gather the constants
@@ -3268,7 +2691,7 @@ useful.Viewer.prototype.Zoom = function (parent) {
 		// reposition the slider
 		config.status.menus.zoomSlider.style.top = (100 - (curZoom - minZoom) / (maxZoom - minZoom) * 100) + '%';
 	};
-	
+
 	this.increase = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// increase the zoom factor
@@ -3276,7 +2699,7 @@ useful.Viewer.prototype.Zoom = function (parent) {
 		// order a redraw
 		parent.update();
 	};
-	
+
 	this.decrease = function () {
 		var context = this.context, parent = this.parent, config = this.config;
 		// decrease the zoom factor
@@ -3291,70 +2714,3 @@ useful.Viewer.prototype.Zoom = function (parent) {
 	// touch screen controls
 	this.touch = new this.context.Zoom_Touch(this);
 };
-
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer.Zoom;
-}
-
-/*
-Source:
-van Creij, Maurice (2014). "useful.viewer.js: A simple tile based image viewer", version 20141127, http://www.woollymittens.nl/.
-
-License:
-This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Viewer = useful.Viewer || function () {};
-
-// extend the prototype with the init function
-useful.Viewer.prototype.init = function (config) {
-	// turn on strict mode
-	"use strict";
-	// default config
-	this.config = {
-		'urlprefix' : '',
-		'imageslice' : 'php/imageslice.php?src=../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
-		'transforms' : true,
-		'width' : '100',
-		'widthUnit' : '%',
-		'height' : '512',
-		'heightUnit' : 'px',
-		'divide' : '80%',
-		'margin' : '0%',
-		'colorPassive' : '#ff6a00',
-		'colorActive' : '#d45800',
-		'colorHover' : '#ff9800',
-		'colorDisabled' : '#7f7f7f',
-		'lens' : '0.5',
-		'toolbars' : 'buttons', 	// buttons | toolbar | sliders | none
-		'zoom' : 'static', 			// static | lens
-		'spin' : 'slideshow', 		// rotation | slideshow | catalogue
-		'pan' : 'drag', 			// drag | hover
-		'magnification' : '1.1',
-		'max' : '4',
-		'grid' : '256px',
-		'cache' : '32',
-		'left' : 0,
-		'top' : 0,
-		'right' : 1,
-		'bottom' : 1
-	};
-	// store the config
-	for (var name in config) { this.config[name] = config[name]; }
-	// bind the components
-	this.main = new this.Main().init(this);
-	// expose the public functions
-	this.focus = this.main.focus.bind(this.main);
-	this.previous = this.main.previous.bind(this.main);
-	this.next = this.main.next.bind(this.main);
-	// return the object
-	return this;
-};
-
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Viewer;
-}
