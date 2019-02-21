@@ -50,6 +50,5 @@ var Viewer = function (config) {
 };
 
 // return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = Viewer;
-}
+if (typeof define != 'undefined') define(['viewer'], function () { return Viewer });
+if (typeof module != 'undefined') module.exports = Viewer;
