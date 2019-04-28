@@ -124,7 +124,7 @@ Viewer.prototype.Figures_Touch = function (parent) {
 	this.mirror = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// retrieve the touch position
-		var pos = useful.positions.touch(event, config.status.cover);
+		var pos = positions.touch(event, config.status.cover);
 		// measure the exact location of the interaction
 		config.status.pos.x = pos.x;
 		config.status.pos.y = pos.y;

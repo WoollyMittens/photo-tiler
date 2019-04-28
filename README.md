@@ -9,13 +9,35 @@ Try the <a href="http://www.woollymittens.nl/default.php?url=useful-viewer">demo
 The stylesheet is best included in the header of the document.
 
 ```html
-<link rel="stylesheet" href="./css/useful-viewer.css"/>
+<link rel="stylesheet" href="css/viewer.css"/>
 ```
 
 This include can be added to the header or placed inline before the script is invoked.
 
 ```html
-<script src="./js/useful-viewer.js"></script>
+<script src="lib/positions.js"></script>
+<script src="lib/transitions.js"></script>
+<script src="js/viewer.js"></script>
+```
+
+Or use [Require.js](https://requirejs.org/).
+
+```js
+requirejs([
+	'lib/positions.js',
+	'lib/transitions.js',
+	'js/viewer.js'
+], function(positions, transitions, Viewer) {
+	...
+});
+```
+
+Or import into an MVC framework.
+
+```js
+var positions = require('lib/positions.js');
+var transitions = require('lib/transitions.js');
+var Viewer = require('js/viewer.js');
 ```
 
 ## How to start the script

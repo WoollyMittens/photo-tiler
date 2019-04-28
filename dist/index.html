@@ -26,24 +26,27 @@
 				<style>@import url("./css/viewer.css");</style>
 				<div id="viewera" class="viewer">
 					<ul>
-						<li><a href="./img/photo_0a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_0.jpg" width="4608" height="3456"/></a></li>
-						<li><a href="./img/photo_1a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_1.jpg" width="3456" height="4608"/></a></li>
-						<li><a href="./img/photo_2a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_2.jpg" width="4608" height="3456"/></a></li>
-						<li><a href="./img/photo_3a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_3.jpg" width="3456" height="4608"/></a></li>
-						<li><a href="./img/photo_4a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_4.jpg" width="4608" height="3456"/></a></li>
-						<li><a href="./img/photo_5a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_5.jpg" width="1932" height="2576"/></a></li>
-						<li><a href="./img/photo_6a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_6.jpg" width="2560" height="1920"/></a></li>
-						<li><a href="./img/photo_7a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_7.jpg" width="2560" height="1920"/></a></li>
-						<li><a href="./img/photo_8a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_8.jpg" width="1920" height="2560"/></a></li>
-						<li><a href="./img/photo_9a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_9.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_0a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_0.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_1a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_1.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="img/photo_2a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_2.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_3a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_3.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="img/photo_4a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_4.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_5a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_5.jpg" width="1932" height="2576"/></a></li>
+						<li><a href="img/photo_6a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_6.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_7a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_7.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_8a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_8.jpg" width="1920" height="2560"/></a></li>
+						<li><a href="img/photo_9a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_9.jpg" width="2560" height="1920"/></a></li>
 					</ul>
 				</div>
+				<script src="./lib/positions.js"></script>
+				<script src="./lib/transitions.js"></script>
 				<script src="./js/viewer.js"></script>
 				<script>
 				//<!--
 					// create a new instance of the script
 					var viewera = new Viewer({
 						'element' : document.getElementById('viewera'),
+						'imageslice' : './php/imageslice.php?src=../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 						'width' : '100',
 						'widthUnit' : '%',
 						'height' : '512',
@@ -71,21 +74,21 @@
 				<style>@import url("./css/viewer.css");</style>
 				<div id="viewerc" class="viewer">
 					<ul>
-						<li><a href="./img/panorama_0a.jpg"><img alt="" src="./img/panorama_0.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_1a.jpg"><img alt="" src="./img/panorama_1.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_2a.jpg"><img alt="" src="./img/panorama_2.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_3a.jpg"><img alt="" src="./img/panorama_3.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_4a.jpg"><img alt="" src="./img/panorama_4.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_5a.jpg"><img alt="" src="./img/panorama_5.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_6a.jpg"><img alt="" src="./img/panorama_6.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_7a.jpg"><img alt="" src="./img/panorama_7.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_8a.jpg"><img alt="" src="./img/panorama_8.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_9a.jpg"><img alt="" src="./img/panorama_9.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_10a.jpg"><img alt="" src="./img/panorama_10.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_11a.jpg"><img alt="" src="./img/panorama_11.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_12a.jpg"><img alt="" src="./img/panorama_12.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_13a.jpg"><img alt="" src="./img/panorama_13.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
-						<li><a href="./img/panorama_14a.jpg"><img alt="" src="./img/panorama_14.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_0a.jpg"><img alt="" src="./img/panorama_0.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_1a.jpg"><img alt="" src="./img/panorama_1.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_2a.jpg"><img alt="" src="./img/panorama_2.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_3a.jpg"><img alt="" src="./img/panorama_3.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_4a.jpg"><img alt="" src="./img/panorama_4.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_5a.jpg"><img alt="" src="./img/panorama_5.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_6a.jpg"><img alt="" src="./img/panorama_6.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_7a.jpg"><img alt="" src="./img/panorama_7.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_8a.jpg"><img alt="" src="./img/panorama_8.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_9a.jpg"><img alt="" src="./img/panorama_9.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_10a.jpg"><img alt="" src="./img/panorama_10.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_11a.jpg"><img alt="" src="./img/panorama_11.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_12a.jpg"><img alt="" src="./img/panorama_12.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_13a.jpg"><img alt="" src="./img/panorama_13.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_14a.jpg"><img alt="" src="./img/panorama_14.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
 					</ul>
 				</div>
 				<script src="./js/viewer.js"></script>
@@ -94,6 +97,7 @@
 					// create a new instance of the script
 					var viewerc = new Viewer({
 						'element' : document.getElementById('viewerc'),
+						'imageslice' : './php/imageslice.php?src=../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 						'width' : '100',
 						'widthUnit' : '%',
 						'height' : '610',
@@ -121,16 +125,16 @@
 				<style>@import url("./css/viewer.css");</style>
 				<div id="viewerb" class="viewer">
 					<ul>
-						<li><a href="./img/photo_9a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_9.jpg" width="2560" height="1920"/></a></li>
-						<li><a href="./img/photo_8a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_8.jpg" width="1920" height="2560"/></a></li>
-						<li><a href="./img/photo_7a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_7.jpg" width="2560" height="1920"/></a></li>
-						<li><a href="./img/photo_6a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_6.jpg" width="2560" height="1920"/></a></li>
-						<li><a href="./img/photo_5a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_5.jpg" width="1932" height="2576"/></a></li>
-						<li><a href="./img/photo_4a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_4.jpg" width="4608" height="3456"/></a></li>
-						<li><a href="./img/photo_3a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_3.jpg" width="3456" height="4608"/></a></li>
-						<li><a href="./img/photo_2a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_2.jpg" width="4608" height="3456"/></a></li>
-						<li><a href="./img/photo_1a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_1.jpg" width="3456" height="4608"/></a></li>
-						<li><a href="./img/photo_0a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_0.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_9a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_9.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_8a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_8.jpg" width="1920" height="2560"/></a></li>
+						<li><a href="img/photo_7a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_7.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_6a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_6.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_5a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_5.jpg" width="1932" height="2576"/></a></li>
+						<li><a href="img/photo_4a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_4.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_3a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_3.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="img/photo_2a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_2.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_1a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_1.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="img/photo_0a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_0.jpg" width="4608" height="3456"/></a></li>
 					</ul>
 				</div>
 				<script src="./js/viewer.js"></script>
@@ -140,6 +144,7 @@
 					var hasTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
 					var viewerb = new Viewer({
 						'element' : document.getElementById('viewerb'),
+						'imageslice' : './php/imageslice.php?src=../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 						'width' : '100',
 						'widthUnit' : '%',
 						'height' : '512',

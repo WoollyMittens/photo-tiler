@@ -74,7 +74,7 @@ Viewer.prototype.Thumbnails_Menu = function (parent) {
 				newPosition = config.scrollMax;
 			}
 			// transition to the new position
-			useful.transitions.byRules(config.status.slideUl, {'marginLeft' : newPosition + 'px'});
+			transitions.byRules(config.status.slideUl, {'marginLeft' : newPosition + 'px'});
 			// redraw the menu buttons
 			this.update();
 		}
@@ -97,7 +97,7 @@ Viewer.prototype.Thumbnails_Menu = function (parent) {
 				newPosition = 0;
 			}
 			// transition to the new position
-			useful.transitions.byRules(config.status.slideUl, {'marginLeft' : newPosition + 'px'});
+			transitions.byRules(config.status.slideUl, {'marginLeft' : newPosition + 'px'});
 			// redraw the menu buttons
 			this.update();
 		}

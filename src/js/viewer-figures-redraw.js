@@ -325,7 +325,7 @@ Viewer.prototype.Figures_Redraw = function (parent) {
 						// apply the figure class
 						config.status.figures[a].className = 'figure_leafin';
 						// apply the figure style
-						useful.transitions.byRules(
+						transitions.byRules(
 							config.status.figures[a],
 							{'clip' : 'rect(auto ' + clipWidth + 'px auto 0px)', 'transform' : 'translate(0%,0%) rotate(0deg)'},
 							null,

@@ -121,7 +121,7 @@ Viewer.prototype.Figures_Mouse = function (parent) {
 	this.mirror = function (event) {
 		var context = this.context, parent = this.parent, config = this.config;
 		// retrieve the mouse position
-		var pos = useful.positions.cursor(event, config.status.cover);
+		var pos = positions.cursor(event, config.status.cover);
 		// measure the exact location of the interaction
 		config.status.pos.x = pos.x;
 		config.status.pos.y = pos.y;

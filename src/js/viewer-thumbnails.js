@@ -122,7 +122,7 @@ Viewer.prototype.Thumbnails = function (parent) {
 		centeredPosition = (centeredPosition > 0) ? 0 : centeredPosition;
 		centeredPosition = (centeredPosition < config.scrollMax && config.scrollMax < 0) ? config.scrollMax : centeredPosition;
 		// transition to the new position
-		useful.transitions.byRules(
+		transitions.byRules(
 			config.status.slideUl,
 			{'marginLeft' : centeredPosition + 'px'}
 		);
