@@ -46,7 +46,7 @@ var Viewer = require('js/viewer.js');
 var viewer = new Viewer({
 	'element' : document.getElementById('viewer'),
 	'urlprefix' : '',
-	'imageslice' : 'php/imageslice.php?src=../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
+	'imageslice' : 'php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 	'transforms' : true,
 	'width' : '100',
 	'widthUnit' : '%',

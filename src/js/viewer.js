@@ -11,7 +11,7 @@ var Viewer = function (config) {
 	// default config
 	this.config = {
 		'urlprefix' : '',
-		'imageslice' : 'php/imageslice.php?src=../{src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
+		'imageslice' : 'php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
 		'transforms' : true,
 		'width' : '100',
 		'widthUnit' : '%',
