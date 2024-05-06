@@ -1,10 +1,167 @@
 <!DOCTYPE html>
 <html>
 	<head>
-    <title>Redirect to demo</title>
-		<script>document.location.replace('./dist/');</script>
+		<meta charset="UTF-8" />
+		<title>viewer.js: Tile Based Image Viewer</title>
+		<style>
+			html { font-family:Sans-Serif; font-size:75%; height:100%; }
+			body { _height:100%; line-height:180%; margin:0; min-height:100%; padding:1%; }
+			.example { max-width:960px; margin:0 auto; padding:0; clear:both; }
+			.example > article, .example > aside { width:98%; padding:2%; }
+			.example-left > article, .example-left > aside { width:48%; padding:1%; float:left; }
+			.example-right > article, .example-right > aside { width:48%; padding:1%; float:right; }
+		</style>
 	</head>
 	<body>
-		<a href="./dist/">Start</a>
+		<section class="example example-right">
+			<article>
+				<h2>Tile Based Image Viewer</h2>
+				<p>This tile-based image viewer loads only the parts of the image that are visible. Not unlike how Google Maps loads map tiles.</p>
+				<p>This demo comes with a web service to divide large images into tiles using PHP, but the concept is easily replicated in other languages.</p>
+				<p><a class="button downloadButton" href="http://github.com/WoollyMittens/useful-viewer" target="_blank">Download (GitHub)</a></p>
+			</article>
+			<aside>
+
+				<!-- Cut below this -->
+				<style>@import url("./css/viewer.css");</style>
+				<div id="viewera" class="viewer">
+					<ul>
+						<li><a href="img/photo_0a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_0.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_1a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_1.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="img/photo_2a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_2.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_3a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_3.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="img/photo_4a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_4.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_5a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_5.jpg" width="1932" height="2576"/></a></li>
+						<li><a href="img/photo_6a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_6.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_7a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_7.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_8a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_8.jpg" width="1920" height="2560"/></a></li>
+						<li><a href="img/photo_9a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_9.jpg" width="2560" height="1920"/></a></li>
+					</ul>
+				</div>
+				<script src="./lib/positions.js"></script>
+				<script src="./lib/transitions.js"></script>
+				<script src="./js/viewer.js"></script>
+				<script>
+				//<!--
+					// create a new instance of the script
+					var viewera = new Viewer({
+						'element' : document.getElementById('viewera'),
+						'imageslice' : './php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
+						'width' : '100',
+						'widthUnit' : '%',
+						'height' : '512',
+						'heightUnit' : 'px',
+						'divide' : '80%',
+						'margin' : '0%',
+						'toolbars' : 'buttons', 	// buttons | toolbar | sliders | none
+						'zoom' : 'static', 			// static | lens
+						'spin' : 'slideshow', 		// rotation | slideshow | catalogue
+						'pan' : 'drag' 			// drag | hover
+					});
+				//-->
+				</script>
+				<!-- Cut above this -->
+
+			</aside>
+		</section>
+		<section class="example example-left">
+			<article>
+				<p>This example allows frames of a rotation to be dragged around.</p>
+			</article>
+			<aside>
+
+				<!-- Cut below this -->
+				<style>@import url("./css/viewer.css");</style>
+				<div id="viewerc" class="viewer">
+					<ul>
+						<li><a href="img/panorama_0a.jpg"><img alt="" src="./img/panorama_0.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_1a.jpg"><img alt="" src="./img/panorama_1.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_2a.jpg"><img alt="" src="./img/panorama_2.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_3a.jpg"><img alt="" src="./img/panorama_3.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_4a.jpg"><img alt="" src="./img/panorama_4.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_5a.jpg"><img alt="" src="./img/panorama_5.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_6a.jpg"><img alt="" src="./img/panorama_6.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_7a.jpg"><img alt="" src="./img/panorama_7.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_8a.jpg"><img alt="" src="./img/panorama_8.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_9a.jpg"><img alt="" src="./img/panorama_9.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_10a.jpg"><img alt="" src="./img/panorama_10.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_11a.jpg"><img alt="" src="./img/panorama_11.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_12a.jpg"><img alt="" src="./img/panorama_12.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_13a.jpg"><img alt="" src="./img/panorama_13.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+						<li><a href="img/panorama_14a.jpg"><img alt="" src="./img/panorama_14.jpg" data-left="0" data-top="0" data-right="1" data-bottom="1" width="1932" height="2576"/></a></li>
+					</ul>
+				</div>
+				<script src="./js/viewer.js"></script>
+				<script>
+				//<!--
+					// create a new instance of the script
+					var viewerc = new Viewer({
+						'element' : document.getElementById('viewerc'),
+						'imageslice' : './php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
+						'width' : '100',
+						'widthUnit' : '%',
+						'height' : '610',
+						'heightUnit' : 'px',
+						'divide' : '100%',
+						'margin' : '0%',
+						'toolbars' : 'sliders', 	// buttons | toolbar | sliders | none
+						'zoom' : 'static', 			// static | lens
+						'spin' : 'rotation', 		// rotation | slideshow | catalogue
+						'pan' : 'drag' 			// drag | hover
+					});
+				//-->
+				</script>
+				<!-- Cut above this -->
+
+			</aside>
+		</section>
+		<section class="example example-right">
+			<article>
+				<p>This example shows a lens instead of zooming in on the whole image. On devices with a touch interface this example will revert to a more intuitive "pinch to zoom" interface.</p>
+			</article>
+			<aside>
+
+				<!-- Cut below this -->
+				<style>@import url("./css/viewer.css");</style>
+				<div id="viewerb" class="viewer">
+					<ul>
+						<li><a href="img/photo_9a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_9.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_8a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_8.jpg" width="1920" height="2560"/></a></li>
+						<li><a href="img/photo_7a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_7.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_6a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_6.jpg" width="2560" height="1920"/></a></li>
+						<li><a href="img/photo_5a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_5.jpg" width="1932" height="2576"/></a></li>
+						<li><a href="img/photo_4a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_4.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_3a.jpg"><img title="Excepteur" alt="Excepteur sint occaecat" src="./img/photo_3.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="img/photo_2a.jpg"><img title="Duis Aute" alt="Duis aute irure dolor" src="./img/photo_2.jpg" width="4608" height="3456"/></a></li>
+						<li><a href="img/photo_1a.jpg"><img title="Ut Enim" alt="Ut enim ad minim veniam" src="./img/photo_1.jpg" width="3456" height="4608"/></a></li>
+						<li><a href="img/photo_0a.jpg"><img title="Lorem Ipsum" alt="Lorem ipsum dolor sit amet" src="./img/photo_0.jpg" width="4608" height="3456"/></a></li>
+					</ul>
+				</div>
+				<script src="./js/viewer.js"></script>
+				<script>
+				//<!--
+					// create a new instance of the script
+					var hasTouch = (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
+					var viewerb = new Viewer({
+						'element' : document.getElementById('viewerb'),
+						'imageslice' : './php/imageslice.php?src={src}&left={left}&top={top}&right={right}&bottom={bottom}&width={width}&height={height}',
+						'width' : '100',
+						'widthUnit' : '%',
+						'height' : '512',
+						'heightUnit' : 'px',
+						'divide' : '80%',
+						'margin' : '0%',
+						'lens' : '0.5',
+						'toolbars' : 'toolbar', 					// buttons | toolbar | sliders | none
+						'zoom' : (hasTouch) ? 'static' : 'lens',	// static | lens
+						'spin' : 'slideshow', 						// rotation | slideshow | catalogue
+						'pan' : 'drag' 							// drag | hover
+					});
+				//-->
+				</script>
+				<!-- Cut above this -->
+
+			</aside>
+		</section>
 	</body>
 </html>
