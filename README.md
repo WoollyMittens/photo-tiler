@@ -1,6 +1,6 @@
 # viewer.js: Tile Based Image Viewer
 
-*DEPRICATION WARNING: the functionality in this script has been superceeded / trivialised by updated web standards.*
+*DEPRICATION WARNING: the functionality in this script has been superceeded by [photo-zoom](https://github.com/WoollyMittens/photo-zoom).*
 
 This tile-based image viewer loads only the parts of the image that are visible. Not unlike how Google Maps loads map tiles. This demo comes with a web service to divide large images into tiles using PHP, but the concept is easily replicated in other languages.
 
